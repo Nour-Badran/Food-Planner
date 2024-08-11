@@ -17,7 +17,6 @@ public class MealEntity {
     private String strYoutube;
     private String strSource;
 
-    // Getters and Setters
     @NonNull
     public String getIdMeal() {
         return idMeal;
