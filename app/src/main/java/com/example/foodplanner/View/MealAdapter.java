@@ -30,7 +30,11 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
     public void onBindViewHolder(@NonNull MealViewHolder holder, int position) {
         MealEntity meal = meals.get(position);
         holder.mealName.setText(meal.getStrMeal());
-        Glide.with(holder.itemView.getContext()).load(meal.getStrMealThumb()).into(holder.mealImage);
+
+        // Load image using Glide or another image loading library
+        Glide.with(holder.itemView.getContext())
+                .load(meal.getStrMealThumb())
+                .into(holder.mealImage);
     }
 
     @Override
@@ -43,11 +47,11 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
         notifyDataSetChanged();
     }
 
-    static class MealViewHolder extends RecyclerView.ViewHolder {
+    public static class MealViewHolder extends RecyclerView.ViewHolder {
         ImageView mealImage;
         TextView mealName;
 
-        MealViewHolder(@NonNull View itemView) {
+        public MealViewHolder(@NonNull View itemView) {
             super(itemView);
             mealImage = itemView.findViewById(R.id.mealImage);
             mealName = itemView.findViewById(R.id.mealName);

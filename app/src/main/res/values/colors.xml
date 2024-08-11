@@ -2,7 +2,7 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="semi_transparent_black">#80000000</color> <!-- 50% transparent black -->
+    <color name="semi_transparent_black">#10000000</color> <!-- 75% transparent black -->
     <color name="colorAccent">#03DAC5</color>
     <color name="gray">#D3D3D3</color>
     <color name="dark_gray">#333333</color>
@@ -12,5 +12,6 @@
     <color name="categoryBackgroundColor">#FF9800</color> <!-- Orange -->
     <color name="areaBackgroundColor">#4CAF50</color> <!-- Green -->
     <color name="differentColor">#FF5722</color> <!-- Example color -->
+    <color name="red">#F44336</color>
     <color name="nameCardBackgroundColor">#FFFFFF</color> <!-- Background color for the meal name card -->
 </resources>

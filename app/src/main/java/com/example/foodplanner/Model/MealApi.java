@@ -16,4 +16,9 @@ public interface MealApi {
 
     @GET("list.php?a=list")
     Call<CountryResponse> getCountries();
+    @GET("search.php")
+    Call<MealResponse> searchMeals(@Query("s") String mealName);
+
+    @GET("lookup.php")
+    Call<MealResponse> getMealDetails(@Query("i") String mealId);
 }

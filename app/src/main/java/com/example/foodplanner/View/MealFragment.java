@@ -18,6 +18,9 @@ import com.example.foodplanner.R;
 public class MealFragment extends Fragment {
     private MealEntity meal;
 
+    public MealFragment() {
+        // Required empty public constructor
+    }
     public MealFragment(MealEntity meal) {
         this.meal = meal;
     }

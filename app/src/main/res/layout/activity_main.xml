@@ -32,14 +32,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/next"
         android:layout_width="70dp"
         android:layout_height="64dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="27dp"
         android:rotationY="180"
+        android:src="@drawable/arrow_back_24dp_e8eaed_fill0_wght400_grad0_opsz24"
+        app:civ_border_color="#FFFFFF"
+        app:civ_border_overlay="true"
+        app:civ_border_width="4dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/arrow_back_24dp_e8eaed_fill0_wght400_grad0_opsz24" />
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

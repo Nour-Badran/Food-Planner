@@ -1,5 +1,6 @@
 package com.example.foodplanner.View;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,6 +22,7 @@ import com.example.foodplanner.Presenter.MealPresenterImpl;
 import com.example.foodplanner.R;
 
 import java.util.Collections;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MealView {
     private RecyclerView recyclerView;
@@ -35,7 +37,8 @@ public class MainActivity extends AppCompatActivity implements MealView {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent outIntent = new Intent(MainActivity.this, MealSearch.class);
+                startActivity(outIntent);
             }
         });
 //        recyclerView = findViewById(R.id.mealRecyclerView);
@@ -70,5 +73,10 @@ public class MainActivity extends AppCompatActivity implements MealView {
     @Override
     public void showError(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showMeals(List<MealEntity> meals) {
+
     }
 }
