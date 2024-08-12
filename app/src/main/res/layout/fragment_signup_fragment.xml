@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/img_4"
+    android:background="@drawable/img_9"
     tools:context=".View.NewMainActivity">
 
     <!-- CardView Container -->
@@ -24,6 +24,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/semi_transparent_black"
             android:padding="16dp">
 
             <!-- ImageView for displaying an image -->
@@ -146,132 +147,24 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
             <!-- Favorite Meals TextView -->
-            <TextView
-                android:id="@+id/favoriteMealsTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
-                android:text="Favorite Meals"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
             <!-- Pizza Row -->
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/pizzaRow"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/favoriteMealsTextView">
-
-                <ImageView
-                    android:id="@+id/imageViewPizza"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_marginEnd="16dp"
-                    android:background="@drawable/rounded_corners"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/img_1" />
-
-                <CheckBox
-                    android:id="@+id/checkBoxPizza"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Pizza"
-                    android:textColor="@color/differentColor"
-                    android:textSize="30sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/imageViewPizza"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <!-- Sushi Row -->
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/sushiRow"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/pizzaRow">
-
-                <ImageView
-                    android:id="@+id/imageViewSushi"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_marginEnd="16dp"
-                    android:background="@drawable/rounded_corners"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/img_2" />
-
-                <CheckBox
-                    android:id="@+id/checkBoxSushi"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Sushi"
-                    android:textColor="@color/differentColor"
-                    android:textSize="30sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/imageViewSushi"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <!-- Burgers Row -->
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/burgersRow"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/sushiRow">
-
-                <ImageView
-                    android:id="@+id/imageViewBurgers"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_marginEnd="16dp"
-                    android:background="@drawable/rounded_corners"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/img_3" />
-
-                <CheckBox
-                    android:id="@+id/checkBoxBurgers"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Burgers"
-                    android:textColor="@color/differentColor"
-                    android:textSize="30sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/imageViewBurgers"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
             <!-- Submit Button -->
             <Button
                 android:id="@+id/signUpButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="65dp"
                 android:text="Sign Up"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toTopOf="@+id/loginButton"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/burgersRow" />
+                app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
             <!-- Login Button -->
             <Button

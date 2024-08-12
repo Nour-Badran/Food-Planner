@@ -62,9 +62,9 @@ public class signup_fragment extends Fragment {
 
         signUp = view.findViewById(R.id.signUpButton);
         logIn = view.findViewById(R.id.loginButton);
-        checkBoxPizza = view.findViewById(R.id.checkBoxPizza);
-        checkBoxSushi = view.findViewById(R.id.checkBoxSushi);
-        checkBoxBurgers = view.findViewById(R.id.checkBoxBurgers);
+//        checkBoxPizza = view.findViewById(R.id.checkBoxPizza);
+//        checkBoxSushi = view.findViewById(R.id.checkBoxSushi);
+//        checkBoxBurgers = view.findViewById(R.id.checkBoxBurgers);
         email = view.findViewById(R.id.email);
         confirmPassword = view.findViewById(R.id.confirmPassword);
         username = view.findViewById(R.id.username);
@@ -157,17 +157,17 @@ public class signup_fragment extends Fragment {
                     person.gender = "Not specified";
                 }
 
-                List<String> favoriteMeals = new ArrayList<>();
-                if (checkBoxPizza.isChecked()) {
-                    favoriteMeals.add("Pizza");
-                }
-                if (checkBoxSushi.isChecked()) {
-                    favoriteMeals.add("Sushi");
-                }
-                if (checkBoxBurgers.isChecked()) {
-                    favoriteMeals.add("Burgers");
-                }
-                person.favoriteMeals = favoriteMeals.toArray(new String[0]);
+//                List<String> favoriteMeals = new ArrayList<>();
+//                if (checkBoxPizza.isChecked()) {
+//                    favoriteMeals.add("Pizza");
+//                }
+//                if (checkBoxSushi.isChecked()) {
+//                    favoriteMeals.add("Sushi");
+//                }
+//                if (checkBoxBurgers.isChecked()) {
+//                    favoriteMeals.add("Burgers");
+//                }
+//                person.favoriteMeals = favoriteMeals.toArray(new String[0]);
 
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("person_key", person);

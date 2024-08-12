@@ -1,4 +1,4 @@
-package com.example.foodplanner.View;
+package com.example.foodplanner.View.Auth;
 
 import android.os.Bundle;
 import android.text.TextUtils;

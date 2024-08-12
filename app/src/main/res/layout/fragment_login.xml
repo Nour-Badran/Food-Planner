@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/img_4"
-    tools:context=".View.LoginFragment">
+    android:background="@drawable/img_9"
+    tools:context=".View.Auth.LoginFragment">
 
     <!-- CardView Container -->
     <androidx.cardview.widget.CardView
         android:id="@+id/cardViewContainer"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="351dp"
+        android:layout_height="344dp"
         android:layout_margin="16dp"
         app:cardBackgroundColor="@android:color/white"
         app:cardCornerRadius="16dp"
@@ -24,6 +24,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/semi_transparent_black"
             android:padding="16dp">
 
             <!-- ImageView for displaying an image -->
