@@ -11,7 +11,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cardViewContainer"
         android:layout_width="351dp"
-        android:layout_height="344dp"
+        android:layout_height="400dp"
         android:layout_margin="16dp"
         app:cardBackgroundColor="@android:color/white"
         app:cardCornerRadius="16dp"
@@ -23,7 +23,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="400dp"
             android:background="@color/semi_transparent_black"
             android:padding="16dp">
 
@@ -33,7 +33,7 @@
                 android:layout_width="300dp"
                 android:layout_height="100dp"
                 android:layout_marginBottom="16dp"
-                app:layout_constraintBottom_toTopOf="@+id/username"
+                app:layout_constraintBottom_toTopOf="@+id/emailID"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -42,12 +42,12 @@
 
             <!-- Username input field -->
             <EditText
-                android:id="@+id/username"
+                android:id="@+id/emailID"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="32dp"
                 android:background="@drawable/rounded_edit_text"
-                android:hint="Username"
+                android:hint="Email"
                 android:inputType="text"
                 android:padding="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -69,33 +69,49 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/username" />
+                app:layout_constraintTop_toBottomOf="@+id/emailID" />
 
             <!-- Login Button -->
+
+            <!-- Sign Up Button -->
             <Button
                 android:id="@+id/loginButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
                 android:text="Login"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toTopOf="@+id/signupButton"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/password" />
+                app:layout_constraintTop_toBottomOf="@+id/password"
+                app:layout_constraintVertical_bias="0.288" />
 
-            <!-- Sign Up Button -->
+            <!-- ProgressBar -->
+
             <Button
                 android:id="@+id/signupButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
                 android:text="Sign Up"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="49dp"
+                android:layout_height="43dp"
+                android:layout_marginTop="24dp"
+                android:indeterminate="true"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@+id/signupButton"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/loginButton" />
+                app:layout_constraintTop_toBottomOf="@+id/loginButton"
+                app:layout_constraintVertical_bias="0.8" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

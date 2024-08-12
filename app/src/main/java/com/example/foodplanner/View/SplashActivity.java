@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.foodplanner.R;
+import com.example.foodplanner.View.Auth.NewMainActivity;
 
 public class SplashActivity extends AppCompatActivity {
     @Override

@@ -11,19 +11,30 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import com.example.foodplanner.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.regex.Pattern;
 
 public class LoginFragment extends Fragment {
 
     Button signUp;
     Button logIn;
-    EditText username;
+    EditText email;
     EditText password;
-
+    FirebaseAuth mAuth;
+    ProgressBar progressBar;
+    private static final Pattern EMAIL_PATTERN = Pattern.compile(
+            "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$");
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mAuth = FirebaseAuth.getInstance();
     }
 
     @Override
@@ -38,35 +49,44 @@ public class LoginFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         signUp = view.findViewById(R.id.signupButton);
         logIn = view.findViewById(R.id.loginButton);
-        username = view.findViewById(R.id.username);
+        email = view.findViewById(R.id.emailID);
         password = view.findViewById(R.id.password);
-
+        progressBar = view.findViewById(R.id.progressBar);
         logIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Validate login credentials
-                String user = username.getText().toString().trim();
+                String emaill = email.getText().toString().trim();
                 String pass = password.getText().toString().trim();
 
-                if (TextUtils.isEmpty(user)) {
-                    username.setError("Username is required");
+                if (TextUtils.isEmpty(emaill)) {
+                    email.setError("Email is required");
                     return;
                 }
                 if (TextUtils.isEmpty(pass)) {
                     password.setError("Password is required");
                     return;
                 }
-
-
-                boolean isAuthenticated = authenticateUser(user, pass);
-
-                if (isAuthenticated) {
-                    // Navigate to another fragment or activity on successful login
-                    //Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_homeFragment);
-                } else {
-                    // Show error message on failed login
-                    Toast.makeText(getContext(), "Invalid username or password", Toast.LENGTH_LONG).show();
+                if (!EMAIL_PATTERN.matcher(emaill).matches()) {
+                    email.setError("Invalid email format");
+                    Toast.makeText(getActivity(), "Invalid email format", Toast.LENGTH_SHORT).show();
+                    return;
                 }
+                progressBar.setVisibility(v.VISIBLE);
+                mAuth.signInWithEmailAndPassword(emaill,pass).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                    @Override
+                    public void onSuccess(AuthResult authResult) {
+                        progressBar.setVisibility(v.GONE);
+                        Toast.makeText(getActivity(), "Login Successful", Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        progressBar.setVisibility(v.GONE);
+                        Toast.makeText(getActivity(), "Login Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
             }
         });
 

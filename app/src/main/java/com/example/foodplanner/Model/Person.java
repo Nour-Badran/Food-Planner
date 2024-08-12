@@ -7,5 +7,4 @@ public class Person implements Serializable {
     public String password;
     public String email;
     public String gender;
-    public String[] favoriteMeals;
 }

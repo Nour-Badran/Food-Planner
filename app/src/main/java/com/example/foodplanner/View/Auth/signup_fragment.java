@@ -1,4 +1,4 @@
-package com.example.foodplanner.View;
+package com.example.foodplanner.View.Auth;
 
 import android.os.Bundle;
 
@@ -11,17 +11,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.foodplanner.Model.Person;
 import com.example.foodplanner.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Pattern;
 
 public class signup_fragment extends Fragment {
@@ -34,9 +35,8 @@ public class signup_fragment extends Fragment {
     EditText email;
     RadioButton male;
     RadioButton female;
-    CheckBox checkBoxPizza;
-    CheckBox checkBoxSushi;
-    CheckBox checkBoxBurgers;
+    FirebaseAuth mAuth;
+    ProgressBar progressBar;
 
     // Regex patterns
     private static final Pattern EMAIL_PATTERN = Pattern.compile(
@@ -47,6 +47,7 @@ public class signup_fragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mAuth = FirebaseAuth.getInstance();
     }
 
     @Override
@@ -62,12 +63,13 @@ public class signup_fragment extends Fragment {
 
         signUp = view.findViewById(R.id.signUpButton);
         logIn = view.findViewById(R.id.loginButton);
+        progressBar = view.findViewById(R.id.progressBar);
 //        checkBoxPizza = view.findViewById(R.id.checkBoxPizza);
 //        checkBoxSushi = view.findViewById(R.id.checkBoxSushi);
 //        checkBoxBurgers = view.findViewById(R.id.checkBoxBurgers);
         email = view.findViewById(R.id.email);
         confirmPassword = view.findViewById(R.id.confirmPassword);
-        username = view.findViewById(R.id.username);
+        username = view.findViewById(R.id.emailID);
         password = view.findViewById(R.id.password);
         male = view.findViewById(R.id.radioButton);
         female = view.findViewById(R.id.radioButton3);
@@ -143,6 +145,7 @@ public class signup_fragment extends Fragment {
                     Toast.makeText(getActivity(), "Choose your gender", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                progressBar.setVisibility(v.VISIBLE);
 
                 Person person = new Person();
                 person.username = usernameText;
@@ -157,6 +160,20 @@ public class signup_fragment extends Fragment {
                     person.gender = "Not specified";
                 }
 
+                mAuth.createUserWithEmailAndPassword(emailText, passwordText)
+                        .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    progressBar.setVisibility(v.GONE);
+                                    //FirebaseUser user = mAuth.getCurrentUser();
+                                    Toast.makeText(getContext(), "Sign up successful!", Toast.LENGTH_SHORT).show(); // Use getContext()
+                                    // Handle successful sign up (e.g., navigate to another fragment or activity)
+                                } else {
+                                    Toast.makeText(getContext(), "Sign up failed. Please try again.", Toast.LENGTH_SHORT).show(); // Use getContext()
+                                }
+                            }
+                        });
 //                List<String> favoriteMeals = new ArrayList<>();
 //                if (checkBoxPizza.isChecked()) {
 //                    favoriteMeals.add("Pizza");
