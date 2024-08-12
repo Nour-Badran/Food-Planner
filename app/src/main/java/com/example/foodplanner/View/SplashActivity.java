@@ -14,13 +14,15 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
         LottieAnimationView animationView = findViewById(R.id.splashAnimation);
         animationView.setAnimation(R.raw.comp_1);
         animationView.playAnimation();
 
         new Handler().postDelayed(() -> {
-            startActivity(new Intent(SplashActivity.this, MainActivity.class));
+            startActivity(new Intent(SplashActivity.this, NewMainActivity.class));
             finish();
         }, 3000); // Delay for splash screen
     }

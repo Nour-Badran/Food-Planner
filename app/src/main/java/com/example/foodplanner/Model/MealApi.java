@@ -11,6 +11,9 @@ public interface MealApi {
     @GET("filter.php")
     Call<MealResponse> getMealsByCategory(@Query("c") String category);
 
+    @GET("randomselection.php")
+    Call<MealResponse> getRandomMeals();
+
     @GET("list.php?c=list")
     Call<CategoryResponse> getCategories();
 

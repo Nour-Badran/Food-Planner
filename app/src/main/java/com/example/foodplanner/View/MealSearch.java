@@ -46,7 +46,7 @@ public class MealSearch extends AppCompatActivity implements MealView {
         FavoriteMealDatabase appDatabase = Room.databaseBuilder(getApplicationContext(),
                 FavoriteMealDatabase.class, "mealsdb").build();
         presenter = new MealPresenterImpl(this, mealApi, appDatabase);
-
+        presenter.getRandomMeals();
         buttonSearch.setOnClickListener(v -> {
             String mealName = editTextMealName.getText().toString().trim();
             if (!mealName.isEmpty()) {
@@ -70,19 +70,15 @@ public class MealSearch extends AppCompatActivity implements MealView {
     @Override
     public void showMeals(List<MealEntity> meals) {
         adapter.setMeals(meals);
-        if (meals.isEmpty()) {
-            showError("No meals found 2");
-        } else {
-            recyclerView.setVisibility(View.VISIBLE); // Show RecyclerView
-            textViewError.setVisibility(View.GONE);
-        }
+        recyclerView.setVisibility(View.VISIBLE); // Show RecyclerView
+        textViewError.setVisibility(View.GONE);
     }
 
     @Override
     public void showError(String message) {
         textViewError.setText(message);
         textViewError.setVisibility(View.VISIBLE);
-        recyclerView.setVisibility(View.GONE); // Hide RecyclerView if there's an error
+        recyclerView.setVisibility(View.GONE);
 
     }
 }

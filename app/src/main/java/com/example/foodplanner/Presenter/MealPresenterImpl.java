@@ -36,8 +36,6 @@ public class MealPresenterImpl implements MealPresenter {
                     Log.d("MealPresenterImpl", "Response JSON: " + new Gson().toJson(mealResponse));
                     List<MealEntity> meals = mealResponse.getMeals();
                     if (meals != null && !meals.isEmpty()) {
-                        Log.d("MealPresenterImpl", "Meals fetched: " + meals.size());
-                        Log.d("MealPresenterImpl", "First meal details: " + new Gson().toJson(meals.get(0)));
                         view.showMeal(meals.get(0));
                     } else {
                         view.showError("No meals found");
@@ -46,8 +44,6 @@ public class MealPresenterImpl implements MealPresenter {
                     view.showError("Failed to load meal: " + response.message());
                 }
             }
-
-
 
             @Override
             public void onFailure(Call<MealResponse> call, Throwable t) {
@@ -85,7 +81,32 @@ public class MealPresenterImpl implements MealPresenter {
         });
     }
 
+    public void getRandomMeals(){
+        mealApi.getRandomMeals().enqueue(new Callback<MealResponse>() {
+            @Override
+            public void onResponse(Call<MealResponse> call, Response<MealResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    MealResponse mealResponse = response.body();
+                    List<MealEntity> meals = mealResponse.getMeals();
 
+                    // Handle null list explicitly
+                    if (meals == null || meals.isEmpty()) {
+                        view.showError("No meals found");
+                    } else {
+                        view.showMeals(meals);
+                    }
+                } else {
+                    // Handle non-successful response
+                    view.showError("Failed to search meals: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MealResponse> call, Throwable t) {
+
+            }
+        });
+    }
     @Override
     public void loadCategories() {
 
