@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements MealView {
         MealApi mealApi = RetrofitClient.getClient().create(MealApi.class);
         FavoriteMealDatabase appDatabase = Room.databaseBuilder(getApplicationContext(),
                 FavoriteMealDatabase.class, "mealsdb").build();
-        presenter = new MealPresenterImpl(this, mealApi, appDatabase);
+        presenter = new MealPresenterImpl(this, mealApi);
         presenter.loadRandomMeal();
     }
 
@@ -59,10 +59,10 @@ public class MainActivity extends AppCompatActivity implements MealView {
         Log.d("MainActivity", "Meal received: " + meal.getStrMeal());
 
         // Show meal of the day in a prominent way
-        MealFragment mealFragment = new MealFragment(meal);
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, mealFragment)
-                .commit();
+//        MealFragment mealFragment = new MealFragment(meal);
+//        getSupportFragmentManager().beginTransaction()
+//                .replace(R.id.fragment_container, mealFragment)
+//                .commit();
     }
 
     @Override

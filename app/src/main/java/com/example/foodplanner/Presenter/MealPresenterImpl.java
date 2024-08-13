@@ -20,10 +20,10 @@ public class MealPresenterImpl implements MealPresenter {
     private MealApi mealApi;
     private FavoriteMealDatabase appDatabase;
 
-    public MealPresenterImpl(MealView view, MealApi mealApi, FavoriteMealDatabase appDatabase) {
+    public MealPresenterImpl(MealView view, MealApi mealApi) {
         this.view = view;
         this.mealApi = mealApi;
-        this.appDatabase = appDatabase;
+        //this.appDatabase = appDatabase;
     }
 
     @Override

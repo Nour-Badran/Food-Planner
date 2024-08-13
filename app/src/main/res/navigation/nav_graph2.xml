@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph2"
-    app:startDestination="@id/mealFragment3">
+    app:startDestination="@id/randomMeal">
     <fragment
-        android:id="@+id/mealFragment3"
-        android:name="com.example.foodplanner.MealFragment"
-        android:label="fragment_meal2"
+        android:id="@+id/randomMeal"
+        android:name="com.example.foodplanner.View.Menu.MealFragment"
+        android:label="randomMeal"
         tools:layout="@layout/fragment_meal2" />
 </navigation>

@@ -43,9 +43,7 @@ public class MealSearch extends AppCompatActivity implements MealView {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         MealApi mealApi = RetrofitClient.getClient().create(MealApi.class);
-        FavoriteMealDatabase appDatabase = Room.databaseBuilder(getApplicationContext(),
-                FavoriteMealDatabase.class, "mealsdb").build();
-        presenter = new MealPresenterImpl(this, mealApi, appDatabase);
+        presenter = new MealPresenterImpl(this, mealApi);
         presenter.getRandomMeals();
         buttonSearch.setOnClickListener(v -> {
             String mealName = editTextMealName.getText().toString().trim();
