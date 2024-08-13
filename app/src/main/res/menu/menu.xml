@@ -6,5 +6,20 @@
             android:id="@+id/randomMeal"
             android:icon="@drawable/home_24dp_e8eaed_fill0_wght400_grad0_opsz24"
             android:title="Home" />
+        <item
+            android:id="@+id/categorySearchFragment"
+            android:icon="@drawable/search_24dp_e8eaed_fill0_wght400_grad0_opsz24"
+            android:title="Search for meal by Category" />
+        <item
+            android:id="@+id/countrySearchFragment"
+            android:title="Search for meal by Country" />
+        <item
+            android:id="@+id/ingredientSearchFragment"
+            android:icon="@drawable/search_24dp_e8eaed_fill0_wght400_grad0_opsz24"
+            android:title="Search for meal by Ingredient" />
+        <item
+            android:id="@+id/nameSearchFragment"
+            android:icon="@drawable/search_24dp_e8eaed_fill0_wght400_grad0_opsz24"
+            android:title="Search for meal by Name" />
     </group>
 </menu>

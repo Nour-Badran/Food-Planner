@@ -1,6 +1,7 @@
 package com.example.foodplanner.View.Auth;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -16,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 import com.example.foodplanner.R;
+import com.example.foodplanner.View.Menu.HomeActivity;
 import com.facebook.CallbackManager;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -87,6 +89,9 @@ public class LoginFragment extends Fragment {
                         editor.putString("email",emaill);
                         editor.putString("password",pass);
                         editor.apply();
+                        Intent intent = new Intent(getActivity(), HomeActivity.class);
+                        startActivity(intent);
+                        getActivity().finish(); // Finish HomeActivity if you don't want the user to return to it
                         progressBar.setVisibility(v.GONE);
                         Toast.makeText(getActivity(), "Login Successful", Toast.LENGTH_SHORT).show();
                     }

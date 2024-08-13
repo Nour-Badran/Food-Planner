@@ -5,13 +5,14 @@
     android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".View.MealSearch">
+    android:background="@drawable/img_5"
+    tools:context=".View.Menu.NameSearchFragment">
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonSearch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
+        android:layout_width="124dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="85dp"
         android:layout_marginEnd="52dp"
         android:text="Search"
         app:cornerRadius="4dp"
@@ -25,23 +26,33 @@
         android:id="@+id/recyclerViewMeals"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="26dp"
+        android:background="@drawable/img_5"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view2" />
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/editTextMealName"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/inputLayoutMealName"
         android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="46dp"
-        android:layout_marginTop="80dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="40dp"
         android:layout_marginEnd="20dp"
-        android:hint="Enter meal name"
+        app:layout_constraintBottom_toTopOf="@+id/view2"
         app:layout_constraintEnd_toStartOf="@+id/buttonSearch"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextMealName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter meal name"
+            android:padding="12dp"
+            android:textColorHint="@color/gray"
+            app:backgroundTint="@color/white" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <View
         android:id="@+id/view2"
@@ -60,7 +71,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="40dp"
         android:layout_marginEnd="16dp"
         android:gravity="center"
         android:text="Error message"

@@ -1,4 +1,4 @@
-package com.example.foodplanner.View;
+package com.example.foodplanner.View.Splash;
 
 import android.content.Context;
 import android.content.Intent;

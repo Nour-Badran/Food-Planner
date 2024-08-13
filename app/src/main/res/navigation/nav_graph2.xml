@@ -9,4 +9,24 @@
         android:name="com.example.foodplanner.View.Menu.MealFragment"
         android:label="randomMeal"
         tools:layout="@layout/fragment_meal2" />
+    <fragment
+        android:id="@+id/nameSearchFragment"
+        android:name="com.example.foodplanner.View.Menu.NameSearchFragment"
+        android:label="fragment_name_search"
+        tools:layout="@layout/fragment_name_search" />
+    <fragment
+        android:id="@+id/categorySearchFragment"
+        android:name="com.example.foodplanner.View.Menu.CategorySearchFragment"
+        android:label="fragment_category_search"
+        tools:layout="@layout/fragment_category_search" />
+    <fragment
+        android:id="@+id/countrySearchFragment"
+        android:name="com.example.foodplanner.View.Menu.CountrySearchFragment"
+        android:label="fragment_country_search"
+        tools:layout="@layout/fragment_country_search" />
+    <fragment
+        android:id="@+id/ingredientSearchFragment"
+        android:name="com.example.foodplanner.View.Menu.IngredientSearchFragment"
+        android:label="fragment_ingredient_search"
+        tools:layout="@layout/fragment_ingredient_search" />
 </navigation>

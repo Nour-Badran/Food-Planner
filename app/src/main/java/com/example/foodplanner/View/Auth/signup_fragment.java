@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.foodplanner.Model.Person;
 import com.example.foodplanner.R;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -124,7 +125,84 @@ public class signup_fragment extends Fragment {
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Existing email/password sign-up logic
+                String usernameText = username.getText().toString().trim();
+                String passwordText = password.getText().toString().trim();
+                String emailText = email.getText().toString().trim();
+                String confirmPasswordText = confirmPassword.getText().toString().trim();
+
+                if (usernameText.isEmpty()) {
+                    username.setError("Username is required");
+                    return;
+                }
+                if (emailText.isEmpty()) {
+                    email.setError("Email is required");
+                    return;
+                }
+                if (passwordText.isEmpty()) {
+                    password.setError("Password is required");
+                    return;
+                }
+                if (confirmPasswordText.isEmpty()) {
+                    confirmPassword.setError("Confirm Password is required");
+                    return;
+                }
+
+                if (!EMAIL_PATTERN.matcher(emailText).matches()) {
+                    email.setError("Invalid email format");
+                    Toast.makeText(getActivity(), "Invalid email format", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (!PASSWORD_PATTERN.matcher(passwordText).matches()) {
+                    password.setError("Password must be at least 6 characters long, contain at least one letter, one number, and one special character");
+                    Toast.makeText(getActivity(), "Password must be at least 6 characters long, contain at least one letter, one number, and one special character", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                if (!passwordText.equals(confirmPasswordText)) {
+                    confirmPassword.setError("Passwords do not match");
+                    Toast.makeText(getActivity(), "Passwords do not match", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+//                if(!male.isChecked() && !female.isChecked())
+//                {
+//                    Toast.makeText(getActivity(), "Choose your gender", Toast.LENGTH_SHORT).show();
+//                    return;
+//                }
+                progressBar.setVisibility(v.VISIBLE);
+
+                Person person = new Person();
+                person.username = usernameText;
+                person.password = passwordText;
+                person.email = emailText;
+
+//                if (male.isChecked()) {
+//                    person.gender = "Male";
+//                } else if (female.isChecked()) {
+//                    person.gender = "Female";
+//                } else {
+//                    person.gender = "Not specified";
+//                }
+
+                mAuth.createUserWithEmailAndPassword(emailText, passwordText)
+                        .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    progressBar.setVisibility(v.GONE);
+                                    //FirebaseUser user = mAuth.getCurrentUser();
+                                    Toast.makeText(getContext(), "Sign up successful!", Toast.LENGTH_SHORT).show(); // Use getContext()
+                                    // Handle successful sign up (e.g., navigate to another fragment or activity)
+                                } else {
+                                    Toast.makeText(getContext(), "Sign up failed. Please try again.", Toast.LENGTH_SHORT).show(); // Use getContext()
+                                }
+                            }
+                        });
+
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("person_key", person);
+                Navigation.findNavController(v).navigate(R.id.action_signup_fragment_to_loginFragment);
             }
         });
     }
