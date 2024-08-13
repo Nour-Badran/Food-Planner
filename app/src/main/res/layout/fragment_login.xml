@@ -11,7 +11,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cardViewContainer"
         android:layout_width="351dp"
-        android:layout_height="400dp"
+        android:layout_height="wrap_content"
         android:layout_margin="16dp"
         app:cardBackgroundColor="@android:color/white"
         app:cardCornerRadius="16dp"
@@ -23,7 +23,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="400dp"
+            android:layout_height="wrap_content"
             android:background="@color/semi_transparent_black"
             android:padding="16dp">
 
@@ -43,7 +43,7 @@
             <!-- Username input field -->
             <EditText
                 android:id="@+id/emailID"
-                android:layout_width="0dp"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="32dp"
                 android:background="@drawable/rounded_edit_text"
@@ -58,7 +58,7 @@
             <!-- Password input field -->
             <EditText
                 android:id="@+id/password"
-                android:layout_width="0dp"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="32dp"
                 android:layout_marginTop="8dp"
@@ -76,42 +76,42 @@
             <!-- Sign Up Button -->
             <Button
                 android:id="@+id/loginButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_width="200dp"
+                android:layout_height="51dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="24dp"
                 android:text="Login"
                 android:textSize="20sp"
-                app:layout_constraintBottom_toTopOf="@+id/signupButton"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/password"
-                app:layout_constraintVertical_bias="0.288" />
+                app:layout_constraintTop_toBottomOf="@+id/password" />
 
             <!-- ProgressBar -->
 
-            <Button
-                android:id="@+id/signupButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Sign Up"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imageId"
+                android:layout_width="67dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="3dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="24dp"
+                android:src="@drawable/img_10"
+                app:civ_border_color="@color/differentColor"
+                app:civ_border_overlay="true"
+                app:civ_border_width="4dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toEndOf="@+id/loginButton"
+                app:layout_constraintTop_toBottomOf="@+id/password" />
 
             <ProgressBar
                 android:id="@+id/progressBar"
                 android:layout_width="49dp"
                 android:layout_height="43dp"
-                android:layout_marginTop="24dp"
                 android:indeterminate="true"
                 android:visibility="gone"
-                app:layout_constraintBottom_toTopOf="@+id/signupButton"
+                app:layout_constraintBottom_toTopOf="@+id/password"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/loginButton"
-                app:layout_constraintVertical_bias="0.8" />
+                app:layout_constraintTop_toBottomOf="@+id/emailID" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

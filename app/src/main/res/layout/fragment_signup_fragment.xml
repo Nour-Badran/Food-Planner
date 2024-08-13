@@ -30,6 +30,20 @@
 
             <!-- ImageView for displaying an image -->
 
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imageId"
+                android:layout_width="67dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="20dp"
+                android:src="@drawable/img_10"
+                app:civ_border_color="@color/differentColor"
+                app:civ_border_overlay="true"
+                app:civ_border_width="4dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/signUpButton"
+                app:layout_constraintTop_toBottomOf="@+id/confirmPassword" />
+
             <ImageView
                 android:id="@+id/imageView2"
                 android:layout_width="300dp"
@@ -106,47 +120,10 @@
                 app:layout_constraintTop_toBottomOf="@+id/password" />
 
             <!-- Gender TextView -->
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Gender"
-                android:textColor="@color/black"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/confirmPassword" />
 
             <!-- Male RadioButton -->
-            <com.google.android.material.radiobutton.MaterialRadioButton
-                android:id="@+id/radioButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="24dp"
-                android:text="Male"
-                android:textColor="@color/differentColor"
-                android:textSize="20sp"
-                app:layout_constraintEnd_toStartOf="@+id/radioButton3"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
             <!-- Female RadioButton -->
-            <com.google.android.material.radiobutton.MaterialRadioButton
-                android:id="@+id/radioButton3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:text="Female"
-                android:textColor="@color/differentColor"
-                android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/radioButton"
-                app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
             <!-- Favorite Meals TextView -->
 
@@ -158,15 +135,17 @@
             <!-- Submit Button -->
             <Button
                 android:id="@+id/signUpButton"
-                android:layout_width="0dp"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="65dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
                 android:text="Sign Up"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toTopOf="@+id/loginButton"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/imageId"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView2" />
+                app:layout_constraintTop_toBottomOf="@+id/confirmPassword" />
 
             <!-- Login Button -->
             <Button
@@ -174,7 +153,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:text="Go to Login"
+                android:hint="Already have an account? Log in"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -186,16 +165,11 @@
                 style="?android:attr/progressBarStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="14dp"
-                android:layout_marginTop="2dp"
-                android:layout_marginEnd="13dp"
-                android:layout_marginBottom="14dp"
                 android:elevation="22dp"
                 android:visibility="gone"
-                app:layout_constraintBottom_toTopOf="@+id/signUpButton"
-                app:layout_constraintEnd_toStartOf="@+id/radioButton3"
-                app:layout_constraintStart_toEndOf="@+id/radioButton"
-                app:layout_constraintTop_toBottomOf="@+id/textView2" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/email" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

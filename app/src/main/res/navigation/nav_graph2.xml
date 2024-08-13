@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph2"
+    app:startDestination="@id/mealFragment3">
+    <fragment
+        android:id="@+id/mealFragment3"
+        android:name="com.example.foodplanner.MealFragment"
+        android:label="fragment_meal2"
+        tools:layout="@layout/fragment_meal2" />
+</navigation>

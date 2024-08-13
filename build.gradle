@@ -4,6 +4,9 @@ buildscript{
         classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.5.3'
         classpath 'com.google.gms:google-services:4.4.2'
     }
+    repositories {
+        mavenCentral()
+    }
 }
 plugins {
 alias(libs.plugins.android.application) apply false

@@ -41,11 +41,11 @@ public class MealFragment extends Fragment {
         TextView mealCategory = view.findViewById(R.id.mealCategory);
         TextView mealArea = view.findViewById(R.id.mealArea);
 
-        mealName.setText("Meal Name: " + meal.getStrMeal());
-        //mealDesc.setText(meal.getStrInstructions());
-        mealCategory.setText("Category: " + meal.getStrCategory()); // Assuming getStrCategory() is defined in MealEntity
-        mealArea.setText("Area: " + meal.getStrArea()); // Assuming getStrArea() is defined in MealEntity
-
-        Glide.with(this).load(meal.getStrMealThumb()).into(mealImage);
+//        mealName.setText("Meal Name: " + meal.getStrMeal());
+//        //mealDesc.setText(meal.getStrInstructions());
+//        mealCategory.setText("Category: " + meal.getStrCategory()); // Assuming getStrCategory() is defined in MealEntity
+//        mealArea.setText("Area: " + meal.getStrArea()); // Assuming getStrArea() is defined in MealEntity
+//
+//        Glide.with(this).load(meal.getStrMealThumb()).into(mealImage);
     }
 }

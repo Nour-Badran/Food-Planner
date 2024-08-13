@@ -49,6 +49,8 @@ dependencies {
     implementation libs.firebase.auth
     annotationProcessor 'androidx.room:room-compiler:2.5.1'
 
+    implementation 'com.facebook.android:facebook-android-sdk:latest.release'
+
 // Lottie for splash screen animation
     implementation 'com.airbnb.android:lottie:5.0.3'
 
