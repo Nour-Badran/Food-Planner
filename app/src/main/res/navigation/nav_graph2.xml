@@ -44,4 +44,9 @@
             android:name="categoryName"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/mealDetailsFragment"
+        android:name="com.example.foodplanner.MealDetailsFragment"
+        android:label="fragment_meal_details"
+        tools:layout="@layout/fragment_meal_details" />
 </navigation>
