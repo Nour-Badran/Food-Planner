@@ -2,11 +2,12 @@ package com.example.foodplanner.Presenter;
 
 import android.util.Log;
 
+import com.example.foodplanner.Model.CategoryResponse;
 import com.example.foodplanner.Model.FavoriteMealDatabase;
 import com.example.foodplanner.Model.MealEntity;
 import com.example.foodplanner.Model.MealApi;
 import com.example.foodplanner.Model.MealResponse;
-import com.example.foodplanner.View.MealView;
+import com.example.foodplanner.View.Menu.MealView;
 import com.google.gson.Gson;
 
 import java.util.List;
@@ -52,7 +53,31 @@ public class MealPresenterImpl implements MealPresenter {
         });
     }
 
+    @Override
+    public void getMealsByCategory(String categoryName) {
+        mealApi.getMealsByCategory(categoryName).enqueue(new Callback<MealResponse>() {
+            @Override
+            public void onResponse(Call<MealResponse> call, Response<MealResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    MealResponse mealResponse = response.body();
+                    List<MealEntity> meals = mealResponse.getMeals();
 
+                    if (meals == null || meals.isEmpty()) {
+                        view.showError("No meals found");
+                    } else {
+                        view.showMeals(meals);
+                    }
+                } else {
+                    view.showError("Failed to find meals: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MealResponse> call, Throwable t) {
+                view.showError("Error: " + t.getMessage());
+            }
+        });
+    }
     @Override
     public void searchMeals(String mealName) {
         mealApi.searchMeals(mealName).enqueue(new Callback<MealResponse>() {
@@ -62,14 +87,12 @@ public class MealPresenterImpl implements MealPresenter {
                     MealResponse mealResponse = response.body();
                     List<MealEntity> meals = mealResponse.getMeals();
 
-                    // Handle null list explicitly
                     if (meals == null || meals.isEmpty()) {
                         view.showError("No meals found");
                     } else {
                         view.showMeals(meals);
                     }
                 } else {
-                    // Handle non-successful response
                     view.showError("Failed to search meals: " + response.message());
                 }
             }
@@ -107,6 +130,9 @@ public class MealPresenterImpl implements MealPresenter {
             }
         });
     }
+
+
+
     @Override
     public void loadCategories() {
 
@@ -115,6 +141,34 @@ public class MealPresenterImpl implements MealPresenter {
     @Override
     public void loadCountries() {
 
+    }
+
+    @Override
+    public void getCategories() {
+        mealApi.getCategories().enqueue(new Callback<CategoryResponse>() {
+            @Override
+            public void onResponse(Call<CategoryResponse> call, Response<CategoryResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    CategoryResponse categoryResponse = response.body();
+                    List<CategoryResponse.Category> categories = categoryResponse.getCategories();
+
+                    // Handle null list explicitly
+                    if (categories == null || categories.isEmpty()) {
+                        view.showError("No categories found");
+                    } else {
+                        view.showCategories(categories);
+                    }
+                } else {
+                    // Handle non-successful response
+                    view.showError("Failed to connect: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CategoryResponse> call, Throwable t) {
+
+            }
+        });
     }
 
     // Implement other methods similarly

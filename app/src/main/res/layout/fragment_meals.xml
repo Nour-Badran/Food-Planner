@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/img_5"
-    tools:context=".View.Menu.CategorySearchFragment" >
+    tools:context=".View.Menu.MealsFragment" >
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/categoryNameId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="73dp"
@@ -34,5 +34,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/categoryNameId" />
 </androidx.constraintlayout.widget.ConstraintLayout>

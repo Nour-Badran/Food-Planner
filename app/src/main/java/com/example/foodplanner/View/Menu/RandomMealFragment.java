@@ -5,7 +5,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.room.Room;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,19 +14,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.foodplanner.Model.FavoriteMealDatabase;
+import com.example.foodplanner.Model.CategoryResponse;
 import com.example.foodplanner.Model.MealApi;
 import com.example.foodplanner.Model.MealEntity;
 import com.example.foodplanner.Model.RetrofitClient;
 import com.example.foodplanner.Presenter.MealPresenter;
 import com.example.foodplanner.Presenter.MealPresenterImpl;
 import com.example.foodplanner.R;
-import com.example.foodplanner.View.MealView;
 
 import java.util.List;
 
 
-public class MealFragment extends Fragment implements MealView {
+public class RandomMealFragment extends Fragment implements MealView {
 
     private MealPresenter presenter;
     ImageView mealImage;
@@ -42,7 +40,7 @@ public class MealFragment extends Fragment implements MealView {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_meal2, container, false);
+        return inflater.inflate(R.layout.fragment_random_meal, container, false);
     }
 
     @Override
@@ -76,7 +74,17 @@ public class MealFragment extends Fragment implements MealView {
     }
 
     @Override
+    public void showCategories(List<CategoryResponse.Category> categories) {
+
+    }
+
+    @Override
     public void showMeals(List<MealEntity> meals) {
+
+    }
+
+    @Override
+    public void getMealsByCategory(String categoryName) {
 
     }
 }

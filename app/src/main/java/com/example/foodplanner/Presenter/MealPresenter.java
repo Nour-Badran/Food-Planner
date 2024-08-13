@@ -5,6 +5,7 @@ public interface MealPresenter {
     void searchMeals(String query);
     void loadCategories();
     void loadCountries();
-
+    void getCategories();
     void getRandomMeals();
+    void getMealsByCategory(String categoryName);
 }

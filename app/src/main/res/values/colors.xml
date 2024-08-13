@@ -12,6 +12,7 @@
     <color name="categoryBackgroundColor">#FF9800</color> <!-- Orange -->
     <color name="areaBackgroundColor">#4CAF50</color> <!-- Green -->
     <color name="differentColor">#FF5700</color> <!-- Example color -->
+    <color name="differentColorTransp">#80FF5700</color> <!-- Slightly transparent color -->
     <color name="red">#F44336</color>
     <color name="transparent">#00000000</color>
     <color name="nameCardBackgroundColor">#FFFFFF</color> <!-- Background color for the meal name card -->
