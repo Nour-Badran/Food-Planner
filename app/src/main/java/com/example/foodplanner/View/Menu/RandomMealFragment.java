@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.foodplanner.Model.CategoryResponse;
+import com.example.foodplanner.Model.IngredientResponse;
 import com.example.foodplanner.Model.MealApi;
 import com.example.foodplanner.Model.MealEntity;
 import com.example.foodplanner.Model.RetrofitClient;
@@ -102,6 +103,11 @@ public class RandomMealFragment extends Fragment implements MealView {
 
     @Override
     public void showMeals(List<MealEntity> meals) {
+
+    }
+
+    @Override
+    public void showIngredients(List<IngredientResponse.Ingredient> ingredients) {
 
     }
 

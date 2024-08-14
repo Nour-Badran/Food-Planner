@@ -19,6 +19,8 @@ public interface MealApi {
 
     @GET("categories.php")
     Call<CategoryResponse> getCategories();
+    @GET("list.php?i=list")
+    Call<IngredientResponse> getIngredients();
 
     @GET("list.php?a=list")
     Call<CountryResponse> getCountries();

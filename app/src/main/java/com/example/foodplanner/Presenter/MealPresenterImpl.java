@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.example.foodplanner.Model.CategoryResponse;
 import com.example.foodplanner.Model.FavoriteMealDatabase;
+import com.example.foodplanner.Model.IngredientResponse;
 import com.example.foodplanner.Model.MealEntity;
 import com.example.foodplanner.Model.MealApi;
 import com.example.foodplanner.Model.MealResponse;
@@ -104,6 +105,36 @@ public class MealPresenterImpl implements MealPresenter {
             }
         });
     }
+
+    @Override
+    public void getIngredients() {
+        mealApi.getIngredients().enqueue(new Callback<IngredientResponse>() {
+            @Override
+            public void onResponse(Call<IngredientResponse> call, Response<IngredientResponse> response) {
+                Log.d("MealPresenterImpl", "Request URL: " + call.request().url());
+                Log.d("MealPresenterImpl", "Response Code: " + response.code());
+                Log.d("MealPresenterImpl", "Response Body: " + new Gson().toJson(response.body()));
+                if (response.isSuccessful() && response.body() != null) {
+                    IngredientResponse ingredientResponse = response.body();
+                    List<IngredientResponse.Ingredient> ingredients = ingredientResponse.getIngredients();
+                    if (ingredients == null || ingredients.isEmpty()) {
+                        view.showError("No ingredients found");
+                    } else {
+                        view.showIngredients(ingredients);
+                    }
+                } else {
+                    view.showError("Failed to find ingredients: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<IngredientResponse> call, Throwable t) {
+                Log.e("MealPresenterImpl", "Error: " + t.getMessage());
+                view.showError("Error: " + t.getMessage());
+            }
+        });
+    }
+
 
     @Override
     public void getMealsByCategory(String categoryName) {

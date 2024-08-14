@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.foodplanner.Model.CategoryResponse;
+import com.example.foodplanner.Model.IngredientResponse;
 import com.example.foodplanner.Model.MealApi;
 import com.example.foodplanner.Model.MealEntity;
 import com.example.foodplanner.Model.RetrofitClient;
@@ -96,6 +97,11 @@ public class CategorySearchFragment extends Fragment implements MealView {
 
     @Override
     public void showMeals(List<MealEntity> meals) {
+
+    }
+
+    @Override
+    public void showIngredients(List<IngredientResponse.Ingredient> ingredients) {
 
     }
 

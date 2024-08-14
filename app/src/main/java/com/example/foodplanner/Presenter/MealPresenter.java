@@ -10,4 +10,5 @@ public interface MealPresenter {
     void getMealsByCategory(String categoryName);
     void getAllMeals();
     void getMealByArea(String area);
+    void getIngredients();
 }

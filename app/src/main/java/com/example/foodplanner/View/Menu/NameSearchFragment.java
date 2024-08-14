@@ -9,14 +9,17 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.foodplanner.Model.CategoryResponse;
+import com.example.foodplanner.Model.IngredientResponse;
 import com.example.foodplanner.Model.MealApi;
 import com.example.foodplanner.Model.MealEntity;
 import com.example.foodplanner.Model.RetrofitClient;
@@ -61,6 +64,14 @@ public class NameSearchFragment extends Fragment implements MealView {
         presenter = new MealPresenterImpl(this, mealApi);
         presenter.getAllMeals();
 
+        editTextMealName.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                Toast.makeText(getActivity(), "d5l", Toast.LENGTH_SHORT).show();
+                presenter.searchMeals(editTextMealName.getText().toString().trim());
+                return false;
+            }
+        });
         buttonSearch.setOnClickListener(v -> {
             String mealName = editTextMealName.getText().toString().trim();
             if (!mealName.isEmpty()) {
@@ -108,6 +119,11 @@ public class NameSearchFragment extends Fragment implements MealView {
         adapter.setMeals(meals);
         recyclerView.setVisibility(View.VISIBLE); // Show RecyclerView
         textViewError.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showIngredients(List<IngredientResponse.Ingredient> ingredients) {
+
     }
 
     @Override
