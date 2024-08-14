@@ -2,10 +2,13 @@ package com.example.foodplanner.View.Menu;
 
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +38,13 @@ public class RandomMealFragment extends Fragment implements MealView {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                // Replace with the action to navigate to another fragment
+                requireActivity().finish();
+            }
+        });
     }
 
     @Override
@@ -53,6 +63,16 @@ public class RandomMealFragment extends Fragment implements MealView {
         mealName = view.findViewById(R.id.mealName);
         mealCategory = view.findViewById(R.id.mealCategory);
         mealArea = view.findViewById(R.id.mealArea);
+        mealImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String fullMealName = mealName.getText().toString();
+                String mealNameWithoutPrefix = fullMealName.replace("Meal Name: ", "").trim();
+                Bundle bundle = new Bundle();
+                bundle.putString("meal_name", mealNameWithoutPrefix);
+                Navigation.findNavController(view).navigate(R.id.action_randomMeal_to_mealDetailsFragment,bundle);
+            }
+        });
     }
 
     @Override

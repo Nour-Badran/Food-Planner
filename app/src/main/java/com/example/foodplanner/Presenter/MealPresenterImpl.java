@@ -54,6 +54,32 @@ public class MealPresenterImpl implements MealPresenter {
     }
 
     @Override
+    public void getAllMeals() {
+        mealApi.getAllMeals().enqueue(new Callback<MealResponse>() {
+            @Override
+            public void onResponse(Call<MealResponse> call, Response<MealResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    MealResponse mealResponse = response.body();
+                    List<MealEntity> meals = mealResponse.getMeals();
+
+                    if (meals == null || meals.isEmpty()) {
+                        view.showError("No meals found");
+                    } else {
+                        view.showMeals(meals);
+                    }
+                } else {
+                    view.showError("Failed to find meals: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MealResponse> call, Throwable t) {
+                view.showError("Error: " + t.getMessage());
+            }
+        });
+    }
+
+    @Override
     public void getMealsByCategory(String categoryName) {
         mealApi.getMealsByCategory(categoryName).enqueue(new Callback<MealResponse>() {
             @Override

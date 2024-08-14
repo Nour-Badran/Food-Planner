@@ -33,14 +33,10 @@ public class SplashActivity extends AppCompatActivity {
             boolean loggedIn = prefs.getBoolean(KEY_LOGGED_IN, false);
 
             if (loggedIn) {
-                Toast.makeText(this, "Nour", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(SplashActivity.this, HomeActivity.class));
-                //Navigation.findNavController(requireView()).navigate(R.id.action_signup_fragment_to_mainFragment);
             } else {
-                Toast.makeText(this, "Not Nour", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(SplashActivity.this, NewMainActivity.class));
             }
-//            startActivity(new Intent(SplashActivity.this, NewMainActivity.class));
             finish();
         }, 3000); // Delay for splash screen
     }

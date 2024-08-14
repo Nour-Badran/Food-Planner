@@ -8,4 +8,5 @@ public interface MealPresenter {
     void getCategories();
     void getRandomMeals();
     void getMealsByCategory(String categoryName);
+    void getAllMeals();
 }

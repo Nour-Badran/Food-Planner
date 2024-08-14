@@ -62,7 +62,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="32dp"
-                android:background="@drawable/rounded_edit_text"
+                android:background="@drawable/com_facebook_tooltip_blue_background"
+                android:drawableStart="@drawable/person_24dp_e8eaed_fill0_wght400_grad0_opsz24"
                 android:hint="Username"
                 android:inputType="text"
                 android:padding="16dp"
@@ -78,7 +79,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="32dp"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/rounded_edit_text"
+                android:background="@drawable/com_facebook_tooltip_blue_background"
+                android:drawableStart="@drawable/mail_24dp_e8eaed_fill0_wght400_grad0_opsz24"
                 android:hint="Email"
                 android:inputType="textEmailAddress"
                 android:padding="16dp"
@@ -89,12 +91,14 @@
 
             <!-- Password input field -->
             <EditText
+
                 android:id="@+id/password"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="32dp"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/rounded_edit_text"
+                android:background="@drawable/com_facebook_tooltip_blue_background"
+                android:drawableStart="@drawable/lock_24dp_e8eaed_fill0_wght400_grad0_opsz24"
                 android:hint="Password"
                 android:inputType="textPassword"
                 android:padding="16dp"
@@ -110,7 +114,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="32dp"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/rounded_edit_text"
+                android:background="@drawable/com_facebook_tooltip_blue_background"
+                android:drawableStart="@drawable/lock_24dp_e8eaed_fill0_wght400_grad0_opsz24"
                 android:hint="Confirm Password"
                 android:inputType="textPassword"
                 android:padding="16dp"
@@ -118,24 +123,11 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/password" />
-
-            <!-- Gender TextView -->
-
-            <!-- Male RadioButton -->
-
-            <!-- Female RadioButton -->
-
-            <!-- Favorite Meals TextView -->
-
-            <!-- Pizza Row -->
-
-            <!-- Sushi Row -->
-
-            <!-- Burgers Row -->
             <!-- Submit Button -->
             <Button
+                android:drawableRight="@drawable/app_registration_24dp_e8eaed_fill0_wght400_grad0_opsz24"
                 android:id="@+id/signUpButton"
-                android:layout_width="250dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="16dp"
@@ -150,11 +142,13 @@
             <!-- Login Button -->
             <Button
                 android:id="@+id/loginButton"
-                android:layout_width="0dp"
+                android:layout_width="290dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
+                android:drawableRight="@drawable/login_24dp_e8eaed_fill0_wght400_grad0_opsz24"
                 android:hint="Already have an account? Log in"
-                android:textSize="20sp"
+                android:text="Already have an account? Log in"
+                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

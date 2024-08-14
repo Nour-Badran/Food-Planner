@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -55,7 +56,45 @@ public class HomeActivity extends AppCompatActivity {
             actionBar.setDisplayShowHomeEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
             NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment2);
-            NavigationUI.setupWithNavController(navigationView, navController);
+            //NavigationUI.setupWithNavController(navigationView, navController);
+            // Set up navigation item selected listener
+            navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                    int id = menuItem.getItemId();
+
+                    if (id == R.id.randomMeal) {
+                        // Handle Home action
+                        navController.navigate(R.id.randomMeal); // Navigate to home fragment
+                    }
+                    else if(id ==R.id.nameSearchFragment)
+                    {
+                        navController.navigate(R.id.nameSearchFragment);
+                    }
+                    else if(id ==R.id.countrySearchFragment)
+                    {
+                        navController.navigate(R.id.countrySearchFragment);
+                    }
+                    else if(id ==R.id.categorySearchFragment)
+                    {
+                        navController.navigate(R.id.categorySearchFragment);
+                    }
+                    else if(id ==R.id.ingredientSearchFragment)
+                    {
+                        navController.navigate(R.id.ingredientSearchFragment);
+                    }
+                    else if(id ==R.id.signout)
+                    {
+                        finish();
+                    }
+                    else if(id ==R.id.exit)
+                    {
+                        finish();
+                    }
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                    return true;
+                }
+            });
             navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
                 actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.differentColor)));
                 actionBar.setDisplayShowTitleEnabled(false);
@@ -70,13 +109,6 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu); // Inflate your menu
-        menu.clear();
-        return true;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -84,12 +116,6 @@ public class HomeActivity extends AppCompatActivity {
             } else {
                 drawerLayout.openDrawer(GravityCompat.START);
             }
-            return true;
-        } else if (item.getItemId() == R.id.nameSearchFragment) {
-            NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment2);
-            navController.navigate(R.id.nameSearchFragment, null, new NavOptions.Builder()
-                    .setPopUpTo(R.id.nav_graph2, true) // Clear the back stack
-                    .build());
             return true;
         }
         return super.onOptionsItemSelected(item);

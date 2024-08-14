@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/img_5"
-    tools:context=".View.Menu.MealsFragment" >
+    tools:context=".View.Menu.MealsByCategoryFragment" >
 
     <TextView
         android:id="@+id/categoryNameId"
@@ -17,7 +17,7 @@
         android:background="@color/differentColor"
         android:gravity="center"
         android:padding="8dp"
-        android:text="@string/Categories"
+        android:text="Category Name"
         android:textColor="@color/nameCardBackgroundColor"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -28,9 +28,10 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewMeals"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/img_5"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"

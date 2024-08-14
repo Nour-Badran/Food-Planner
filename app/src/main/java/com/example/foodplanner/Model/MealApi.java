@@ -24,4 +24,7 @@ public interface MealApi {
 
     @GET("lookup.php")
     Call<MealResponse> getMealDetails(@Query("i") String mealId);
+    @GET("filter.php?i")
+    Call<MealResponse> getAllMeals();
+
 }

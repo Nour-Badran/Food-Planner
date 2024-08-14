@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -48,6 +49,7 @@ public class NameSearchFragment extends Fragment implements MealView {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         editTextMealName = view.findViewById(R.id.editTextMealName);
+        editTextMealName.setText("");
         textViewError = view.findViewById(R.id.textViewError);
         Button buttonSearch = view.findViewById(R.id.buttonSearch);
         recyclerView = view.findViewById(R.id.recyclerViewMeals);
@@ -57,13 +59,24 @@ public class NameSearchFragment extends Fragment implements MealView {
 
         MealApi mealApi = RetrofitClient.getClient().create(MealApi.class);
         presenter = new MealPresenterImpl(this, mealApi);
-        //presenter.getRandomMeals();
+        presenter.getAllMeals();
+
         buttonSearch.setOnClickListener(v -> {
             String mealName = editTextMealName.getText().toString().trim();
             if (!mealName.isEmpty()) {
                 presenter.searchMeals(mealName);
             } else {
                 showError("Please enter a meal name");
+            }
+        });
+
+        adapter.setOnMealClickListener(meal -> {
+            // Navigate to MealsFragment
+            if (getActivity() != null) {
+                //Toast.makeText(getActivity(), category.getName(), Toast.LENGTH_SHORT).show();
+                Bundle bundle = new Bundle();
+                bundle.putString("meal_name", meal.getStrMeal());
+                Navigation.findNavController(view).navigate(R.id.action_nameSearchFragment_to_mealDetailsFragment,bundle);
             }
         });
     }

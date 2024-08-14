@@ -18,6 +18,7 @@ import java.util.List;
 
 public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder> {
     private List<MealEntity> meals = new ArrayList<>();
+    private OnMealClickListener onMealClickListener;
 
     @NonNull
     @Override
@@ -35,8 +36,15 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
         Glide.with(holder.itemView.getContext())
                 .load(meal.getStrMealThumb())
                 .into(holder.mealImage);
+        holder.itemView.setOnClickListener(v -> {
+            if (onMealClickListener != null) {
+                onMealClickListener.onMealClick(meal);
+            }
+        });
     }
-
+    public void setOnMealClickListener(OnMealClickListener listener) {
+        this.onMealClickListener = listener;
+    }
     @Override
     public int getItemCount() {
         return meals.size();
