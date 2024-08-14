@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.foodplanner.Model.MealEntity;
 import com.example.foodplanner.R;
 
@@ -34,7 +35,8 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
 
         // Load image using Glide or another image loading library
         Glide.with(holder.itemView.getContext())
-                .load(meal.getStrMealThumb())
+                .load(meal.getStrMealThumb()).apply(new RequestOptions())
+                .placeholder(R.drawable.img_11)
                 .into(holder.mealImage);
         holder.itemView.setOnClickListener(v -> {
             if (onMealClickListener != null) {

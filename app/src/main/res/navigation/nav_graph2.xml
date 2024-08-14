@@ -44,7 +44,13 @@
         android:id="@+id/countrySearchFragment"
         android:name="com.example.foodplanner.View.Menu.CountrySearchFragment"
         android:label="fragment_country_search"
-        tools:layout="@layout/fragment_country_search" />
+        tools:layout="@layout/fragment_country_search" >
+        <action
+            android:id="@+id/action_countrySearchFragment_to_mealsFragment"
+            app:destination="@id/mealsFragment"
+            app:popUpTo="@id/countrySearchFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
     <fragment
         android:id="@+id/ingredientSearchFragment"
         android:name="com.example.foodplanner.View.Menu.IngredientSearchFragment"
@@ -64,6 +70,11 @@
         <action
             android:id="@+id/action_mealsFragment_to_categorySearchFragment"
             app:destination="@id/categorySearchFragment" />
+        <action
+            android:id="@+id/action_mealsFragment_to_countrySearchFragment"
+            app:destination="@id/countrySearchFragment"
+            app:popUpTo="@id/countrySearchFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/mealDetailsFragment"

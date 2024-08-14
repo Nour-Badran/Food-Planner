@@ -15,26 +15,25 @@
 
     <!-- Title TextView wrapped in a MaterialCardView -->
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/animation_view"
-        android:layout_width="220dp"
-        android:layout_height="153dp"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="8dp"
+    <ImageView
+        android:id="@+id/imageId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="75dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="15dp"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageId"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
-        app:lottie_rawRes="@raw/comp_1"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintTop_toTopOf="parent"
+        material:layout_constraintStart_toStartOf="parent"
+        material:srcCompat="@drawable/img" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="236dp"
+        android:layout_marginTop="15dp"
         android:background="@color/differentColor"
         android:gravity="center"
         android:padding="8dp"
@@ -42,43 +41,35 @@
         android:textColor="@color/nameCardBackgroundColor"
         android:textSize="24sp"
         android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/imageId"
         material:layout_constraintEnd_toEndOf="parent"
-        material:layout_constraintStart_toStartOf="parent"
-        material:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/imageId"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="44dp"
-        material:layout_constraintStart_toStartOf="parent"
-        material:layout_constraintTop_toTopOf="parent"
-        material:srcCompat="@drawable/img" />
+        material:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/mealImage"
         android:layout_width="0dp"
         android:layout_height="180dp"
-        android:layout_marginTop="220dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="4dp"
         android:background="@drawable/rounded_corners"
         android:backgroundTint="@color/differentColor"
         android:elevation="8dp"
         android:scaleType="centerCrop"
+        app:layout_constraintBottom_toTopOf="@+id/mealNameCard"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageId" />
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/mealNameCard"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="4dp"
         android:layout_marginBottom="4dp"
         app:cardBackgroundColor="@color/red"
         app:cardCornerRadius="8dp"
         app:cardElevation="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/mealCategoryCard"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/mealImage">
@@ -100,7 +91,7 @@
         android:id="@+id/mealCategoryCard"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="4dp"
         android:layout_marginBottom="4dp"
         app:cardBackgroundColor="@color/categoryBackgroundColor"
         app:cardCornerRadius="8dp"
@@ -127,10 +118,11 @@
         android:id="@+id/mealAreaCard"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="4dp"
         app:cardBackgroundColor="@color/areaBackgroundColor"
         app:cardCornerRadius="8dp"
         app:cardElevation="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/splashAnimation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -147,5 +139,17 @@
             android:textStyle="bold" />
 
     </com.google.android.material.card.MaterialCardView>
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/splashAnimation"
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="60dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mealCategoryCard"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/comp_1" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

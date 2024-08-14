@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.foodplanner.Model.CategoryResponse;
 import com.example.foodplanner.Model.MealApi;
 import com.example.foodplanner.Model.MealEntity;
@@ -80,7 +81,8 @@ public class RandomMealFragment extends Fragment implements MealView {
         mealName.setText("Meal Name: " + meal.getStrMeal());
         mealCategory.setText("Category: " + meal.getStrCategory());
         mealArea.setText("Area: " + meal.getStrArea());
-        Glide.with(this).load(meal.getStrMealThumb()).into(mealImage);
+        Glide.with(this).load(meal.getStrMealThumb()).apply(new RequestOptions())
+                .placeholder(R.drawable.img_11).into(mealImage);
     }
 
     @Override

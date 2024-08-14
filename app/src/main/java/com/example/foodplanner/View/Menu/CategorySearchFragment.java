@@ -66,7 +66,7 @@ public class CategorySearchFragment extends Fragment implements MealView {
             if (getActivity() != null) {
                 //Toast.makeText(getActivity(), category.getName(), Toast.LENGTH_SHORT).show();
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("category_name", category.getName());
+                bundle.putString("category_name", category.getName());
                 Navigation.findNavController(view).navigate(R.id.action_categorySearchFragment_to_mealsFragment,bundle);
             }
         });

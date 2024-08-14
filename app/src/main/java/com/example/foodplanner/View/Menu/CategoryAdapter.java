@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.foodplanner.Model.CategoryResponse;
 import com.example.foodplanner.R;
 
@@ -32,7 +33,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         CategoryResponse.Category category = categories.get(position);
         holder.categoryName.setText(category.getName());
         Glide.with(holder.itemView.getContext())
-                .load(category.getThumbnailUrl())
+                .load(category.getThumbnailUrl()).apply(new RequestOptions())
+                .placeholder(R.drawable.img_11)
                 .into(holder.categoryImage);
 
         holder.itemView.setOnClickListener(v -> {

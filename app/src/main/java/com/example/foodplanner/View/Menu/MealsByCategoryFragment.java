@@ -27,6 +27,7 @@ import java.util.List;
 public class MealsByCategoryFragment extends Fragment implements MealView{
 
     String categoryName;
+    String countryName;
     MealPresenterImpl presenter;
     private RecyclerView recyclerView;
     private MealAdapter adapter;
@@ -34,16 +35,30 @@ public class MealsByCategoryFragment extends Fragment implements MealView{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                // Replace with the action to navigate to another fragment
-                Navigation.findNavController(requireView()).navigate(R.id.action_mealsFragment_to_categorySearchFragment);
-            }
-        });
+
         if (getArguments() != null) {
             categoryName = getArguments().getString("category_name");
-            //Toast.makeText(getActivity(), categoryName, Toast.LENGTH_SHORT).show();
+            countryName = getArguments().getString("meal_name");
+        }
+        if(countryName==null)
+        {
+            requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+                @Override
+                public void handleOnBackPressed() {
+                    // Replace with the action to navigate to another fragment
+                    Navigation.findNavController(requireView()).navigate(R.id.action_mealsFragment_to_categorySearchFragment);
+                }
+            });
+        }
+        else
+        {
+            requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+                @Override
+                public void handleOnBackPressed() {
+                    // Replace with the action to navigate to another fragment
+                    Navigation.findNavController(requireView()).navigate(R.id.action_mealsFragment_to_countrySearchFragment);
+                }
+            });
         }
     }
 
@@ -59,14 +74,27 @@ public class MealsByCategoryFragment extends Fragment implements MealView{
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.recyclerViewMeals);
         txtCategoryName = view.findViewById(R.id.categoryNameId);
-        txtCategoryName.setText(categoryName + " Meals");
+        if(categoryName!=null)
+        {
+            txtCategoryName.setText(categoryName + " Meals");
+        }
+        else
+            txtCategoryName.setText(countryName + " Meals");
+
         adapter = new MealAdapter();
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         MealApi mealApi = RetrofitClient.getClient().create(MealApi.class);
         presenter = new MealPresenterImpl(this, mealApi);
-        presenter.getMealsByCategory(categoryName);
+        if(categoryName!=null)
+        {
+            presenter.getMealsByCategory(categoryName);
+        }
+        else
+        {
+            presenter.getMealByArea(countryName);
+        }
 
         adapter.setOnMealClickListener(meal -> {
             if (getActivity() != null) {
@@ -102,7 +130,6 @@ public class MealsByCategoryFragment extends Fragment implements MealView{
     @Override
     public void showMeals(List<MealEntity> meals) {
         adapter.setMeals(meals);
-
     }
 
     @Override

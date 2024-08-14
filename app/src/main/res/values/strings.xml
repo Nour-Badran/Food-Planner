@@ -18,5 +18,6 @@
     <string name="Category">Category</string>
     <string name="Ingredient">Ingredient</string>
     <string name="Categories">Categories</string>
+    <string name="Countries">Countries</string>
 
 </resources>
