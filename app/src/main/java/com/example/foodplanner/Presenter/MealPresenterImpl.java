@@ -11,6 +11,7 @@ import com.example.foodplanner.Model.MealResponse;
 import com.example.foodplanner.View.Menu.MealView;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -111,9 +112,6 @@ public class MealPresenterImpl implements MealPresenter {
         mealApi.getIngredients().enqueue(new Callback<IngredientResponse>() {
             @Override
             public void onResponse(Call<IngredientResponse> call, Response<IngredientResponse> response) {
-                Log.d("MealPresenterImpl", "Request URL: " + call.request().url());
-                Log.d("MealPresenterImpl", "Response Code: " + response.code());
-                Log.d("MealPresenterImpl", "Response Body: " + new Gson().toJson(response.body()));
                 if (response.isSuccessful() && response.body() != null) {
                     IngredientResponse ingredientResponse = response.body();
                     List<IngredientResponse.Ingredient> ingredients = ingredientResponse.getIngredients();
@@ -130,6 +128,39 @@ public class MealPresenterImpl implements MealPresenter {
             @Override
             public void onFailure(Call<IngredientResponse> call, Throwable t) {
                 Log.e("MealPresenterImpl", "Error: " + t.getMessage());
+                view.showError("Error: " + t.getMessage());
+            }
+        });
+    }
+
+    public void getIngredientsBySubstring(String substring) {
+        mealApi.getIngredients().enqueue(new Callback<IngredientResponse>() {
+            @Override
+            public void onResponse(Call<IngredientResponse> call, Response<IngredientResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    IngredientResponse ingredientResponse = response.body();
+                    List<IngredientResponse.Ingredient> ingredients = ingredientResponse.getIngredients();
+                    List<IngredientResponse.Ingredient> matchingIngredients = new ArrayList<>(); // Initialize here
+                    for(int i = 0; i < ingredients.size();i++)
+                    {
+                        String ingredientName = ingredients.get(i).getName();
+                        if(ingredientName.toLowerCase().contains(substring.toLowerCase()))
+                        {
+                            matchingIngredients.add(ingredients.get(i));
+                        }
+                    }
+                    if (matchingIngredients == null || matchingIngredients.isEmpty()) {
+                        view.showError("No ingredients found");
+                    } else {
+                        view.showIngredients(matchingIngredients);
+                    }
+                } else {
+                    view.showError("Failed to find ingredients: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<IngredientResponse> call, Throwable t) {
                 view.showError("Error: " + t.getMessage());
             }
         });
@@ -161,6 +192,33 @@ public class MealPresenterImpl implements MealPresenter {
             }
         });
     }
+
+    @Override
+    public void getMealsByIngredient(String ingredient) {
+        mealApi.getMealsByIngredient(ingredient).enqueue(new Callback<MealResponse>() {
+            @Override
+            public void onResponse(Call<MealResponse> call, Response<MealResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    MealResponse mealResponse = response.body();
+                    List<MealEntity> meals = mealResponse.getMeals();
+
+                    if (meals == null || meals.isEmpty()) {
+                        view.showError("No meals found");
+                    } else {
+                        view.showMeals(meals);
+                    }
+                } else {
+                    view.showError("Failed to find meals: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MealResponse> call, Throwable t) {
+                view.showError("Error: " + t.getMessage());
+            }
+        });
+    }
+
     @Override
     public void searchMeals(String mealName) {
         mealApi.searchMeals(mealName).enqueue(new Callback<MealResponse>() {

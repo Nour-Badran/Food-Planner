@@ -8,7 +8,9 @@ public interface MealPresenter {
     void getCategories();
     void getRandomMeals();
     void getMealsByCategory(String categoryName);
+    void getMealsByIngredient(String ingredient);
     void getAllMeals();
     void getMealByArea(String area);
     void getIngredients();
+    void getIngredientsBySubstring(String substring);
 }

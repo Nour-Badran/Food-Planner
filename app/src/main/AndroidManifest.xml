@@ -21,9 +21,6 @@
             android:name=".View.Auth.NewMainActivity"
             android:exported="false" />
         <activity
-            android:name=".View.MealSearch"
-            android:exported="false" /> <!-- SplashActivity to launch the app -->
-        <activity
             android:name=".View.Splash.SplashActivity"
             android:exported="true">
             <intent-filter>

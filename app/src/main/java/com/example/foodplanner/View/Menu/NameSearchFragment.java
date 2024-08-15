@@ -67,17 +67,17 @@ public class NameSearchFragment extends Fragment implements MealView {
         editTextMealName.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                Toast.makeText(getActivity(), "d5l", Toast.LENGTH_SHORT).show();
                 presenter.searchMeals(editTextMealName.getText().toString().trim());
                 return false;
             }
         });
+
         buttonSearch.setOnClickListener(v -> {
             String mealName = editTextMealName.getText().toString().trim();
             if (!mealName.isEmpty()) {
                 presenter.searchMeals(mealName);
             } else {
-                showError("Please enter a meal name");
+                showError("No meals found");
             }
         });
 

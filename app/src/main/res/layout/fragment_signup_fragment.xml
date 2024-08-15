@@ -25,7 +25,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/semi_transparent_black"
+            android:background="@drawable/category_area_background"
             android:padding="16dp">
 
             <!-- ImageView for displaying an image -->
@@ -58,11 +58,12 @@
 
             <!-- Username input field -->
             <EditText
+                android:drawablePadding="8dp"
                 android:id="@+id/emailID"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="32dp"
-                android:background="@drawable/com_facebook_tooltip_blue_background"
+                android:background="@drawable/edittext_background"
                 android:drawableStart="@drawable/person_24dp_e8eaed_fill0_wght400_grad0_opsz24"
                 android:hint="Username"
                 android:inputType="text"
@@ -72,14 +73,14 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
-            <!-- Email input field -->
             <EditText
+                android:drawablePadding="8dp"
                 android:id="@+id/email"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="32dp"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/com_facebook_tooltip_blue_background"
+                android:background="@drawable/edittext_background"
                 android:drawableStart="@drawable/mail_24dp_e8eaed_fill0_wght400_grad0_opsz24"
                 android:hint="Email"
                 android:inputType="textEmailAddress"
@@ -89,15 +90,14 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/emailID" />
 
-            <!-- Password input field -->
             <EditText
-
+                android:drawablePadding="8dp"
                 android:id="@+id/password"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="32dp"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/com_facebook_tooltip_blue_background"
+                android:background="@drawable/edittext_background"
                 android:drawableStart="@drawable/lock_24dp_e8eaed_fill0_wght400_grad0_opsz24"
                 android:hint="Password"
                 android:inputType="textPassword"
@@ -107,14 +107,14 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/email" />
 
-            <!-- Confirm Password input field -->
             <EditText
+                android:drawablePadding="8dp"
                 android:id="@+id/confirmPassword"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="32dp"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/com_facebook_tooltip_blue_background"
+                android:background="@drawable/edittext_background"
                 android:drawableStart="@drawable/lock_24dp_e8eaed_fill0_wght400_grad0_opsz24"
                 android:hint="Confirm Password"
                 android:inputType="textPassword"
@@ -123,15 +123,16 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/password" />
+
             <!-- Submit Button -->
             <Button
-                android:drawableRight="@drawable/app_registration_24dp_e8eaed_fill0_wght400_grad0_opsz24"
                 android:id="@+id/signUpButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
+                android:drawableRight="@drawable/app_registration_24dp_e8eaed_fill0_wght400_grad0_opsz24"
                 android:text="Sign Up"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toTopOf="@+id/loginButton"

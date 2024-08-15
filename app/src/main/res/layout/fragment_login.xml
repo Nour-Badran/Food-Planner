@@ -43,11 +43,12 @@
             <!-- Username input field -->
             <EditText
                 android:id="@+id/emailID"
+                android:drawablePadding="8dp"
                 android:drawableStart="@drawable/mail_24dp_e8eaed_fill0_wght400_grad0_opsz24"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="32dp"
-                android:background="@drawable/com_facebook_tooltip_blue_background"
+                android:background="@drawable/edittext_background"
                 android:hint="Email"
                 android:inputType="text"
                 android:padding="16dp"
@@ -58,13 +59,14 @@
 
             <!-- Password input field -->
             <EditText
+                android:drawablePadding="8dp"
                 android:drawableStart="@drawable/lock_24dp_e8eaed_fill0_wght400_grad0_opsz24"
                 android:id="@+id/password"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="32dp"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/com_facebook_tooltip_blue_background"
+                android:background="@drawable/edittext_background"
                 android:hint="Password"
                 android:inputType="textPassword"
                 android:padding="16dp"

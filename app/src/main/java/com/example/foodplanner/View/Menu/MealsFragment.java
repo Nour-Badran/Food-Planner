@@ -25,10 +25,11 @@ import com.example.foodplanner.R;
 
 import java.util.List;
 
-public class MealsByCategoryFragment extends Fragment implements MealView{
+public class MealsFragment extends Fragment implements MealView{
 
     String categoryName;
     String countryName;
+    String ingredientName;
     MealPresenterImpl presenter;
     private RecyclerView recyclerView;
     private MealAdapter adapter;
@@ -40,8 +41,9 @@ public class MealsByCategoryFragment extends Fragment implements MealView{
         if (getArguments() != null) {
             categoryName = getArguments().getString("category_name");
             countryName = getArguments().getString("meal_name");
+            ingredientName = getArguments().getString("ingredient_name");
         }
-        if(countryName==null)
+        if(categoryName!=null)
         {
             requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
                 @Override
@@ -51,13 +53,23 @@ public class MealsByCategoryFragment extends Fragment implements MealView{
                 }
             });
         }
-        else
+        else if(countryName!=null)
         {
             requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
                 @Override
                 public void handleOnBackPressed() {
                     // Replace with the action to navigate to another fragment
                     Navigation.findNavController(requireView()).navigate(R.id.action_mealsFragment_to_countrySearchFragment);
+                }
+            });
+        }
+        else if(ingredientName!=null)
+        {
+            requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+                @Override
+                public void handleOnBackPressed() {
+                    // Replace with the action to navigate to another fragment
+                    Navigation.findNavController(requireView()).navigate(R.id.action_mealsFragment_to_ingredientSearchFragment);
                 }
             });
         }
@@ -79,8 +91,14 @@ public class MealsByCategoryFragment extends Fragment implements MealView{
         {
             txtCategoryName.setText(categoryName + " Meals");
         }
-        else
+        else if(countryName!=null)
+        {
             txtCategoryName.setText(countryName + " Meals");
+        }
+        else if(ingredientName!=null)
+        {
+            txtCategoryName.setText(ingredientName + " Meals");
+        }
 
         adapter = new MealAdapter();
         recyclerView.setAdapter(adapter);
@@ -92,9 +110,13 @@ public class MealsByCategoryFragment extends Fragment implements MealView{
         {
             presenter.getMealsByCategory(categoryName);
         }
-        else
+        else if(countryName!=null)
         {
             presenter.getMealByArea(countryName);
+        }
+        else if(ingredientName!=null)
+        {
+            presenter.getMealsByIngredient(ingredientName);
         }
 
         adapter.setOnMealClickListener(meal -> {

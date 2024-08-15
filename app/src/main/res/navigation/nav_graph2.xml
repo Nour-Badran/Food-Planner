@@ -55,10 +55,14 @@
         android:id="@+id/ingredientSearchFragment"
         android:name="com.example.foodplanner.View.Menu.IngredientSearchFragment"
         android:label="fragment_ingredient_search"
-        tools:layout="@layout/fragment_ingredient_search" />
+        tools:layout="@layout/fragment_ingredient_search" >
+        <action
+            android:id="@+id/action_ingredientSearchFragment_to_mealsFragment"
+            app:destination="@id/mealsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/mealsFragment"
-        android:name="com.example.foodplanner.View.Menu.MealsByCategoryFragment"
+        android:name="com.example.foodplanner.View.Menu.MealsFragment"
         android:label="fragment_meals"
         tools:layout="@layout/fragment_meals_by_category" >
         <argument
@@ -75,6 +79,9 @@
             app:destination="@id/countrySearchFragment"
             app:popUpTo="@id/countrySearchFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_mealsFragment_to_ingredientSearchFragment"
+            app:destination="@id/ingredientSearchFragment" />
     </fragment>
     <fragment
         android:id="@+id/mealDetailsFragment"
