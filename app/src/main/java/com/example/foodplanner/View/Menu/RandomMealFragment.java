@@ -73,6 +73,7 @@ public class RandomMealFragment extends Fragment implements MealView {
         mealArea = view.findViewById(R.id.mealArea);
         next = view.findViewById(R.id.next);
         back = view.findViewById(R.id.back);
+        back.setVisibility(View.INVISIBLE);
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,7 +87,7 @@ public class RandomMealFragment extends Fragment implements MealView {
                     presenter.loadRandomMeal();
                     currentIndex++;
                 }
-
+                back.setVisibility(View.VISIBLE);
             }
         });
         back.setOnClickListener(new View.OnClickListener() {
@@ -96,6 +97,10 @@ public class RandomMealFragment extends Fragment implements MealView {
                 {
                     currentIndex--;
                     showStoredMeal(mealsList.get(currentIndex));
+                    if(currentIndex==0)
+                    {
+                        back.setVisibility(View.INVISIBLE);
+                    }
                 }
             }
         });

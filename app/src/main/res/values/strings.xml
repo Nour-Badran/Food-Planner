@@ -21,5 +21,6 @@
     <string name="Countries">Countries</string>
     <string name="Ingredients">Ingredients</string>
     <string name="InspirtationMeal">Inspirtation Meal</string>
+    <string name="Meals">Meals</string>
 
 </resources>

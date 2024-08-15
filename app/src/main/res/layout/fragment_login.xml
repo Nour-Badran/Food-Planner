@@ -79,12 +79,13 @@
 
             <!-- Sign Up Button -->
             <Button
-                android:drawableRight="@drawable/login_24dp_e8eaed_fill0_wght400_grad0_opsz24"
                 android:id="@+id/loginButton"
                 android:layout_width="200dp"
                 android:layout_height="51dp"
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="24dp"
+                android:drawableRight="@drawable/login_24dp_e8eaed_fill0_wght400_grad0_opsz24"
+                android:fontFamily="@font/poppins_medium"
                 android:text="Login"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"

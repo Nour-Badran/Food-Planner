@@ -173,11 +173,6 @@ public class signup_fragment extends Fragment {
                     return;
                 }
 
-//                if(!male.isChecked() && !female.isChecked())
-//                {
-//                    Toast.makeText(getActivity(), "Choose your gender", Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
                 progressBar.setVisibility(v.VISIBLE);
 
                 Person person = new Person();
@@ -185,22 +180,19 @@ public class signup_fragment extends Fragment {
                 person.password = passwordText;
                 person.email = emailText;
 
-//                if (male.isChecked()) {
-//                    person.gender = "Male";
-//                } else if (female.isChecked()) {
-//                    person.gender = "Female";
-//                } else {
-//                    person.gender = "Not specified";
-//                }
 
                 mAuth.createUserWithEmailAndPassword(emailText, passwordText)
                         .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-                                    progressBar.setVisibility(v.GONE);
                                     //FirebaseUser user = mAuth.getCurrentUser();
+                                    Bundle bundle = new Bundle();
+                                    bundle.putSerializable("person_key", person);
                                     Toast.makeText(getContext(), "Sign up successful!", Toast.LENGTH_SHORT).show(); // Use getContext()
+                                    Navigation.findNavController(v).navigate(R.id.action_signup_fragment_to_loginFragment);
+                                    progressBar.setVisibility(v.GONE);
+
                                     // Handle successful sign up (e.g., navigate to another fragment or activity)
                                 } else {
                                     Toast.makeText(getContext(), "Sign up failed. Please try again.", Toast.LENGTH_SHORT).show(); // Use getContext()
@@ -208,9 +200,7 @@ public class signup_fragment extends Fragment {
                             }
                         });
 
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("person_key", person);
-                Navigation.findNavController(v).navigate(R.id.action_signup_fragment_to_loginFragment);
+
             }
         });
     }
