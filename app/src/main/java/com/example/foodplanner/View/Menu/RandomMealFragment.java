@@ -27,6 +27,7 @@ import com.example.foodplanner.Presenter.MealPresenter;
 import com.example.foodplanner.Presenter.MealPresenterImpl;
 import com.example.foodplanner.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -34,12 +35,17 @@ public class RandomMealFragment extends Fragment implements MealView {
 
     private MealPresenter presenter;
     ImageView mealImage;
+    ImageView next;
+    ImageView back;
     TextView mealName;
     TextView mealCategory;
     TextView mealArea;
+    List<MealEntity> mealsList;
+    int currentIndex = 0;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mealsList = new ArrayList<>();
         requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
@@ -65,6 +71,34 @@ public class RandomMealFragment extends Fragment implements MealView {
         mealName = view.findViewById(R.id.mealName);
         mealCategory = view.findViewById(R.id.mealCategory);
         mealArea = view.findViewById(R.id.mealArea);
+        next = view.findViewById(R.id.next);
+        back = view.findViewById(R.id.back);
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(currentIndex<mealsList.size()-1)
+                {
+                    currentIndex++;
+                    showStoredMeal(mealsList.get(currentIndex));
+                }
+                else
+                {
+                    presenter.loadRandomMeal();
+                    currentIndex++;
+                }
+
+            }
+        });
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(currentIndex>0)
+                {
+                    currentIndex--;
+                    showStoredMeal(mealsList.get(currentIndex));
+                }
+            }
+        });
         mealImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,6 +113,7 @@ public class RandomMealFragment extends Fragment implements MealView {
 
     @Override
     public void showMeal(MealEntity meal) {
+        mealsList.add(meal);
         mealName.setText("Meal Name: " + meal.getStrMeal());
         mealCategory.setText("Category: " + meal.getStrCategory());
         mealArea.setText("Area: " + meal.getStrArea());
@@ -86,6 +121,14 @@ public class RandomMealFragment extends Fragment implements MealView {
                 .placeholder(R.drawable.img_11).into(mealImage);
     }
 
+    public void showStoredMeal(MealEntity meal)
+    {
+        mealName.setText("Meal Name: " + meal.getStrMeal());
+        mealCategory.setText("Category: " + meal.getStrCategory());
+        mealArea.setText("Area: " + meal.getStrArea());
+        Glide.with(this).load(meal.getStrMealThumb()).apply(new RequestOptions())
+                .placeholder(R.drawable.img_11).into(mealImage);
+    }
     @Override
     public void showMealDetails(MealEntity meal) {
 

@@ -33,30 +33,33 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:background="@color/differentColor"
+        android:layout_marginTop="16dp"
+        android:background="@color/bluePrimaryTransparent10"
+        android:fontFamily="@font/poppins_bold"
         android:gravity="center"
-        android:padding="8dp"
-        android:text="@string/Mealoftheday"
-        android:textColor="@color/nameCardBackgroundColor"
-        android:textSize="24sp"
+        android:padding="12dp"
+        android:text="@string/InspirtationMeal"
+        android:textColor="#000000"
+        android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@+id/imageId"
-        material:layout_constraintEnd_toEndOf="parent"
-        material:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageId" />
+
 
     <ImageView
         android:id="@+id/mealImage"
         android:layout_width="0dp"
         android:layout_height="180dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/rounded_corners"
-        android:backgroundTint="@color/differentColor"
-        android:elevation="8dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:elevation="0dp"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toTopOf="@+id/mealNameCard"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
@@ -64,9 +67,9 @@
         android:id="@+id/mealNameCard"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="4dp"
-        app:cardBackgroundColor="@color/red"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        app:cardBackgroundColor="@color/cardBackgroundLight"
         app:cardCornerRadius="8dp"
         app:cardElevation="8dp"
         app:layout_constraintBottom_toTopOf="@+id/mealCategoryCard"
@@ -78,22 +81,21 @@
             android:id="@+id/mealName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_regular"
             android:padding="8dp"
             android:text="Meal Name"
-            android:textColor="@color/white"
+            android:textColor="@color/textColorDarkGray"
             android:textSize="20sp"
             android:textStyle="bold" />
-
     </com.google.android.material.card.MaterialCardView>
 
-    <!-- Category CardView with styling -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/mealCategoryCard"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="4dp"
-        app:cardBackgroundColor="@color/categoryBackgroundColor"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        app:cardBackgroundColor="@color/cardBackgroundGray"
         app:cardCornerRadius="8dp"
         app:cardElevation="8dp"
         app:layout_constraintBottom_toTopOf="@id/mealAreaCard"
@@ -105,21 +107,20 @@
             android:id="@+id/mealCategory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_regular"
             android:padding="8dp"
             android:text="Category"
-            android:textColor="@color/white"
+            android:textColor="@color/textColorDarkGray"
             android:textSize="20sp"
             android:textStyle="bold" />
-
     </com.google.android.material.card.MaterialCardView>
 
-    <!-- Area CardView with styling -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/mealAreaCard"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        app:cardBackgroundColor="@color/areaBackgroundColor"
+        android:layout_marginTop="8dp"
+        app:cardBackgroundColor="@color/cardBackgroundDark"
         app:cardCornerRadius="8dp"
         app:cardElevation="8dp"
         app:layout_constraintBottom_toTopOf="@+id/splashAnimation"
@@ -132,24 +133,43 @@
             android:id="@+id/mealArea"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_regular"
             android:padding="8dp"
             android:text="Area"
-            android:textColor="@color/white"
+            android:textColor="@color/textColorWhite"
             android:textSize="20sp"
             android:textStyle="bold" />
-
     </com.google.android.material.card.MaterialCardView>
+
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/splashAnimation"
-        android:layout_width="0dp"
-        android:layout_height="80dp"
-        android:layout_marginTop="60dp"
+        android:layout_width="397dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="32dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mealCategoryCard"
+        app:layout_constraintTop_toBottomOf="@+id/mealAreaCard"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/comp_1" />
+
+    <ImageView
+        android:id="@+id/next"
+        android:layout_width="60dp"
+        android:layout_height="70dp"
+        app:layout_constraintBottom_toBottomOf="@+id/mealImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/mealImage"
+        material:srcCompat="@drawable/arrow_circle_right_24dp_e8eaed_fill0_wght400_grad0_opsz24" />
+
+    <ImageView
+        android:id="@+id/back"
+        android:layout_width="60dp"
+        android:layout_height="70dp"
+        app:layout_constraintBottom_toBottomOf="@+id/mealImage"
+        app:layout_constraintStart_toStartOf="@+id/mealImage"
+        app:layout_constraintTop_toTopOf="@+id/mealImage"
+        material:srcCompat="@drawable/arrow_circle_left_24dp_e8eaed_fill0_wght400_grad0_opsz24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

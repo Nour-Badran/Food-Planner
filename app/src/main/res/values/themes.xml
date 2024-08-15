@@ -2,12 +2,11 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.FoodPlanner" parent="Theme.Material3.DayNight">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-        <item name="colorPrimary">@color/differentColor</item>
-        <item name="colorPrimaryVariant">@color/differentColor</item>
+        <item name="colorPrimary">@color/blue_primary</item>
+        <item name="colorPrimaryVariant">@color/blue_primary_variant</item>
         <item name="colorOnPrimary">#FFFFFF</item>
-        <item name="colorSecondary">@color/differentColor</item>
-        <item name="colorSecondaryVariant">@color/differentColor</item>
+        <item name="colorSecondary">@color/blue_secondary</item>
+        <item name="colorSecondaryVariant">@color/blue_secondary_variant</item>
         <item name="colorOnSecondary">#FFFFFF</item>
     </style>
 

@@ -1,6 +1,9 @@
 package com.example.foodplanner.View.Menu;
 
+import static android.view.View.VISIBLE;
+
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -8,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,12 +26,15 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.foodplanner.R;
+import com.example.foodplanner.View.Auth.NewMainActivity;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class HomeActivity extends AppCompatActivity {
 
     DrawerLayout drawerLayout;
     TextView nameTextView;
+    ProgressBar progressBar;
     private static final String PREFS_NAME = "FoodPlannerPrefs";
     private static final String KEY_LOGGED_IN = "loggedIn";
     SharedPreferences prefs;
@@ -46,6 +53,7 @@ public class HomeActivity extends AppCompatActivity {
 
         View headerView = navigationView.getHeaderView(0);
         nameTextView = headerView.findViewById(R.id.name_tv);
+        progressBar = findViewById(R.id.progressBar2);
         prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         String email = prefs.getString("email", "Guest");
         nameTextView.setText(email);
@@ -85,7 +93,18 @@ public class HomeActivity extends AppCompatActivity {
                     }
                     else if(id ==R.id.signout)
                     {
-                        finish();
+                        progressBar.setVisibility(VISIBLE);
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.remove("password");
+                        editor.remove("email");
+                        editor.remove("loggedIn");
+                        editor.apply();
+                        FirebaseAuth.getInstance().signOut();
+                        Intent intent = new Intent(HomeActivity.this, NewMainActivity.class);
+                        startActivity(intent);
+                        finish(); // Finish HomeActivity if you don't want the user to return to it
+                        //progressBar.setVisibility(v.GONE);
+                        //finish();
                     }
                     else if(id ==R.id.exit)
                     {
@@ -96,7 +115,7 @@ public class HomeActivity extends AppCompatActivity {
                 }
             });
             navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
-                actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.differentColor)));
+                actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.blue_primary)));
                 actionBar.setDisplayShowTitleEnabled(false);
                 actionBar.setElevation(22.0F);
                 actionBar.setTitle(destination.getLabel());

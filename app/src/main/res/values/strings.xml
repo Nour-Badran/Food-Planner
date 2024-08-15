@@ -20,5 +20,6 @@
     <string name="Categories">Categories</string>
     <string name="Countries">Countries</string>
     <string name="Ingredients">Ingredients</string>
+    <string name="InspirtationMeal">Inspirtation Meal</string>
 
 </resources>

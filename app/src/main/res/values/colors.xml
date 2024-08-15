@@ -6,7 +6,6 @@
     <color name="colorAccent">#03DAC5</color>
     <color name="gray">#D3D3D3</color>
     <color name="dark_gray">#333333</color>
-    <color name="colorPrimary">#FF6200EE</color>
     <color name="colorPrimaryLight">#FF9E9E9E</color>
     <color name="colorPrimaryDark">#FF3700B3</color>
     <color name="categoryBackgroundColor">#FF9800</color> <!-- Orange -->
@@ -15,5 +14,40 @@
     <color name="differentColorTransp">#80FF5700</color> <!-- Slightly transparent color -->
     <color name="red">#F44336</color>
     <color name="transparent">#00000000</color>
+        <color name="blue_primary">#2196F3</color>
+        <color name="blue_primary_variant">#1976D2</color>
+    <!-- Light Blue for card backgrounds -->
+    <color name="cardBackgroundLight">#E3F2FD</color>
+    <!-- Neutral Gray for card backgrounds -->
+    <color name="cardBackgroundGray">#F5F5F5</color>
+    <!-- Dark Blue for card backgrounds -->
+    <color name="cardBackgroundDark">#1976D2</color>
+    <!-- White text color -->
+    <color name="textColorWhite">#FFFFFF</color>
+    <!-- Dark Gray text color -->
+    <color name="textColorDarkGray">#212121</color>
+        <color name="blue_secondary">#03A9F4</color>
+        <color name="blue_secondary_variant">#0288D1</color>
+    <color name="bluePrimaryTransparent10">#1A2196F3</color> <!-- 10% opacity -->
+    <color name="bluePrimaryTransparent20">#332196F3</color> <!-- 20% opacity -->
+    <color name="bluePrimaryTransparent30">#4D2196F3</color> <!-- 30% opacity -->
+    <color name="bluePrimaryTransparent40">#662196F3</color> <!-- 40% opacity -->
+    <color name="bluePrimaryTransparent50">#802196F3</color> <!-- 50% opacity -->
+    <color name="bluePrimaryTransparent60">#992196F3</color> <!-- 60% opacity -->
+    <color name="bluePrimaryTransparent70">#B32196F3</color> <!-- 70% opacity -->
+    <color name="bluePrimaryTransparent80">#CC2196F3</color> <!-- 80% opacity -->
+    <!-- Primary colors -->
+    <color name="colorPrimary">#2196F3</color> <!-- Blue Primary -->
+    <color name="colorPrimaryVariant">#1976D2</color> <!-- Darker Blue -->
+    <color name="colorOnPrimary">#FFFFFF</color> <!-- White text on primary color -->
+
+    <!-- Secondary colors -->
+    <color name="colorSecondary">#03A9F4</color> <!-- Light Blue -->
+    <color name="colorSecondaryVariant">#0288D1</color> <!-- Darker Light Blue -->
+    <color name="colorOnSecondary">#FFFFFF</color> <!-- White text on secondary color -->
+
+    <!-- Menu item colors -->
+    <color name="menuItemTextColor">#FFFFFF</color> <!-- White text color for menu items -->
+    <color name="menuItemBackgroundColor">#2196F3</color> <!-- Blue background color for menu items -->
     <color name="nameCardBackgroundColor">#FFFFFF</color> <!-- Background color for the meal name card -->
 </resources>
