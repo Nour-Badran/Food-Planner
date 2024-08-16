@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.example.foodplanner.Model.Person;
 import com.example.foodplanner.R;
+import com.example.foodplanner.View.Menu.HomeActivity;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -187,20 +188,27 @@ public class signup_fragment extends Fragment {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     //FirebaseUser user = mAuth.getCurrentUser();
-                                    Bundle bundle = new Bundle();
-                                    bundle.putSerializable("person_key", person);
-                                    Toast.makeText(getContext(), "Sign up successful!", Toast.LENGTH_SHORT).show(); // Use getContext()
-                                    Navigation.findNavController(v).navigate(R.id.action_signup_fragment_to_loginFragment);
+//                                    Bundle bundle = new Bundle();
+//                                    bundle.putSerializable("person_key", person);
+//                                    Toast.makeText(getContext(), "Sign up successful!", Toast.LENGTH_SHORT).show();
+//                                    Navigation.findNavController(v).navigate(R.id.action_signup_fragment_to_loginFragment);
+                                    SharedPreferences prefs = requireActivity().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = prefs.edit();
+                                    editor.putBoolean(KEY_LOGGED_IN, true);
+                                    editor.putString("email",emailText);
+                                    editor.putString("password",passwordText);
+                                    editor.apply();
+                                    Intent intent = new Intent(getActivity(), HomeActivity.class);
+                                    startActivity(intent);
+                                    getActivity().finish();
                                     progressBar.setVisibility(v.GONE);
+                                    Toast.makeText(getActivity(), "Welcome " + usernameText, Toast.LENGTH_SHORT).show();
 
-                                    // Handle successful sign up (e.g., navigate to another fragment or activity)
                                 } else {
-                                    Toast.makeText(getContext(), "Sign up failed. Please try again.", Toast.LENGTH_SHORT).show(); // Use getContext()
+                                    Toast.makeText(getContext(), "Sign up failed. Please try again.", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
-
-
             }
         });
     }

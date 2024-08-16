@@ -26,7 +26,9 @@
     <color name="textColorWhite">#FFFFFF</color>
     <!-- Dark Gray text color -->
     <color name="textColorDarkGray">#212121</color>
-        <color name="blue_secondary">#03A9F4</color>
+    <color name="rippleColor">#50FFFFFF</color> <!-- Semi-transparent white -->
+
+    <color name="blue_secondary">#03A9F4</color>
         <color name="blue_secondary_variant">#0288D1</color>
     <color name="bluePrimaryTransparent10">#1A2196F3</color> <!-- 10% opacity -->
     <color name="bluePrimaryTransparent20">#332196F3</color> <!-- 20% opacity -->

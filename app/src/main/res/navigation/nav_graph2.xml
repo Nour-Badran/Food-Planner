@@ -11,9 +11,7 @@
         tools:layout="@layout/fragment_random_meal" >
         <action
             android:id="@+id/action_randomMeal_to_mealDetailsFragment"
-            app:destination="@id/mealDetailsFragment"
-            app:popUpTo="@id/randomMeal"
-            app:popUpToInclusive="true" />
+            app:destination="@id/mealDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/nameSearchFragment"
@@ -22,9 +20,10 @@
         tools:layout="@layout/fragment_name_search" >
         <action
             android:id="@+id/action_nameSearchFragment_to_mealDetailsFragment"
-            app:destination="@id/mealDetailsFragment"
-            app:popUpTo="@id/nameSearchFragment"
-            app:popUpToInclusive="true" />
+            app:destination="@id/mealDetailsFragment" />
+        <action
+            android:id="@+id/action_nameSearchFragment_to_randomMeal"
+            app:destination="@id/randomMeal" />
     </fragment>
     <fragment
         android:id="@+id/categorySearchFragment"
@@ -34,8 +33,7 @@
         <action
             android:id="@+id/action_categorySearchFragment_to_mealsFragment"
             app:destination="@id/mealsFragment"
-            app:popUpTo="@id/categorySearchFragment"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="false" />
         <action
             android:id="@+id/action_categorySearchFragment_to_randomMeal"
             app:destination="@id/randomMeal" />
@@ -48,8 +46,10 @@
         <action
             android:id="@+id/action_countrySearchFragment_to_mealsFragment"
             app:destination="@id/mealsFragment"
-            app:popUpTo="@id/countrySearchFragment"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_countrySearchFragment_to_randomMeal"
+            app:destination="@id/randomMeal" />
     </fragment>
     <fragment
         android:id="@+id/ingredientSearchFragment"
@@ -59,6 +59,9 @@
         <action
             android:id="@+id/action_ingredientSearchFragment_to_mealsFragment"
             app:destination="@id/mealsFragment" />
+        <action
+            android:id="@+id/action_ingredientSearchFragment_to_randomMeal"
+            app:destination="@id/randomMeal" />
     </fragment>
     <fragment
         android:id="@+id/mealsFragment"

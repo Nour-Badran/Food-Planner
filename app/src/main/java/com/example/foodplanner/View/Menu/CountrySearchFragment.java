@@ -2,6 +2,7 @@ package com.example.foodplanner.View.Menu;
 
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -18,6 +19,13 @@ public class CountrySearchFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                // Replace with the action to navigate to another fragment
+                Navigation.findNavController(requireView()).navigate(R.id.action_countrySearchFragment_to_randomMeal);
+            }
+        });
     }
 
     @Override

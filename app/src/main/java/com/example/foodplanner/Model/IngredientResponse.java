@@ -29,6 +29,8 @@ public class IngredientResponse {
         @SerializedName("strType")
         private String type;
 
+        private String measure;
+
         // This is a new field for the thumbnail URL
         private String thumbnailUrl;
 
@@ -47,6 +49,13 @@ public class IngredientResponse {
 
         public void setName(String name) {
             this.name = name;
+        }
+        public String getMeasure() {
+            return measure;
+        }
+
+        public void setMeasure(String measure) {
+            this.measure = measure;
         }
 
         public String getDescription() {
