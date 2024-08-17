@@ -10,14 +10,11 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
+import androidx.appcompat.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.foodplanner.Model.CategoryResponse;
 import com.example.foodplanner.Model.IngredientResponse;
@@ -34,8 +31,9 @@ public class IngredientSearchFragment extends Fragment implements MealView{
     private MealPresenter presenter;
     private RecyclerView recyclerView;
     private IngredientAdapter adapter;
-    private EditText editTextMealName;
-    private TextView textViewError;
+    private SearchView searchViewIngredient;
+    //private TextView textViewError;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,10 +56,9 @@ public class IngredientSearchFragment extends Fragment implements MealView{
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        editTextMealName = view.findViewById(R.id.editTextMealName);
-        editTextMealName.setText("");
-        textViewError = view.findViewById(R.id.textViewError);
-        Button buttonSearch = view.findViewById(R.id.buttonSearch);
+        searchViewIngredient = view.findViewById(R.id.searchViewIngredient);
+        searchViewIngredient.setIconifiedByDefault(false); // Ensure SearchView is always expanded
+        //textViewError = view.findViewById(R.id.textViewError);
         recyclerView = view.findViewById(R.id.recyclerViewMeals);
         adapter = new IngredientAdapter();
         recyclerView.setAdapter(adapter);
@@ -71,73 +68,74 @@ public class IngredientSearchFragment extends Fragment implements MealView{
         presenter = new MealPresenterImpl(this, mealApi);
         presenter.getIngredients();
 
-        editTextMealName.setOnKeyListener(new View.OnKeyListener() {
+        searchViewIngredient.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                presenter.getIngredientsBySubstring(editTextMealName.getText().toString().trim());
+            public boolean onQueryTextSubmit(String query) {
+                presenter.getIngredientsBySubstring(query.trim());
                 return false;
             }
-        });
-        buttonSearch.setOnClickListener(new View.OnClickListener() {
+
             @Override
-            public void onClick(View v) {
-                String ingredientName = editTextMealName.getText().toString().trim();
-                if(!ingredientName.isEmpty())
-                {
-                    presenter.getIngredientsBySubstring(ingredientName);
+            public boolean onQueryTextChange(String newText) {
+                if (newText.trim().isEmpty()) {
+                    recyclerView.setVisibility(View.GONE);
+//                    textViewError.setVisibility(View.VISIBLE);
+//                    textViewError.setText("No ingredients found");
+                } else {
+//                    textViewError.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
+                    presenter.getIngredientsBySubstring(newText.trim());
                 }
-                else {
-                    showError("No ingredients found");
-                }
+                return false;
             }
         });
 
         adapter.setOnIngredientClickListener(ingredient -> {
             // Navigate to MealsFragment
             if (getActivity() != null) {
-                //Toast.makeText(getActivity(), category.getName(), Toast.LENGTH_SHORT).show();
                 Bundle bundle = new Bundle();
                 bundle.putString("ingredient_name", ingredient.getName());
-                Navigation.findNavController(view).navigate(R.id.action_ingredientSearchFragment_to_mealsFragment,bundle);
+                Navigation.findNavController(view).navigate(R.id.action_ingredientSearchFragment_to_mealsFragment, bundle);
             }
         });
     }
 
     @Override
     public void showMeal(MealEntity meal) {
-
+        // Handle meal display
     }
 
     @Override
     public void showMealDetails(MealEntity meal) {
-
+        // Handle meal details display
     }
 
     @Override
     public void showError(String message) {
-        textViewError.setText(message);
-        textViewError.setVisibility(View.VISIBLE);
-        recyclerView.setVisibility(View.GONE);    }
+//        textViewError.setText(message);
+//        textViewError.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
+    }
 
     @Override
     public void showCategories(List<CategoryResponse.Category> categories) {
-
+        // Handle category display
     }
 
     @Override
     public void showMeals(List<MealEntity> meals) {
-
+        // Handle meals display
     }
 
     @Override
     public void showIngredients(List<IngredientResponse.Ingredient> ingredients) {
         adapter.setIngredients(ingredients);
-        recyclerView.setVisibility(View.VISIBLE); // Show RecyclerView
-        textViewError.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
+//        textViewError.setVisibility(View.GONE);
     }
 
     @Override
     public void getMealsByCategory(String categoryName) {
-
+        // Handle meals by category
     }
 }

@@ -24,6 +24,8 @@ import com.example.foodplanner.Presenter.MealPresenterImpl;
 import com.example.foodplanner.R;
 
 import java.util.List;
+import androidx.appcompat.widget.SearchView;
+
 
 public class MealsFragment extends Fragment implements MealView{
 
@@ -34,6 +36,8 @@ public class MealsFragment extends Fragment implements MealView{
     private RecyclerView recyclerView;
     private MealAdapter adapter;
     TextView txtCategoryName;
+    private SearchView searchViewMeal;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +91,8 @@ public class MealsFragment extends Fragment implements MealView{
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.recyclerViewMeals);
         txtCategoryName = view.findViewById(R.id.categoryNameId);
+        searchViewMeal = view.findViewById(R.id.searchViewMeal);
+        searchViewMeal.setIconifiedByDefault(false); // Ensure SearchView is always expanded
         if(categoryName!=null)
         {
             txtCategoryName.setText(categoryName + " Meals");
@@ -118,6 +124,20 @@ public class MealsFragment extends Fragment implements MealView{
         {
             presenter.getMealsByIngredient(ingredientName);
         }
+
+        searchViewMeal.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                adapter.getFilter().filter(query);  // Filter meals based on search query
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.getFilter().filter(newText);  // Update filter as text changes
+                return false;
+            }
+        });
 
         adapter.setOnMealClickListener(meal -> {
             if (getActivity() != null) {

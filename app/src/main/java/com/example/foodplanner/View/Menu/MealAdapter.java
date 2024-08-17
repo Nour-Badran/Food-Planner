@@ -3,6 +3,7 @@ package com.example.foodplanner.View.Menu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,6 +21,7 @@ import java.util.List;
 public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder> {
     private List<MealEntity> meals = new ArrayList<>();
     private OnMealClickListener onMealClickListener;
+    private List<MealEntity> filteredMeals = new ArrayList<>(); // Initialize to an empty list
 
     @NonNull
     @Override
@@ -30,7 +32,7 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull MealViewHolder holder, int position) {
-        MealEntity meal = meals.get(position);
+        MealEntity meal = filteredMeals.get(position); // Use filteredMeals instead of meals
         holder.mealName.setText(meal.getStrMeal());
 
         // Load image using Glide or another image loading library
@@ -44,16 +46,19 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
             }
         });
     }
+
     public void setOnMealClickListener(OnMealClickListener listener) {
         this.onMealClickListener = listener;
     }
+
     @Override
     public int getItemCount() {
-        return meals.size();
+        return filteredMeals.size(); // Use filteredMeals instead of meals
     }
 
     public void setMeals(List<MealEntity> meals) {
         this.meals = meals;
+        this.filteredMeals = new ArrayList<>(meals);
         notifyDataSetChanged();
     }
 
@@ -66,5 +71,34 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
             mealImage = itemView.findViewById(R.id.mealImage);
             mealName = itemView.findViewById(R.id.mealName);
         }
+    }
+
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                List<MealEntity> filteredList = new ArrayList<>();
+                if (constraint == null || constraint.length() == 0) {
+                    filteredList.addAll(meals);
+                } else {
+                    String filterPattern = constraint.toString().toLowerCase().trim();
+                    for (MealEntity meal : meals) {
+                        if (meal.getStrMeal().toLowerCase().contains(filterPattern)) {
+                            filteredList.add(meal);
+                        }
+                    }
+                }
+                FilterResults results = new FilterResults();
+                results.values = filteredList;
+                return results;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                filteredMeals.clear();
+                filteredMeals.addAll((List<MealEntity>) results.values);
+                notifyDataSetChanged();
+            }
+        };
     }
 }

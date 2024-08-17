@@ -134,8 +134,23 @@ public class MealDetailsFragment extends Fragment implements MealView {
         if (meal != null) {
             mealTitle.setText(meal.getStrMeal());
             mealOrigin.setText("Origin: " + meal.getStrArea());
-            mealSteps.setText("Steps: \n" + meal.getStrInstructions());
+
             checkCountry(meal.getStrArea());
+
+            String instructions = meal.getStrInstructions();
+            if (instructions != null && !instructions.isEmpty()) {
+                String[] stepsArray = instructions.split("\r\n|\n");
+                StringBuilder stepsText = new StringBuilder("Steps:\n\n");
+                int stepNumber = 1;
+                for (String step : stepsArray) {
+                    // Check if the step is not empty or just whitespace
+                    if (!step.trim().isEmpty()) {
+                        stepsText.append("Step ").append(stepNumber).append(": ").append(step.trim()).append("\n\n");
+                        stepNumber++;
+                    }
+                }
+                mealSteps.setText(stepsText.toString());
+            }
 
             // Load image
             Glide.with(this).load(meal.getStrMealThumb()).apply(new RequestOptions())

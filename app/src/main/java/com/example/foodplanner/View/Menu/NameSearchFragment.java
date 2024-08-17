@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -59,10 +60,9 @@ public class NameSearchFragment extends Fragment implements MealView {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        editTextMealName = view.findViewById(R.id.editTextMealName);
-        editTextMealName.setText("");
-        textViewError = view.findViewById(R.id.textViewError);
-        Button buttonSearch = view.findViewById(R.id.buttonSearch);
+        SearchView searchViewMeal = view.findViewById(R.id.searchViewMeal);
+        searchViewMeal.setIconifiedByDefault(false); // Ensure SearchView is always expanded
+        //textViewError = view.findViewById(R.id.textViewError);
         recyclerView = view.findViewById(R.id.recyclerViewMeals);
         adapter = new MealAdapter();
         recyclerView.setAdapter(adapter);
@@ -72,30 +72,25 @@ public class NameSearchFragment extends Fragment implements MealView {
         presenter = new MealPresenterImpl(this, mealApi);
         presenter.getAllMeals();
 
-        editTextMealName.setOnKeyListener(new View.OnKeyListener() {
+        searchViewMeal.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                presenter.searchMeals(editTextMealName.getText().toString().trim());
+            public boolean onQueryTextSubmit(String query) {
+                presenter.searchMeals(query.trim());
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.getFilter().filter(newText);
                 return false;
             }
         });
 
-        buttonSearch.setOnClickListener(v -> {
-            String mealName = editTextMealName.getText().toString().trim();
-            if (!mealName.isEmpty()) {
-                presenter.searchMeals(mealName);
-            } else {
-                showError("No meals found");
-            }
-        });
-
         adapter.setOnMealClickListener(meal -> {
-            // Navigate to MealsFragment
             if (getActivity() != null) {
-                //Toast.makeText(getActivity(), category.getName(), Toast.LENGTH_SHORT).show();
                 Bundle bundle = new Bundle();
                 bundle.putString("meal_name", meal.getStrMeal());
-                Navigation.findNavController(view).navigate(R.id.action_nameSearchFragment_to_mealDetailsFragment,bundle);
+                Navigation.findNavController(view).navigate(R.id.action_nameSearchFragment_to_mealDetailsFragment, bundle);
             }
         });
     }
@@ -112,8 +107,8 @@ public class NameSearchFragment extends Fragment implements MealView {
 
     @Override
     public void showError(String message) {
-        textViewError.setText(message);
-        textViewError.setVisibility(View.VISIBLE);
+//        textViewError.setText(message);
+//        textViewError.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.GONE);
     }
 
@@ -126,7 +121,7 @@ public class NameSearchFragment extends Fragment implements MealView {
     public void showMeals(List<MealEntity> meals) {
         adapter.setMeals(meals);
         recyclerView.setVisibility(View.VISIBLE); // Show RecyclerView
-        textViewError.setVisibility(View.GONE);
+//        textViewError.setVisibility(View.GONE);
     }
 
     @Override

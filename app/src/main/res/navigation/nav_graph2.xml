@@ -12,6 +12,9 @@
         <action
             android:id="@+id/action_randomMeal_to_mealDetailsFragment"
             app:destination="@id/mealDetailsFragment" />
+        <action
+            android:id="@+id/action_randomMeal_to_mealsFragment"
+            app:destination="@id/mealsFragment" />
     </fragment>
     <fragment
         android:id="@+id/nameSearchFragment"

@@ -100,24 +100,23 @@ public class RandomMealFragment extends Fragment implements MealView {
         chip.setOnClickListener(v -> {
             switch (chipName) {
                 case "Categories":
-                    categoryAdapter = new CategoryAdapter();
                     recyclerView.setAdapter(categoryAdapter);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
                     presenter.getCategories();
                     break;
-                case "Meals":
-                    mealAdapter = new MealAdapter();
-                    recyclerView.setAdapter(mealAdapter);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                    presenter.getAllMeals();
-                    break;
-                case "Ingredients":
-                    ingredientAdapter = new IngredientAdapter();
-                    recyclerView.setAdapter(ingredientAdapter);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                    presenter.getIngredients();
-                    break;
+//                case "Meals":
+//                    mealAdapter = new MealAdapter();
+//                    recyclerView.setAdapter(mealAdapter);
+//                    recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+//                    presenter.getAllMeals();
+//                    break;
+//                case "Ingredients":
+//                    ingredientAdapter = new IngredientAdapter();
+//                    recyclerView.setAdapter(ingredientAdapter);
+//                    recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+//                    presenter.getIngredients();
+//                    break;
                 default:
                     break;
             }
@@ -140,9 +139,19 @@ public class RandomMealFragment extends Fragment implements MealView {
         back.setVisibility(View.INVISIBLE);
         recyclerView = view.findViewById(R.id.recyclerView);
 
+        categoryAdapter = new CategoryAdapter();
+        categoryAdapter.setOnCategoryClickListener(category -> {
+            // Navigate to MealsFragment
+            if (getActivity() != null) {
+                //Toast.makeText(getActivity(), category.getName(), Toast.LENGTH_SHORT).show();
+                Bundle bundle = new Bundle();
+                bundle.putString("category_name", category.getName());
+                Navigation.findNavController(view).navigate(R.id.action_randomMeal_to_mealsFragment,bundle);
+            }
+        });
         addChipToGroup("Categories");
-        addChipToGroup("Meals");
-        addChipToGroup("Ingredients");
+//        addChipToGroup("Meals");
+//        addChipToGroup("Ingredients");
         currentFabColor = ContextCompat.getColor(getContext(), R.color.blue_primary);
 
         fab = view.findViewById(R.id.fab);
