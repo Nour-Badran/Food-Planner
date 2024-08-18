@@ -7,7 +7,7 @@
     app:startDestination="@id/signup_fragment">
     <fragment
         android:id="@+id/signup_fragment"
-        android:name="com.example.foodplanner.View.Auth.signup_fragment"
+        android:name="com.example.foodplanner.View.Auth.Signup_Fragment"
         android:label="Sign Up"
         tools:layout="@layout/fragment_signup_fragment" >
         <action

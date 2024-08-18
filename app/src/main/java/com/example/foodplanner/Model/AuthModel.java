@@ -9,16 +9,13 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.database.FirebaseDatabase;
 
 public class AuthModel {
     private FirebaseAuth mAuth;
-    private FirebaseDatabase database;
     private SharedPreferences sharedPreferences;
 
     public AuthModel(Context context) {
         mAuth = FirebaseAuth.getInstance();
-        database = FirebaseDatabase.getInstance();
         sharedPreferences = context.getSharedPreferences("FoodPlannerPrefs", Context.MODE_PRIVATE);
     }
 

@@ -9,14 +9,14 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="16dp">
+        android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/mealName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="95dp"
+            android:layout_marginBottom="8dp"
             android:background="@drawable/rounded_edit_text"
             android:fontFamily="@font/roboto"
             android:gravity="center"
@@ -25,34 +25,56 @@
             android:textColor="@color/black"
             android:textSize="24sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/mealImageSeparator"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/mealImageSeparator"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            app:layout_constraintBottom_toTopOf="@+id/mealImage"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mealName" />
 
         <ImageView
             android:id="@+id/mealImage"
             android:layout_width="0dp"
             android:layout_height="200dp"
-            android:background="@drawable/rounded_edit_text"
+            android:background="@color/colorPrimary"
+            android:elevation="12dp"
             android:scaleType="centerCrop"
             android:transitionName="shared_image_transition"
+            app:layout_constraintBottom_toTopOf="@+id/mealImageSeparator2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mealImageSeparator" />
+
+        <View
+            android:id="@+id/mealImageSeparator2"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
             app:layout_constraintBottom_toTopOf="@+id/mealOrigin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mealName" />
+            app:layout_constraintTop_toBottomOf="@+id/mealImage" />
 
         <TextView
             android:id="@+id/mealOrigin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="24dp"
             android:background="@drawable/rounded_corners_transparent"
-            android:text="Origin: Country"
+            android:text="@string/origin_country"
             android:textColor="@color/black"
             android:textSize="28sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mealImage" />
+            app:layout_constraintTop_toBottomOf="@+id/mealImageSeparator2" />
 
         <TextView
             android:id="@+id/mealIngredients"
@@ -60,7 +82,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:background="@drawable/rounded_edit_text"
-            android:text="Ingredients:"
+            android:text="@string/ingredients"
             android:textColor="@color/black"
             android:textSize="28sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -68,25 +90,45 @@
             app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
         <TextView
-            android:id="@+id/mealSteps"
-            android:layout_width="0dp"
+            android:id="@+id/steps"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:background="@drawable/rounded_edit_text"
             android:gravity="center"
             android:padding="12dp"
-            android:text="Steps:"
+            android:text="@string/steps"
             android:textColor="@color/black"
             android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@+id/mealSteps"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/recyclerView2" />
 
+        <TextView
+            android:id="@+id/mealSteps"
+            android:layout_width="0dp"
+            android:justificationMode="inter_word"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/rounded_edit_text"
+            android:padding="12dp"
+            android:text="@string/mealsteps"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@+id/webview"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/steps" />
+
         <WebView
             android:id="@+id/webview"
             android:layout_width="0dp"
-            android:layout_height="200dp"
+            android:layout_height="810dp"
             android:layout_marginTop="24dp"
+            android:elevation="18dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mealSteps" />

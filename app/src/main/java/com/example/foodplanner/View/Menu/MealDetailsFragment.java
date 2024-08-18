@@ -39,7 +39,7 @@ import java.util.Map;
 public class MealDetailsFragment extends Fragment implements MealView {
     private String mealName;
     private MealPresenterImpl presenter;
-    private TextView mealTitle, mealOrigin, mealIngredients, mealSteps;
+    private TextView mealTitle, mealOrigin, mealIngredients, mealSteps, steps;
     private WebView webView;
     private FrameLayout fullscreenContainer;
     private WebChromeClient.CustomViewCallback customViewCallback;
@@ -108,10 +108,10 @@ public class MealDetailsFragment extends Fragment implements MealView {
         mealOrigin = view.findViewById(R.id.mealOrigin);
         mealIngredients = view.findViewById(R.id.mealIngredients);
         mealSteps = view.findViewById(R.id.mealSteps);
+        steps = view.findViewById(R.id.steps);
         webView = view.findViewById(R.id.webview);
         mealImage = view.findViewById(R.id.mealImage);
         countryImage = view.findViewById(R.id.imageView);
-        //ingredientImagesGrid = view.findViewById(R.id.ingredientImagesGrid);
         recyclerView = view.findViewById(R.id.recyclerView2);
 
         adapter = new IngredientAdapter();
@@ -140,25 +140,24 @@ public class MealDetailsFragment extends Fragment implements MealView {
             String instructions = meal.getStrInstructions();
             if (instructions != null && !instructions.isEmpty()) {
                 String[] stepsArray = instructions.split("\r\n|\n");
-                StringBuilder stepsText = new StringBuilder("Steps:\n\n");
+                StringBuilder stepsText = new StringBuilder();
                 int stepNumber = 1;
                 for (String step : stepsArray) {
-                    // Check if the step is not empty or just whitespace
+                    // Check if the step is not empty
                     if (!step.trim().isEmpty()) {
                         stepsText.append("Step ").append(stepNumber).append(": ").append(step.trim()).append("\n\n");
                         stepNumber++;
                     }
                 }
                 mealSteps.setText(stepsText.toString());
+                stepNumber--;
+                steps.setText("Steps: " + stepNumber);
             }
 
-            // Load image
             Glide.with(this).load(meal.getStrMealThumb()).apply(new RequestOptions())
                     .placeholder(R.drawable.img_11).into(mealImage);
 
-            // Load ingredients
             StringBuilder ingredientsText = new StringBuilder("Ingredients:\n");
-            //ingredientImagesGrid.removeAllViews(); // Clear previous images
 
             for (int i = 1; i <= 20; i++) {
                 String ingredient = null;
@@ -252,7 +251,7 @@ public class MealDetailsFragment extends Fragment implements MealView {
 
                     IngredientResponse.Ingredient ingredient1= new IngredientResponse.Ingredient();
                     ingredient1.setName(ingredient);
-                    ingredient1.setMeasure(measure);  // Set measure
+                    ingredient1.setMeasure(measure);
                     ingredientImageUrls.add(ingredient1);
                 }
             }
@@ -318,7 +317,10 @@ public class MealDetailsFragment extends Fragment implements MealView {
 
     @Override
     public void showError(String message) {
-        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+        if(message!=null)
+        {
+            Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

@@ -30,10 +30,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 
-public class LoginFragment extends Fragment implements AuthView {
+public class Signup_Fragment extends Fragment implements AuthView {
 
-    private Button logIn, guestButton;
-    private EditText email, password;
+    private Button guestButton, signUp, goToLogin;
+    private EditText username, email, password, confirmPassword;
     private ProgressBar progressBar;
     private GoogleSignInClient mGoogleSignInClient;
     private AuthPresenter presenter;
@@ -67,7 +67,7 @@ public class LoginFragment extends Fragment implements AuthView {
         requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                Navigation.findNavController(requireView()).navigate(R.id.action_loginFragment_to_signup_fragment);
+                requireActivity().finish();
             }
         });
     }
@@ -75,34 +75,41 @@ public class LoginFragment extends Fragment implements AuthView {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_login, container, false);
+        return inflater.inflate(R.layout.fragment_signup_fragment, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        logIn = view.findViewById(R.id.loginButton);
-        email = view.findViewById(R.id.username);
+        username = view.findViewById(R.id.username);
+        signUp = view.findViewById(R.id.signUpButton);
+        email = view.findViewById(R.id.email);
         password = view.findViewById(R.id.password);
+        confirmPassword = view.findViewById(R.id.confirmPassword);
         progressBar = view.findViewById(R.id.progressBar);
-        guestButton = view.findViewById(R.id.guestLoginButton);
+        goToLogin = view.findViewById(R.id.loginButton);
+        guestButton = view.findViewById(R.id.guestButton);
 
         ImageView googleSignIn = view.findViewById(R.id.google);
         googleSignIn.setOnClickListener(v -> googleSignIn());
 
         guestButton.setOnClickListener(v -> {
             showLoading();
-            startActivity(new Intent(getActivity(), HomeActivity.class));
+            Intent intent = new Intent(getActivity(), HomeActivity.class);
+            startActivity(intent);
             getActivity().finish();
             hideLoading();
-            showToast("Welcome Guest");
+        });
+        goToLogin.setOnClickListener(v -> {
+            Navigation.findNavController(view).navigate(R.id.action_signup_fragment_to_loginFragment);
         });
 
-        logIn.setOnClickListener(v -> {
+        signUp.setOnClickListener(v -> {
+            String user = username.getText().toString().trim();
             String emaill = email.getText().toString().trim();
             String pass = password.getText().toString().trim();
-            presenter.login(emaill, pass);
+            String confirmPass = confirmPassword.getText().toString().trim();
+            presenter.signUp(user, emaill, pass, confirmPass);
         });
     }
 
@@ -134,7 +141,6 @@ public class LoginFragment extends Fragment implements AuthView {
         getActivity().finish();
     }
 
-
     @Override
     public void setEmailError(String error) {
         email.setError(error);
@@ -144,7 +150,8 @@ public class LoginFragment extends Fragment implements AuthView {
     public void setPasswordError(String error) {
         password.setError(error);
     }
-
-
-
 }
+
+
+
+

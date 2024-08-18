@@ -48,7 +48,7 @@
                 android:layout_width="300dp"
                 android:layout_height="100dp"
                 android:layout_marginBottom="16dp"
-                app:layout_constraintBottom_toTopOf="@+id/emailID"
+                app:layout_constraintBottom_toTopOf="@+id/username"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -58,7 +58,7 @@
             <!-- Username input field -->
             <EditText
                 android:drawablePadding="8dp"
-                android:id="@+id/emailID"
+                android:id="@+id/username"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="32dp"
@@ -88,7 +88,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/emailID" />
+                app:layout_constraintTop_toBottomOf="@+id/username" />
 
             <EditText
                 android:drawablePadding="8dp"

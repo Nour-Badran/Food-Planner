@@ -21,7 +21,7 @@
     <string name="Categories">Categories</string>
     <string name="Countries">Countries</string>
     <string name="Ingredients">Ingredients</string>
-    <string name="InspirtationMeal">Inspirtation Meal</string>
+    <string name="InspirtationMeal">Inspirtation Meals</string>
     <string name="Meals">Meals</string>
     <string name="sign_out">Sign Out</string>
     <string name="search_for_meal_by_category">Search for meal by Category</string>
@@ -37,5 +37,9 @@
     <string name="password">Password</string>
     <string name="email">Email</string>
     <string name="username">Username</string>
+    <string name="origin_country">Origin: Country</string>
+    <string name="ingredients">Ingredients:</string>
+    <string name="steps">Steps</string>
+    <string name="mealsteps">Steps:</string>
 
 </resources>

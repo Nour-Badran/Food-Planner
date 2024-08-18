@@ -33,7 +33,7 @@
                 android:layout_width="300dp"
                 android:layout_height="100dp"
                 android:layout_marginBottom="16dp"
-                app:layout_constraintBottom_toTopOf="@+id/emailID"
+                app:layout_constraintBottom_toTopOf="@+id/username"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -42,7 +42,7 @@
 
             <!-- Username input field -->
             <EditText
-                android:id="@+id/emailID"
+                android:id="@+id/username"
                 android:drawablePadding="8dp"
                 android:drawableStart="@drawable/mail_24dp_e8eaed_fill0_wght400_grad0_opsz24"
                 android:layout_width="300dp"
@@ -73,7 +73,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/emailID" />
+                app:layout_constraintTop_toBottomOf="@+id/username" />
 
             <!-- Login Button -->
             <Button
@@ -128,7 +128,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/password"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/emailID" />
+                app:layout_constraintTop_toBottomOf="@+id/username" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

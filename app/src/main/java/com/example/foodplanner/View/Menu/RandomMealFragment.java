@@ -1,5 +1,6 @@
 package com.example.foodplanner.View.Menu;
 
+import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.res.ColorStateList;
@@ -100,27 +101,46 @@ public class RandomMealFragment extends Fragment implements MealView {
         chip.setOnClickListener(v -> {
             switch (chipName) {
                 case "Categories":
-                    recyclerView.setAdapter(categoryAdapter);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                    if (chip.getTag() == null) {
+                        chip.setTag("Open");
+                        recyclerView.setAdapter(categoryAdapter);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                        recyclerView.setVisibility(View.VISIBLE);
+                        recyclerView.setTranslationY(-75); // Start the RecyclerView off-screen (above)
+                        recyclerView.animate()
+                                .translationY(0) // Slide the RecyclerView down into view
+                                .setDuration(300)
+                                .setInterpolator(new AccelerateDecelerateInterpolator())
+                                .setListener(null);
+                        presenter.getCategories();
+                    } else if (chip.getTag().equals("Open")) {
+                        chip.setTag(null);
+                        recyclerView.animate()
+                                .translationY(-75) // Slide the RecyclerView up off-screen
+                                .setDuration(300)
+                                .setInterpolator(new AccelerateDecelerateInterpolator())
+                                .setListener(new Animator.AnimatorListener() {
+                                    @Override
+                                    public void onAnimationEnd(Animator animation) {
+                                        recyclerView.setVisibility(View.GONE);
+                                    }
 
-                    presenter.getCategories();
-                    break;
-//                case "Meals":
-//                    mealAdapter = new MealAdapter();
-//                    recyclerView.setAdapter(mealAdapter);
-//                    recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-//                    presenter.getAllMeals();
-//                    break;
-//                case "Ingredients":
-//                    ingredientAdapter = new IngredientAdapter();
-//                    recyclerView.setAdapter(ingredientAdapter);
-//                    recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-//                    presenter.getIngredients();
-//                    break;
-                default:
+                                    @Override
+                                    public void onAnimationStart(Animator animation) {}
+
+                                    @Override
+                                    public void onAnimationCancel(Animator animation) {}
+
+                                    @Override
+                                    public void onAnimationRepeat(Animator animation) {}
+                                });
+                    }
                     break;
             }
         });
+
+
+
         chipGroup.addView(chip);
     }
     @Override
@@ -210,36 +230,28 @@ public class RandomMealFragment extends Fragment implements MealView {
 //            isFabMenuOpen = !isFabMenuOpen;
 //        });
 
-        next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(currentIndex<mealsList.size()-1)
-                {
-                    currentIndex++;
-                    showStoredMeal(mealsList.get(currentIndex));
-                }
-                else
-                {
-                    presenter.loadRandomMeal();
-                    currentIndex++;
-                }
-                back.setVisibility(View.VISIBLE);
+        next.setOnClickListener(v -> {
+            if (currentIndex < mealsList.size() - 1) {
+                currentIndex++;
+                animateMealSlide(false);
+            } else {
+                presenter.loadRandomMeal();
+                currentIndex++;
+                animateMealSlide(false);
             }
+            back.setVisibility(View.VISIBLE);
         });
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(currentIndex>0)
-                {
-                    currentIndex--;
-                    showStoredMeal(mealsList.get(currentIndex));
-                    if(currentIndex==0)
-                    {
-                        back.setVisibility(View.INVISIBLE);
-                    }
+
+        back.setOnClickListener(v -> {
+            if (currentIndex > 0) {
+                currentIndex--;
+                animateMealZoom();
+                if (currentIndex == 0) {
+                    back.setVisibility(View.INVISIBLE);
                 }
             }
         });
+
         mealImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -341,4 +353,93 @@ public class RandomMealFragment extends Fragment implements MealView {
     public void getMealsByCategory(String categoryName) {
 
     }
+
+    private void animateMealChange() {
+        mealImage.animate()
+                .alpha(0f)
+                .setDuration(200)
+                .setListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        showStoredMeal(mealsList.get(currentIndex)); // Update the content
+                        mealImage.animate()
+                                .alpha(1f)
+                                .setDuration(200)
+                                .setListener(null);
+                    }
+
+                    @Override
+                    public void onAnimationStart(Animator animation) {}
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {}
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {}
+                });
+    }
+
+    private void animateMealSlide(final boolean isNext) {
+        float translationX = isNext ? mealImage.getWidth() : -mealImage.getWidth();
+        mealImage.animate()
+                .translationX(translationX)
+                .alpha(0f)
+                .setDuration(200)
+                .setListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        mealImage.setTranslationX(-translationX); // Move it off-screen in the opposite direction
+                        if (currentIndex < mealsList.size()) {
+                            showStoredMeal(mealsList.get(currentIndex)); // Update the content
+                        }
+                        mealImage.animate()
+                                .translationX(0)
+                                .alpha(1f)
+                                .setDuration(200)
+                                .setListener(null);
+                    }
+
+                    @Override
+                    public void onAnimationStart(Animator animation) {}
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {}
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {}
+                });
+    }
+    private void animateMealZoom() {
+        mealImage.animate()
+                .scaleX(0.8f)
+                .scaleY(0.8f)
+                .alpha(0f)
+                .setDuration(200)
+                .setListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        if (currentIndex < mealsList.size()) {
+                            showStoredMeal(mealsList.get(currentIndex)); // Update the content
+
+                        }
+                        mealImage.animate()
+                                .scaleX(1f)
+                                .scaleY(1f)
+                                .alpha(1f)
+                                .setDuration(200)
+                                .setListener(null);
+                    }
+
+                    @Override
+                    public void onAnimationStart(Animator animation) {}
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {}
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {}
+                });
+    }
+
+
 }

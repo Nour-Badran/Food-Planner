@@ -1,26 +1,26 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/img_5"
-    android:padding="12dp"> <!-- Background color for a clean look -->
+    android:background="@color/transparent"
+    android:padding="12dp">
 
-    <!-- ImageView with rounded corners and a drop shadow -->
-    <ImageView
+    <!-- ImageView with rounded corners and ripple effect -->
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/ingredientImage"
         android:layout_width="0dp"
         android:layout_height="180dp"
-        android:layout_marginTop="16dp"
-        android:background="@color/bluePrimaryTransparent30"
-        android:elevation="8dp"
+        android:layout_marginBottom="4dp"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
         android:scaleType="centerCrop"
+        app:layout_constraintBottom_toTopOf="@+id/cardView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.RoundedCorners" />
 
-    <!-- Semi-transparent overlay card view with ingredient name -->
+    <!-- Semi-transparent overlay card view with ingredient name and gradient background -->
     <View
         android:id="@+id/view3"
         android:layout_width="wrap_content"
@@ -36,24 +36,29 @@
         android:id="@+id/cardView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="150dp"
-        app:cardBackgroundColor="@color/semi_transparent_black"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="8dp"
+        android:layout_marginTop="4dp"
+        android:padding="16dp"
+        app:cardBackgroundColor="@color/bluePrimaryTransparent80"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/ingredientImage">
 
         <TextView
             android:id="@+id/ingredientName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:fontFamily="@font/poppins_bold_italic"
+            android:fontFamily="@font/poppins_bold"
             android:padding="8dp"
+            android:shadowColor="#AA000000"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="4"
             android:text="Name"
             android:textColor="@color/white"
-            android:textSize="20sp"
+            android:textSize="24sp"
             android:textStyle="bold" />
     </androidx.cardview.widget.CardView>
 

@@ -29,9 +29,9 @@
         android:id="@+id/cardView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="130dp"
+        android:layout_marginTop="125dp"
         android:textAlignment="center"
-        app:cardBackgroundColor="@color/semi_transparent_black"
+        app:cardBackgroundColor="@color/bluePrimaryTransparent70"
         app:cardCornerRadius="8dp"
         app:cardElevation="8dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -47,7 +47,7 @@
             android:padding="8dp"
             android:text="Name"
             android:textColor="@color/white"
-            android:textSize="20sp"
+            android:textSize="24sp"
             android:textStyle="bold" />
     </androidx.cardview.widget.CardView>
 
