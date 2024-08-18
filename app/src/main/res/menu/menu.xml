@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/randomMeal"
+            android:icon="@drawable/home_24dp_e8eaed_fill0_wght400_grad0_opsz24"
+            android:title="@string/home" />
+        <item
+            android:id="@+id/nameSearchFragment"
+            android:icon="@drawable/lunch_dining_24dp_e8eaed_fill0_wght400_grad0_opsz24"
+            android:title="@string/meals" />
+        <item
+            android:id="@+id/categorySearchFragment"
+            android:icon="@drawable/search_24dp_e8eaed_fill0_wght400_grad0_opsz24"
+            android:title="@string/search_for_meal_by_category" />
+        <item
+            android:id="@+id/countrySearchFragment"
+            android:icon="@drawable/search_24dp_e8eaed_fill0_wght400_grad0_opsz24"
+            android:title="@string/search_for_meal_by_country" />
+        <item
+            android:id="@+id/ingredientSearchFragment"
+            android:icon="@drawable/search_24dp_e8eaed_fill0_wght400_grad0_opsz24"
+            android:title="@string/search_for_meal_by_ingredient" />
+        <item
+            android:id="@+id/signout"
+            android:icon="@drawable/logout_24dp_e8eaed_fill0_wght400_grad0_opsz24"
+            android:title="@string/sign_out" />
+        <item
+            android:id="@+id/exit"
+            android:icon="@drawable/close_24dp_e8eaed_fill0_wght400_grad0_opsz24"
+            android:title="@string/exit" />
+    </group>
+</menu>

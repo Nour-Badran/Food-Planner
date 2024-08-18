@@ -1,5 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
+    id 'androidx.navigation.safeargs'
+    alias(libs.plugins.google.gms.google.services)
 }
 
 android {
@@ -26,9 +28,48 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {
+// MealDB API
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation "androidx.viewpager2:viewpager2:1.0.0"
+
+    implementation "androidx.navigation:navigation-fragment:2.7.1"  // or the latest version
+    implementation "androidx.navigation:navigation-ui:2.7.1"       // or the latest version
+
+// Room for local storage
+    implementation 'androidx.room:room-runtime:2.5.1'
+    implementation libs.recyclerview
+    implementation libs.navigation.fragment
+    implementation libs.navigation.ui
+    implementation libs.annotation
+    implementation libs.lifecycle.livedata.ktx
+    implementation libs.lifecycle.viewmodel.ktx
+    implementation libs.firebase.auth
+    implementation libs.firebase.database
+    annotationProcessor 'androidx.room:room-compiler:2.5.1'
+
+    implementation 'com.facebook.android:facebook-android-sdk:latest.release'
+
+// Lottie for splash screen animation
+    implementation 'com.airbnb.android:lottie:5.0.3'
+
+// Material Design
+    implementation 'com.google.android.material:material:1.9.0'
+//glide
+    implementation 'com.github.bumptech.glide:glide:4.16.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.16.0'
+
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+//google
+    implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.android.gms:play-services-auth:21.2.0")
 
     implementation libs.appcompat
     implementation libs.material
@@ -38,3 +79,4 @@ dependencies {
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
 }
+apply plugin: 'com.google.gms.google-services'

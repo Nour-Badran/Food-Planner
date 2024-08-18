@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/img_5"
+    tools:context=".View.Menu.CountrySearchFragment">
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="73dp"
+        android:layout_marginTop="85dp"
+        android:layout_marginEnd="73dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/rounded_edit_text"
+        android:fontFamily="@font/roboto"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="@string/Countries"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/gridLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <GridLayout
+        android:id="@+id/gridLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="562dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="16dp"
+        android:columnCount="5"
+        android:orientation="horizontal"
+        android:rowCount="12"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView2">
+
+        <ImageView
+            android:id="@+id/imageViewBritish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="0"
+            android:layout_column="0"
+            android:layout_margin="4dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/british" />
+
+        <ImageView
+            android:id="@+id/imageViewAmerican"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="0"
+            android:layout_column="1"
+            android:layout_margin="4dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/american" />
+
+        <ImageView
+            android:id="@+id/imageViewFrench"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="0"
+            android:layout_column="2"
+            android:layout_margin="4dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/french" />
+
+        <ImageView
+            android:id="@+id/imageViewCanadian"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="0"
+            android:layout_column="3"
+            android:layout_margin="4dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/canadian" />
+
+        <ImageView
+            android:id="@+id/imageViewJamaican"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="0"
+            android:layout_column="4"
+            android:layout_margin="4dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/jamaican" />
+
+        <ImageView
+            android:id="@+id/imageViewChinese"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="1"
+            android:layout_column="0"
+            android:layout_margin="4dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/chinese" />
+
+        <ImageView
+            android:id="@+id/imageViewDutch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="1"
+            android:layout_column="1"
+            android:layout_margin="4dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/dutch" />
+
+        <ImageView
+            android:id="@+id/imageViewEgyptian"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="1"
+            android:layout_column="2"
+            android:layout_margin="4dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/egyptian" />
+
+        <ImageView
+            android:id="@+id/imageViewGreek"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="1"
+            android:layout_column="3"
+            android:layout_margin="4dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/greek" />
+
+        <ImageView
+            android:id="@+id/imageViewIndian"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="1"
+            android:layout_column="4"
+            android:layout_margin="4dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/indian" />
+
+        <ImageView
+            android:id="@+id/imageViewIrish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="2"
+            android:layout_column="0"
+            android:layout_margin="4dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/irish" />
+
+        <ImageView
+            android:id="@+id/imageViewItalian"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="2"
+            android:layout_column="1"
+            android:layout_margin="4dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/italian" />
+
+        <ImageView
+            android:id="@+id/imageViewJapanese"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="2"
+            android:layout_column="2"
+            android:layout_margin="4dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/japanese" />
+
+        <ImageView
+            android:id="@+id/imageViewKenyan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="2"
+            android:layout_column="3"
+            android:layout_margin="4dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/kenyan" />
+
+        <ImageView
+            android:id="@+id/imageViewMalaysian"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="2"
+            android:layout_column="4"
+            android:layout_margin="4dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/malaysian" />
+
+        <ImageView
+            android:id="@+id/imageViewMexican"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="3"
+            android:layout_column="0"
+            android:layout_margin="4dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/mexican" />
+
+        <ImageView
+            android:id="@+id/imageViewMoroccan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="3"
+            android:layout_column="1"
+            android:layout_margin="4dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/moroccan" />
+
+        <ImageView
+            android:id="@+id/imageViewCroatian"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="3"
+            android:layout_column="2"
+            android:layout_margin="4dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/croatian" />
+
+        <ImageView
+            android:id="@+id/imageViewUkrainian"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="3"
+            android:layout_column="3"
+            android:layout_margin="4dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ukrainian" />
+
+        <ImageView
+            android:id="@+id/imageViewPortuguese"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="3"
+            android:layout_column="4"
+            android:layout_margin="4dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/portuguese" />
+
+        <ImageView
+            android:id="@+id/imageViewRussian"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="4"
+            android:layout_column="0"
+            android:layout_margin="4dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/russian" />
+
+        <ImageView
+            android:id="@+id/imageViewFilipino"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="4"
+            android:layout_column="1"
+            android:layout_margin="4dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/filipino" />
+
+        <ImageView
+            android:id="@+id/imageViewSpanish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="4"
+            android:layout_column="2"
+            android:layout_margin="4dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/spanish" />
+
+        <ImageView
+            android:id="@+id/imageViewPolish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="4"
+            android:layout_column="3"
+            android:layout_margin="4dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/polish" />
+
+        <ImageView
+            android:id="@+id/imageViewThai"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="4"
+            android:layout_column="4"
+            android:layout_margin="4dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/thai" />
+
+        <ImageView
+            android:id="@+id/imageViewTunisian"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="5"
+            android:layout_column="1"
+            android:layout_margin="4dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/tunisian" />
+
+        <ImageView
+            android:id="@+id/imageViewVietnamese"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="5"
+            android:layout_column="2"
+            android:layout_margin="4dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/vietnamese" />
+
+        <ImageView
+            android:id="@+id/imageViewTurkish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="5"
+            android:layout_column="3"
+            android:layout_margin="4dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/turkish" />
+
+    </GridLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

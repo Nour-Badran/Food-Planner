@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph2"
+    app:startDestination="@id/randomMeal">
+    <fragment
+        android:id="@+id/randomMeal"
+        android:name="com.example.foodplanner.View.Menu.RandomMealFragment"
+        android:label="randomMeal"
+        tools:layout="@layout/fragment_random_meal" >
+        <action
+            android:id="@+id/action_randomMeal_to_mealDetailsFragment"
+            app:destination="@id/mealDetailsFragment" />
+        <action
+            android:id="@+id/action_randomMeal_to_mealsFragment"
+            app:destination="@id/mealsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/nameSearchFragment"
+        android:name="com.example.foodplanner.View.Menu.NameSearchFragment"
+        android:label="fragment_name_search"
+        tools:layout="@layout/fragment_name_search" >
+        <action
+            android:id="@+id/action_nameSearchFragment_to_mealDetailsFragment"
+            app:destination="@id/mealDetailsFragment" />
+        <action
+            android:id="@+id/action_nameSearchFragment_to_randomMeal"
+            app:destination="@id/randomMeal" />
+    </fragment>
+    <fragment
+        android:id="@+id/categorySearchFragment"
+        android:name="com.example.foodplanner.View.Menu.CategorySearchFragment"
+        android:label="fragment_category_search"
+        tools:layout="@layout/fragment_category_search" >
+        <action
+            android:id="@+id/action_categorySearchFragment_to_mealsFragment"
+            app:destination="@id/mealsFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_categorySearchFragment_to_randomMeal"
+            app:destination="@id/randomMeal" />
+    </fragment>
+    <fragment
+        android:id="@+id/countrySearchFragment"
+        android:name="com.example.foodplanner.View.Menu.CountrySearchFragment"
+        android:label="fragment_country_search"
+        tools:layout="@layout/fragment_country_search" >
+        <action
+            android:id="@+id/action_countrySearchFragment_to_mealsFragment"
+            app:destination="@id/mealsFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_countrySearchFragment_to_randomMeal"
+            app:destination="@id/randomMeal" />
+    </fragment>
+    <fragment
+        android:id="@+id/ingredientSearchFragment"
+        android:name="com.example.foodplanner.View.Menu.IngredientSearchFragment"
+        android:label="fragment_ingredient_search"
+        tools:layout="@layout/fragment_ingredient_search" >
+        <action
+            android:id="@+id/action_ingredientSearchFragment_to_mealsFragment"
+            app:destination="@id/mealsFragment" />
+        <action
+            android:id="@+id/action_ingredientSearchFragment_to_randomMeal"
+            app:destination="@id/randomMeal" />
+    </fragment>
+    <fragment
+        android:id="@+id/mealsFragment"
+        android:name="com.example.foodplanner.View.Menu.MealsFragment"
+        android:label="fragment_meals"
+        tools:layout="@layout/fragment_meals_by_category" >
+        <argument
+            android:name="categoryName"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_mealsFragment_to_mealDetailsFragment"
+            app:destination="@id/mealDetailsFragment" />
+        <action
+            android:id="@+id/action_mealsFragment_to_categorySearchFragment"
+            app:destination="@id/categorySearchFragment" />
+        <action
+            android:id="@+id/action_mealsFragment_to_countrySearchFragment"
+            app:destination="@id/countrySearchFragment"
+            app:popUpTo="@id/countrySearchFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_mealsFragment_to_ingredientSearchFragment"
+            app:destination="@id/ingredientSearchFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mealDetailsFragment"
+        android:name="com.example.foodplanner.View.Menu.MealDetailsFragment"
+        android:label="fragment_meal_details"
+        tools:layout="@layout/fragment_meal_details" />
+    <fragment
+        android:id="@+id/favouritesFragment"
+        android:name="com.example.foodplanner.FavouritesFragment"
+        android:label="fragment_favourites"
+        tools:layout="@layout/fragment_favourites" />
+</navigation>
