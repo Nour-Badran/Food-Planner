@@ -58,6 +58,7 @@ public class HomeActivity extends AppCompatActivity {
         String email = prefs.getString("email", "Guest");
         nameTextView.setText(email);
 
+
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setHomeAsUpIndicator(R.drawable.home_24dp_e8eaed_fill0_wght400_grad0_opsz24);
@@ -128,6 +129,27 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+
+        // Get the email from SharedPreferences
+        String email = prefs.getString("email", "Guest");
+
+        // Find the signout menu item
+        MenuItem signoutMenuItem = menu.findItem(R.id.signout);
+
+        // Change the title based on the email value
+        if ("Guest".equals(email)) {
+            //Toast.makeText(this, signoutMenuItem.getTitle(), Toast.LENGTH_SHORT).show();
+            signoutMenuItem.setTitle("Back to Signup");
+        }
+        else
+            signoutMenuItem.setTitle("Sign Out");
+
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -139,5 +161,6 @@ public class HomeActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 
 }

@@ -128,13 +128,13 @@ public class MealsFragment extends Fragment implements MealView{
         searchViewMeal.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                adapter.getFilter().filter(query);  // Filter meals based on search query
+                adapter.getFilter().filter(query);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                adapter.getFilter().filter(newText);  // Update filter as text changes
+                adapter.getFilter().filter(newText);
                 return false;
             }
         });

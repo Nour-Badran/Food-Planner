@@ -51,6 +51,7 @@ dependencies {
     implementation libs.lifecycle.livedata.ktx
     implementation libs.lifecycle.viewmodel.ktx
     implementation libs.firebase.auth
+    implementation libs.firebase.database
     annotationProcessor 'androidx.room:room-compiler:2.5.1'
 
     implementation 'com.facebook.android:facebook-android-sdk:latest.release'
@@ -65,6 +66,10 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.16.0'
 
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+//google
+    implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.android.gms:play-services-auth:21.2.0")
 
     implementation libs.appcompat
     implementation libs.material

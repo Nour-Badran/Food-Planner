@@ -4,6 +4,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="Mealoftheday">Meal of the day</string>
     <!-- Strings related to login -->
+    <string name="default_web_client_id">692756677460-6v5n15j89fo9f5j9scflr9v98lg5cp4v.apps.googleusercontent.com</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in or register</string>
@@ -22,5 +23,19 @@
     <string name="Ingredients">Ingredients</string>
     <string name="InspirtationMeal">Inspirtation Meal</string>
     <string name="Meals">Meals</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="search_for_meal_by_category">Search for meal by Category</string>
+    <string name="meals">Meals</string>
+    <string name="home">Home</string>
+    <string name="search_for_meal_by_ingredient">Search for meal by Ingredient</string>
+    <string name="search_for_meal_by_country">Search for meal by Country</string>
+    <string name="exit">Exit</string>
+    <string name="continue_as_guest">Continue as Guest</string>
+    <string name="already_have_an_account_log_in">Already have an account? Log in</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="username">Username</string>
 
 </resources>

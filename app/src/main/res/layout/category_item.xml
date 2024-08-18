@@ -23,7 +23,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageId" />
+        app:layout_constraintTop_toBottomOf="@+id/google" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
