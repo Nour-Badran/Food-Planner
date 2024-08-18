@@ -5,13 +5,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.foodplanner.R;
-import com.example.foodplanner.View.Auth.NewMainActivity;
+import com.example.foodplanner.View.Auth.AuthActivity;
 import com.example.foodplanner.View.Menu.HomeActivity;
 
 public class SplashActivity extends AppCompatActivity {
@@ -35,7 +34,7 @@ public class SplashActivity extends AppCompatActivity {
             if (loggedIn) {
                 startActivity(new Intent(SplashActivity.this, HomeActivity.class));
             } else {
-                startActivity(new Intent(SplashActivity.this, NewMainActivity.class));
+                startActivity(new Intent(SplashActivity.this, AuthActivity.class));
             }
             finish();
         }, 3000); // Delay for splash screen

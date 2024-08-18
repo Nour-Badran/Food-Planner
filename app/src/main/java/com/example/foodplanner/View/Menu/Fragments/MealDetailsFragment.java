@@ -1,4 +1,4 @@
-package com.example.foodplanner.View.Menu;
+package com.example.foodplanner.View.Menu.Fragments;
 
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -27,9 +27,13 @@ import com.example.foodplanner.Model.CategoryResponse;
 import com.example.foodplanner.Model.IngredientResponse;
 import com.example.foodplanner.Model.MealEntity;
 import com.example.foodplanner.Model.MealApi;
+import com.example.foodplanner.Model.MealModel;
+import com.example.foodplanner.Model.MealModelImpl;
 import com.example.foodplanner.Model.RetrofitClient;
 import com.example.foodplanner.Presenter.MealPresenterImpl;
 import com.example.foodplanner.R;
+import com.example.foodplanner.View.Menu.Adapters.IngredientAdapter;
+import com.example.foodplanner.View.Menu.Interfaces.MealView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -120,7 +124,8 @@ public class MealDetailsFragment extends Fragment implements MealView {
         mealTitle.setText(mealName);
 
         MealApi mealApi = RetrofitClient.getClient().create(MealApi.class);
-        presenter = new MealPresenterImpl(this, mealApi);
+        MealModel mealModel = new MealModelImpl(mealApi); // Create MealModel instance
+        presenter = new MealPresenterImpl(this, mealModel);
         presenter.searchMeals(mealName);
     }
 

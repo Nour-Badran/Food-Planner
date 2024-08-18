@@ -42,4 +42,33 @@
     <string name="steps">Steps</string>
     <string name="mealsteps">Steps:</string>
 
+    <string name="British">British</string>
+    <string name="American">America</string>
+    <string name="French">French</string>
+    <string name="Canadian">Canada</string>
+    <string name="Jamaican">Jamaica</string>
+    <string name="Chinese">China</string>
+    <string name="Dutch">Dutch</string>
+    <string name="Egyptian">Egypt</string>
+    <string name="Greek">Greek</string>
+    <string name="Indian">India</string>
+    <string name="Irish">Irish</string>
+    <string name="Italian">Italia</string>
+    <string name="Japanese">Japan</string>
+    <string name="Kenyan">Kenya</string>
+    <string name="Malaysian">Malaysia</string>
+    <string name="Mexican">Mexico</string>
+    <string name="Moroccan">Morocco</string>
+    <string name="Croatian">Croatia</string>
+    <string name="Ukrainian">Ukrainia</string>
+    <string name="Portuguese">Portugal</string>
+    <string name="Russian">Russia</string>
+    <string name="Filipino">Filipin</string>
+    <string name="Spanish">Spain</string>
+    <string name="Polish">Poland</string>
+    <string name="Thai">Thai</string>
+    <string name="Tunisian">Tunis</string>
+    <string name="Vietnamese">Vietnam</string>
+    <string name="Turkish">Turkey</string>
+
 </resources>

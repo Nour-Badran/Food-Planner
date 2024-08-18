@@ -1,4 +1,4 @@
-package com.example.foodplanner.View.Menu;
+package com.example.foodplanner.View.Menu.Interfaces;
 
 import com.airbnb.lottie.L;
 import com.example.foodplanner.Model.CategoryResponse;

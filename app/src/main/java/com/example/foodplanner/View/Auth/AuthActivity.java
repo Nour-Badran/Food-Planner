@@ -6,27 +6,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
-import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
+
 import com.example.foodplanner.R;
 
-public class NewMainActivity extends AppCompatActivity {
+public class AuthActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_main);
-//        FacebookSdk.setApplicationId(getString(R.string.facebook_app_id));
-//        FacebookSdk.sdkInitialize(getApplicationContext());
-//        AppEventsLogger.activateApp(getApplication());
-        Log.d("NewMainActivity", "Activity started");
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController);

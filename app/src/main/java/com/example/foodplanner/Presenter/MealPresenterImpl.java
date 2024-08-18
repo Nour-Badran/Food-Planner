@@ -3,276 +3,171 @@ package com.example.foodplanner.Presenter;
 import android.util.Log;
 
 import com.example.foodplanner.Model.CategoryResponse;
-import com.example.foodplanner.Model.FavoriteMealDatabase;
 import com.example.foodplanner.Model.IngredientResponse;
+import com.example.foodplanner.Model.MealCallback;
 import com.example.foodplanner.Model.MealEntity;
-import com.example.foodplanner.Model.MealApi;
-import com.example.foodplanner.Model.MealResponse;
-import com.example.foodplanner.View.Menu.MealView;
-import com.google.gson.Gson;
+import com.example.foodplanner.Model.MealModel;
+import com.example.foodplanner.View.Menu.Interfaces.MealView;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 public class MealPresenterImpl implements MealPresenter {
-    private MealView view;
-    private MealApi mealApi;
-    private FavoriteMealDatabase appDatabase;
 
-    public MealPresenterImpl(MealView view, MealApi mealApi) {
+    private final MealView view;
+    private final MealModel model;
+
+    public MealPresenterImpl(MealView view, MealModel model) {
         this.view = view;
-        this.mealApi = mealApi;
-        //this.appDatabase = appDatabase;
+        this.model = model;
     }
 
     @Override
     public void loadRandomMeal() {
-        mealApi.getRandomMeal().enqueue(new Callback<MealResponse>() {
+        model.loadRandomMeal(new MealCallback<MealEntity>() {
             @Override
-            public void onResponse(Call<MealResponse> call, Response<MealResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    MealResponse mealResponse = response.body();
-                    Log.d("MealPresenterImpl", "Response JSON: " + new Gson().toJson(mealResponse));
-                    List<MealEntity> meals = mealResponse.getMeals();
-                    if (meals != null && !meals.isEmpty()) {
-                        view.showMeal(meals.get(0));
-                    } else {
-                        view.showError("No meals found");
-                    }
-                } else {
-                    view.showError("Failed to load meal: " + response.message());
-                }
+            public void onSuccess(MealEntity meal) {
+                view.showMeal(meal);
             }
 
             @Override
-            public void onFailure(Call<MealResponse> call, Throwable t) {
-                view.showError("Error: " + t.getMessage());
+            public void onFailure(String errorMessage) {
+                view.showError(errorMessage);
             }
         });
     }
 
     @Override
     public void getAllMeals() {
-        mealApi.getAllMeals().enqueue(new Callback<MealResponse>() {
+        model.getAllMeals(new MealCallback<List<MealEntity>>() {
             @Override
-            public void onResponse(Call<MealResponse> call, Response<MealResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    MealResponse mealResponse = response.body();
-                    List<MealEntity> meals = mealResponse.getMeals();
-
-                    if (meals == null || meals.isEmpty()) {
-                        view.showError("No meals found");
-                    } else {
-                        view.showMeals(meals);
-                    }
+            public void onSuccess(List<MealEntity> meals) {
+                if (meals == null || meals.isEmpty()) {
+                    view.showError("No meals found");
                 } else {
-                    view.showError("Failed to find meals: " + response.message());
+                    view.showMeals(meals);
                 }
             }
 
             @Override
-            public void onFailure(Call<MealResponse> call, Throwable t) {
-                view.showError("Error: " + t.getMessage());
+            public void onFailure(String errorMessage) {
+                view.showError(errorMessage);
             }
         });
     }
 
     @Override
     public void getMealByArea(String area) {
-        mealApi.getMealsByArea(area).enqueue(new Callback<MealResponse>() {
+        model.getMealByArea(area, new MealCallback<List<MealEntity>>() {
             @Override
-            public void onResponse(Call<MealResponse> call, Response<MealResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    MealResponse mealResponse = response.body();
-                    List<MealEntity> meals = mealResponse.getMeals();
-
-                    if (meals == null || meals.isEmpty()) {
-                        view.showError("No meals found");
-                    } else {
-                        view.showMeals(meals);
-                    }
+            public void onSuccess(List<MealEntity> meals) {
+                if (meals == null || meals.isEmpty()) {
+                    view.showError("No meals found");
                 } else {
-                    view.showError("Failed to find meals: " + response.message());
+                    view.showMeals(meals);
                 }
             }
 
             @Override
-            public void onFailure(Call<MealResponse> call, Throwable t) {
-                view.showError("Error: " + t.getMessage());
+            public void onFailure(String errorMessage) {
+                view.showError(errorMessage);
             }
         });
     }
 
     @Override
     public void getIngredients() {
-        mealApi.getIngredients().enqueue(new Callback<IngredientResponse>() {
+        model.getIngredients(new MealCallback<List<IngredientResponse.Ingredient>>() {
             @Override
-            public void onResponse(Call<IngredientResponse> call, Response<IngredientResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    IngredientResponse ingredientResponse = response.body();
-                    List<IngredientResponse.Ingredient> ingredients = ingredientResponse.getIngredients();
-                    if (ingredients == null || ingredients.isEmpty()) {
-                        view.showError("No ingredients found");
-                    } else {
-                        view.showIngredients(ingredients);
-                    }
+            public void onSuccess(List<IngredientResponse.Ingredient> ingredients) {
+                if (ingredients == null || ingredients.isEmpty()) {
+                    view.showError("No ingredients found");
                 } else {
-                    view.showError("Failed to find ingredients: " + response.message());
+                    view.showIngredients(ingredients);
                 }
             }
 
             @Override
-            public void onFailure(Call<IngredientResponse> call, Throwable t) {
-                Log.e("MealPresenterImpl", "Error: " + t.getMessage());
-                view.showError("Error: " + t.getMessage());
+            public void onFailure(String errorMessage) {
+                view.showError(errorMessage);
             }
         });
     }
 
+    @Override
     public void getIngredientsBySubstring(String substring) {
-        mealApi.getIngredients().enqueue(new Callback<IngredientResponse>() {
+        model.getIngredientsBySubstring(substring, new MealCallback<List<IngredientResponse.Ingredient>>() {
             @Override
-            public void onResponse(Call<IngredientResponse> call, Response<IngredientResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    IngredientResponse ingredientResponse = response.body();
-                    List<IngredientResponse.Ingredient> ingredients = ingredientResponse.getIngredients();
-                    List<IngredientResponse.Ingredient> matchingIngredients = new ArrayList<>(); // Initialize here
-                    for(int i = 0; i < ingredients.size();i++)
-                    {
-                        String ingredientName = ingredients.get(i).getName();
-                        if(ingredientName.toLowerCase().contains(substring.toLowerCase()))
-                        {
-                            matchingIngredients.add(ingredients.get(i));
-                        }
-                    }
-                    if (matchingIngredients == null || matchingIngredients.isEmpty()) {
-                        view.showError("No ingredients found");
-                    } else {
-                        view.showIngredients(matchingIngredients);
-                    }
+            public void onSuccess(List<IngredientResponse.Ingredient> ingredients) {
+                if (ingredients == null || ingredients.isEmpty()) {
+                    view.showError("No ingredients found");
                 } else {
-                    view.showError("Failed to find ingredients: " + response.message());
+                    view.showIngredients(ingredients);
                 }
             }
 
             @Override
-            public void onFailure(Call<IngredientResponse> call, Throwable t) {
-                view.showError("Error: " + t.getMessage());
+            public void onFailure(String errorMessage) {
+                view.showError(errorMessage);
             }
         });
     }
-
 
     @Override
     public void getMealsByCategory(String categoryName) {
-        mealApi.getMealsByCategory(categoryName).enqueue(new Callback<MealResponse>() {
+        model.getMealsByCategory(categoryName, new MealCallback<List<MealEntity>>() {
             @Override
-            public void onResponse(Call<MealResponse> call, Response<MealResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    MealResponse mealResponse = response.body();
-                    List<MealEntity> meals = mealResponse.getMeals();
-
-                    if (meals == null || meals.isEmpty()) {
-                        view.showError("No meals found");
-                    } else {
-                        view.showMeals(meals);
-                    }
+            public void onSuccess(List<MealEntity> meals) {
+                if (meals == null || meals.isEmpty()) {
+                    view.showError("No meals found");
                 } else {
-                    view.showError("Failed to find meals: " + response.message());
+                    view.showMeals(meals);
                 }
             }
 
             @Override
-            public void onFailure(Call<MealResponse> call, Throwable t) {
-                view.showError("Error: " + t.getMessage());
+            public void onFailure(String errorMessage) {
+                view.showError(errorMessage);
             }
         });
     }
 
     @Override
     public void getMealsByIngredient(String ingredient) {
-        mealApi.getMealsByIngredient(ingredient).enqueue(new Callback<MealResponse>() {
+        model.getMealsByIngredient(ingredient, new MealCallback<List<MealEntity>>() {
             @Override
-            public void onResponse(Call<MealResponse> call, Response<MealResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    MealResponse mealResponse = response.body();
-                    List<MealEntity> meals = mealResponse.getMeals();
-
-                    if (meals == null || meals.isEmpty()) {
-                        view.showError("No meals found");
-                    } else {
-                        view.showMeals(meals);
-                    }
+            public void onSuccess(List<MealEntity> meals) {
+                if (meals == null || meals.isEmpty()) {
+                    view.showError("No meals found");
                 } else {
-                    view.showError("Failed to find meals: " + response.message());
+                    view.showMeals(meals);
                 }
             }
 
             @Override
-            public void onFailure(Call<MealResponse> call, Throwable t) {
-                view.showError("Error: " + t.getMessage());
+            public void onFailure(String errorMessage) {
+                view.showError(errorMessage);
             }
         });
     }
 
     @Override
     public void searchMeals(String mealName) {
-        mealApi.searchMeals(mealName).enqueue(new Callback<MealResponse>() {
+        model.searchMeals(mealName, new MealCallback<List<MealEntity>>() {
             @Override
-            public void onResponse(Call<MealResponse> call, Response<MealResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    MealResponse mealResponse = response.body();
-                    List<MealEntity> meals = mealResponse.getMeals();
-
-                    if (meals == null || meals.isEmpty()) {
-                        view.showError("No meals found");
-                    } else {
-                        view.showMeals(meals);
-                    }
+            public void onSuccess(List<MealEntity> meals) {
+                if (meals == null || meals.isEmpty()) {
+                    view.showError("No meals found");
                 } else {
-                    view.showError("Failed to search meals: " + response.message());
+                    view.showMeals(meals);
                 }
             }
 
             @Override
-            public void onFailure(Call<MealResponse> call, Throwable t) {
-                view.showError("Error: " + t.getMessage());
+            public void onFailure(String errorMessage) {
+                view.showError(errorMessage);
             }
         });
     }
-
-    public void getRandomMeals(){
-        mealApi.getRandomMeals().enqueue(new Callback<MealResponse>() {
-            @Override
-            public void onResponse(Call<MealResponse> call, Response<MealResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    MealResponse mealResponse = response.body();
-                    List<MealEntity> meals = mealResponse.getMeals();
-
-                    // Handle null list explicitly
-                    if (meals == null || meals.isEmpty()) {
-                        view.showError("No meals found");
-                    } else {
-                        view.showMeals(meals);
-                    }
-                } else {
-                    // Handle non-successful response
-                    view.showError("Failed to search meals: " + response.message());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<MealResponse> call, Throwable t) {
-
-            }
-        });
-    }
-
-
 
     @Override
     public void loadCategories() {
@@ -285,33 +180,41 @@ public class MealPresenterImpl implements MealPresenter {
     }
 
     @Override
-    public void getCategories() {
-        mealApi.getCategories().enqueue(new Callback<CategoryResponse>() {
+    public void getRandomMeals() {
+        model.getRandomMeals(new MealCallback<List<MealEntity>>() {
             @Override
-            public void onResponse(Call<CategoryResponse> call, Response<CategoryResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    CategoryResponse categoryResponse = response.body();
-                    List<CategoryResponse.Category> categories = categoryResponse.getCategories();
-
-                    // Handle null list explicitly
-                    if (categories == null || categories.isEmpty()) {
-                        view.showError("No categories found");
-                    } else {
-                        view.showCategories(categories);
-                    }
+            public void onSuccess(List<MealEntity> meals) {
+                if (meals == null || meals.isEmpty()) {
+                    view.showError("No meals found");
                 } else {
-                    // Handle non-successful response
-                    view.showError("Failed to connect: " + response.message());
+                    view.showMeals(meals);
                 }
             }
 
             @Override
-            public void onFailure(Call<CategoryResponse> call, Throwable t) {
-
+            public void onFailure(String errorMessage) {
+                view.showError(errorMessage);
             }
         });
     }
 
-    // Implement other methods similarly
-}
+    @Override
+    public void getCategories() {
+        model.getCategories(new MealCallback<List<CategoryResponse.Category>>() {
+            @Override
+            public void onSuccess(List<CategoryResponse.Category> categories) {
+                if (categories == null || categories.isEmpty()) {
+                    view.showError("No categories found");
+                } else {
+                    view.showCategories(categories);
+                }
+            }
 
+            @Override
+            public void onFailure(String errorMessage) {
+                view.showError(errorMessage);
+            }
+        });
+    }
+
+}

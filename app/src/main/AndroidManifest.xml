@@ -18,7 +18,7 @@
             android:name=".View.Menu.HomeActivity"
             android:exported="false" />
         <activity
-            android:name=".View.Auth.NewMainActivity"
+            android:name=".View.Auth.AuthActivity"
             android:exported="false" />
         <activity
             android:name=".View.Splash.SplashActivity"
