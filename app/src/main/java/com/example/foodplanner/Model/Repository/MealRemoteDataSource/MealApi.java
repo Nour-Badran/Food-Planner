@@ -1,4 +1,9 @@
-package com.example.foodplanner.Model;
+package com.example.foodplanner.Model.Repository.MealRemoteDataSource;
+
+import com.example.foodplanner.Model.CategoryResponse;
+import com.example.foodplanner.Model.CountryResponse;
+import com.example.foodplanner.Model.IngredientResponse;
+import com.example.foodplanner.Model.MealResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

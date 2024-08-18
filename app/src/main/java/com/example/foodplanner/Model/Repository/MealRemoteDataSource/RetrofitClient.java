@@ -1,4 +1,4 @@
-package com.example.foodplanner.Model;
+package com.example.foodplanner.Model.Repository.MealRemoteDataSource;
 
 import retrofit2.Call;
 import retrofit2.Retrofit;

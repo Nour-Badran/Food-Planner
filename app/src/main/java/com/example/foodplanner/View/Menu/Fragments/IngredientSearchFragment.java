@@ -17,11 +17,14 @@ import androidx.appcompat.widget.SearchView;
 
 import com.example.foodplanner.Model.CategoryResponse;
 import com.example.foodplanner.Model.IngredientResponse;
-import com.example.foodplanner.Model.MealApi;
+import com.example.foodplanner.Model.Repository.DataBase.FavoriteMealDatabase;
+import com.example.foodplanner.Model.Repository.DataBase.MealLocalDataSourceImpl;
+import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealApi;
 import com.example.foodplanner.Model.MealEntity;
-import com.example.foodplanner.Model.MealModel;
-import com.example.foodplanner.Model.MealModelImpl;
-import com.example.foodplanner.Model.RetrofitClient;
+import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealModel;
+import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealRemoteDataSource;
+import com.example.foodplanner.Model.Repository.MealRemoteDataSource.RetrofitClient;
+import com.example.foodplanner.Model.Repository.Repository.MealRepository;
 import com.example.foodplanner.Presenter.MealPresenter;
 import com.example.foodplanner.Presenter.MealPresenterImpl;
 import com.example.foodplanner.R;
@@ -67,9 +70,9 @@ public class IngredientSearchFragment extends Fragment implements MealView {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        MealApi mealApi = RetrofitClient.getClient().create(MealApi.class);
-        MealModel mealModel = new MealModelImpl(mealApi); // Create MealModel instance
-        presenter = new MealPresenterImpl(this, mealModel);
+        presenter = new MealPresenterImpl(this, new MealRepository(new MealLocalDataSourceImpl(FavoriteMealDatabase.getInstance(requireContext()).favoriteMealDao()),
+                new MealRemoteDataSource(RetrofitClient.getClient().create(MealApi.class))));
+
         presenter.getIngredients();
 
         searchViewIngredient.setOnQueryTextListener(new SearchView.OnQueryTextListener() {

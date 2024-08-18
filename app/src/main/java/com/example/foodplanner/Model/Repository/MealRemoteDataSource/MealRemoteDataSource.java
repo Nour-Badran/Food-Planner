@@ -1,6 +1,9 @@
-package com.example.foodplanner.Model;
+package com.example.foodplanner.Model.Repository.MealRemoteDataSource;
 
-import android.util.Log;
+import com.example.foodplanner.Model.CategoryResponse;
+import com.example.foodplanner.Model.IngredientResponse;
+import com.example.foodplanner.Model.MealEntity;
+import com.example.foodplanner.Model.MealResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,11 +12,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MealModelImpl implements MealModel {
+public class MealRemoteDataSource implements MealModel {
 
     private final MealApi mealApi;
 
-    public MealModelImpl(MealApi mealApi) {
+    public MealRemoteDataSource(MealApi mealApi) {
         this.mealApi = mealApi;
     }
 

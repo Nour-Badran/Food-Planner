@@ -28,11 +28,14 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.foodplanner.Model.CategoryResponse;
 import com.example.foodplanner.Model.IngredientResponse;
-import com.example.foodplanner.Model.MealApi;
+import com.example.foodplanner.Model.Repository.DataBase.FavoriteMealDatabase;
+import com.example.foodplanner.Model.Repository.DataBase.MealLocalDataSourceImpl;
+import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealApi;
 import com.example.foodplanner.Model.MealEntity;
-import com.example.foodplanner.Model.MealModel;
-import com.example.foodplanner.Model.MealModelImpl;
-import com.example.foodplanner.Model.RetrofitClient;
+import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealModel;
+import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealRemoteDataSource;
+import com.example.foodplanner.Model.Repository.MealRemoteDataSource.RetrofitClient;
+import com.example.foodplanner.Model.Repository.Repository.MealRepository;
 import com.example.foodplanner.Presenter.MealPresenter;
 import com.example.foodplanner.Presenter.MealPresenterImpl;
 import com.example.foodplanner.R;
@@ -144,10 +147,6 @@ public class HomeFragment extends Fragment implements MealView {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        MealApi mealApi = RetrofitClient.getClient().create(MealApi.class);
-        MealModel mealModel = new MealModelImpl(mealApi); // Create MealModel instance
-        presenter = new MealPresenterImpl(this, mealModel);
-        presenter.loadRandomMeal();
         mealImage = view.findViewById(R.id.mealImage);
         mealName = view.findViewById(R.id.mealName);
         chipGroup = view.findViewById(R.id.chipGroup);
@@ -157,6 +156,11 @@ public class HomeFragment extends Fragment implements MealView {
         back = view.findViewById(R.id.back);
         back.setVisibility(View.INVISIBLE);
         recyclerView = view.findViewById(R.id.recyclerView);
+
+        presenter = new MealPresenterImpl(this, new MealRepository(new MealLocalDataSourceImpl(FavoriteMealDatabase.getInstance(requireContext()).favoriteMealDao()),
+                new MealRemoteDataSource(RetrofitClient.getClient().create(MealApi.class))));
+
+        presenter.loadRandomMeal();
 
         categoryAdapter = new CategoryAdapter();
         categoryAdapter.setOnCategoryClickListener(category -> {

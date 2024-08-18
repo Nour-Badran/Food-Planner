@@ -1,4 +1,8 @@
-package com.example.foodplanner.Model;
+package com.example.foodplanner.Model.Repository.MealRemoteDataSource;
+
+import com.example.foodplanner.Model.CategoryResponse;
+import com.example.foodplanner.Model.IngredientResponse;
+import com.example.foodplanner.Model.MealEntity;
 
 import java.util.List;
 
