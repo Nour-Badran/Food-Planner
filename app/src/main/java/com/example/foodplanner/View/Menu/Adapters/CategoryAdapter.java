@@ -1,4 +1,4 @@
-package com.example.foodplanner.View.Menu;
+package com.example.foodplanner.View.Menu.Adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.foodplanner.Model.CategoryResponse;
 import com.example.foodplanner.R;
+import com.example.foodplanner.View.Menu.Interfaces.OnCategoryClickListener;
 
 import java.util.ArrayList;
 import java.util.List;

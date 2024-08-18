@@ -1,19 +1,14 @@
-package com.example.foodplanner.View.Menu;
+package com.example.foodplanner.View.Menu.Fragments;
 
 import android.animation.Animator;
-import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.res.ColorStateList;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.RippleDrawable;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -21,14 +16,11 @@ import androidx.navigation.fragment.FragmentNavigator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,10 +30,16 @@ import com.example.foodplanner.Model.CategoryResponse;
 import com.example.foodplanner.Model.IngredientResponse;
 import com.example.foodplanner.Model.MealApi;
 import com.example.foodplanner.Model.MealEntity;
+import com.example.foodplanner.Model.MealModel;
+import com.example.foodplanner.Model.MealModelImpl;
 import com.example.foodplanner.Model.RetrofitClient;
 import com.example.foodplanner.Presenter.MealPresenter;
 import com.example.foodplanner.Presenter.MealPresenterImpl;
 import com.example.foodplanner.R;
+import com.example.foodplanner.View.Menu.Adapters.CategoryAdapter;
+import com.example.foodplanner.View.Menu.Adapters.IngredientAdapter;
+import com.example.foodplanner.View.Menu.Adapters.MealAdapter;
+import com.example.foodplanner.View.Menu.Interfaces.MealView;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -50,7 +48,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class RandomMealFragment extends Fragment implements MealView {
+public class HomeFragment extends Fragment implements MealView {
 
     private MealPresenter presenter;
     ImageView mealImage;
@@ -147,7 +145,8 @@ public class RandomMealFragment extends Fragment implements MealView {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         MealApi mealApi = RetrofitClient.getClient().create(MealApi.class);
-        presenter = new MealPresenterImpl(this, mealApi);
+        MealModel mealModel = new MealModelImpl(mealApi); // Create MealModel instance
+        presenter = new MealPresenterImpl(this, mealModel);
         presenter.loadRandomMeal();
         mealImage = view.findViewById(R.id.mealImage);
         mealName = view.findViewById(R.id.mealName);

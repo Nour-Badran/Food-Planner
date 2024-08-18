@@ -1,10 +1,11 @@
-package com.example.foodplanner.View.Menu;
+package com.example.foodplanner.View.Menu.Fragments;
 
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,27 +14,31 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import androidx.appcompat.widget.SearchView;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.foodplanner.Model.CategoryResponse;
 import com.example.foodplanner.Model.IngredientResponse;
 import com.example.foodplanner.Model.MealApi;
 import com.example.foodplanner.Model.MealEntity;
+import com.example.foodplanner.Model.MealModel;
+import com.example.foodplanner.Model.MealModelImpl;
 import com.example.foodplanner.Model.RetrofitClient;
 import com.example.foodplanner.Presenter.MealPresenter;
 import com.example.foodplanner.Presenter.MealPresenterImpl;
 import com.example.foodplanner.R;
+import com.example.foodplanner.View.Menu.Adapters.MealAdapter;
+import com.example.foodplanner.View.Menu.Interfaces.MealView;
 
 import java.util.List;
 
-public class IngredientSearchFragment extends Fragment implements MealView{
-    private MealPresenter presenter;
-    private RecyclerView recyclerView;
-    private IngredientAdapter adapter;
-    private SearchView searchViewIngredient;
-    //private TextView textViewError;
+public class SearchMealsFragment extends Fragment implements MealView {
 
+    private RecyclerView recyclerView;
+    private MealPresenter presenter;
+    private EditText editTextMealName;
+    private TextView textViewError;
+    private MealAdapter adapter;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +46,7 @@ public class IngredientSearchFragment extends Fragment implements MealView{
             @Override
             public void handleOnBackPressed() {
                 // Replace with the action to navigate to another fragment
-                Navigation.findNavController(requireView()).navigate(R.id.action_ingredientSearchFragment_to_randomMeal);
+                Navigation.findNavController(requireView()).navigate(R.id.action_nameSearchFragment_to_randomMeal);
             }
         });
     }
@@ -50,64 +55,56 @@ public class IngredientSearchFragment extends Fragment implements MealView{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_ingredient_search, container, false);
+        return inflater.inflate(R.layout.fragment_name_search, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        searchViewIngredient = view.findViewById(R.id.searchViewIngredient);
-        searchViewIngredient.setIconifiedByDefault(false); // Ensure SearchView is always expanded
+        SearchView searchViewMeal = view.findViewById(R.id.searchViewMeal);
+        searchViewMeal.setIconifiedByDefault(false); // Ensure SearchView is always expanded
         //textViewError = view.findViewById(R.id.textViewError);
         recyclerView = view.findViewById(R.id.recyclerViewMeals);
-        adapter = new IngredientAdapter();
+        adapter = new MealAdapter();
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         MealApi mealApi = RetrofitClient.getClient().create(MealApi.class);
-        presenter = new MealPresenterImpl(this, mealApi);
-        presenter.getIngredients();
+        MealModel mealModel = new MealModelImpl(mealApi); // Create MealModel instance
+        presenter = new MealPresenterImpl(this, mealModel);
+        presenter.getAllMeals();
 
-        searchViewIngredient.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        searchViewMeal.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                presenter.getIngredientsBySubstring(query.trim());
+                presenter.searchMeals(query.trim());
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if (newText.trim().isEmpty()) {
-                    recyclerView.setVisibility(View.GONE);
-//                    textViewError.setVisibility(View.VISIBLE);
-//                    textViewError.setText("No ingredients found");
-                } else {
-//                    textViewError.setVisibility(View.GONE);
-                    recyclerView.setVisibility(View.VISIBLE);
-                    presenter.getIngredientsBySubstring(newText.trim());
-                }
+                adapter.getFilter().filter(newText);
                 return false;
             }
         });
 
-        adapter.setOnIngredientClickListener(ingredient -> {
-            // Navigate to MealsFragment
+        adapter.setOnMealClickListener(meal -> {
             if (getActivity() != null) {
                 Bundle bundle = new Bundle();
-                bundle.putString("ingredient_name", ingredient.getName());
-                Navigation.findNavController(view).navigate(R.id.action_ingredientSearchFragment_to_mealsFragment, bundle);
+                bundle.putString("meal_name", meal.getStrMeal());
+                Navigation.findNavController(view).navigate(R.id.action_nameSearchFragment_to_mealDetailsFragment, bundle);
             }
         });
     }
 
     @Override
     public void showMeal(MealEntity meal) {
-        // Handle meal display
+
     }
 
     @Override
     public void showMealDetails(MealEntity meal) {
-        // Handle meal details display
+
     }
 
     @Override
@@ -119,23 +116,23 @@ public class IngredientSearchFragment extends Fragment implements MealView{
 
     @Override
     public void showCategories(List<CategoryResponse.Category> categories) {
-        // Handle category display
+
     }
 
     @Override
     public void showMeals(List<MealEntity> meals) {
-        // Handle meals display
-    }
-
-    @Override
-    public void showIngredients(List<IngredientResponse.Ingredient> ingredients) {
-        adapter.setIngredients(ingredients);
-        recyclerView.setVisibility(View.VISIBLE);
+        adapter.setMeals(meals);
+        recyclerView.setVisibility(View.VISIBLE); // Show RecyclerView
 //        textViewError.setVisibility(View.GONE);
     }
 
     @Override
+    public void showIngredients(List<IngredientResponse.Ingredient> ingredients) {
+
+    }
+
+    @Override
     public void getMealsByCategory(String categoryName) {
-        // Handle meals by category
+
     }
 }

@@ -1,4 +1,4 @@
-package com.example.foodplanner;
+package com.example.foodplanner.View.Menu.Fragments;
 
 import android.os.Bundle;
 
@@ -8,7 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class FavouritesFragment extends Fragment {
+import com.example.foodplanner.R;
+
+public class FavouriteMealsFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

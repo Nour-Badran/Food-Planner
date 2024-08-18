@@ -1,4 +1,4 @@
-package com.example.foodplanner.View.Menu;
+package com.example.foodplanner.View.Menu.Fragments;
 
 import android.os.Bundle;
 
@@ -13,16 +13,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.foodplanner.Model.CategoryResponse;
 import com.example.foodplanner.Model.IngredientResponse;
 import com.example.foodplanner.Model.MealApi;
 import com.example.foodplanner.Model.MealEntity;
+import com.example.foodplanner.Model.MealModel;
+import com.example.foodplanner.Model.MealModelImpl;
 import com.example.foodplanner.Model.RetrofitClient;
 import com.example.foodplanner.Presenter.MealPresenter;
 import com.example.foodplanner.Presenter.MealPresenterImpl;
 import com.example.foodplanner.R;
+import com.example.foodplanner.View.Menu.Adapters.CategoryAdapter;
+import com.example.foodplanner.View.Menu.Interfaces.MealView;
 
 import java.util.List;
 
@@ -37,7 +40,6 @@ public class CategorySearchFragment extends Fragment implements MealView {
         requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                // Replace with the action to navigate to another fragment
                 Navigation.findNavController(requireView()).navigate(R.id.action_categorySearchFragment_to_randomMeal);
             }
         });
@@ -46,7 +48,6 @@ public class CategorySearchFragment extends Fragment implements MealView {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_category_search, container, false);
     }
 
@@ -59,19 +60,18 @@ public class CategorySearchFragment extends Fragment implements MealView {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         MealApi mealApi = RetrofitClient.getClient().create(MealApi.class);
-        presenter = new MealPresenterImpl(this, mealApi);
+        MealModel mealModel = new MealModelImpl(mealApi);
+        presenter = new MealPresenterImpl(this, mealModel);
         presenter.getCategories();
 
         adapter.setOnCategoryClickListener(category -> {
             // Navigate to MealsFragment
             if (getActivity() != null) {
-                //Toast.makeText(getActivity(), category.getName(), Toast.LENGTH_SHORT).show();
                 Bundle bundle = new Bundle();
                 bundle.putString("category_name", category.getName());
                 Navigation.findNavController(view).navigate(R.id.action_categorySearchFragment_to_mealsFragment,bundle);
             }
         });
-        //presenter.getRandomMeals();
     }
 
     @Override

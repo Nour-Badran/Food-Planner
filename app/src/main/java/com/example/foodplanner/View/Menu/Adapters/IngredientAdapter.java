@@ -1,4 +1,4 @@
-package com.example.foodplanner.View.Menu;
+package com.example.foodplanner.View.Menu.Adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;

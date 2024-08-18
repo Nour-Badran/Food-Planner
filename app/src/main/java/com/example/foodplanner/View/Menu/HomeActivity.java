@@ -8,12 +8,10 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -21,12 +19,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
-import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
-import androidx.navigation.ui.NavigationUI;
 
 import com.example.foodplanner.R;
-import com.example.foodplanner.View.Auth.NewMainActivity;
+import com.example.foodplanner.View.Auth.AuthActivity;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -101,7 +97,7 @@ public class HomeActivity extends AppCompatActivity {
                         editor.remove("loggedIn");
                         editor.apply();
                         FirebaseAuth.getInstance().signOut();
-                        Intent intent = new Intent(HomeActivity.this, NewMainActivity.class);
+                        Intent intent = new Intent(HomeActivity.this, AuthActivity.class);
                         startActivity(intent);
                         finish(); // Finish HomeActivity if you don't want the user to return to it
                         //progressBar.setVisibility(v.GONE);
