@@ -1,8 +1,12 @@
 package com.example.foodplanner.View.Menu.Fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -35,8 +39,11 @@ import com.example.foodplanner.Model.Repository.MealRemoteDataSource.RetrofitCli
 import com.example.foodplanner.Model.Repository.Repository.MealRepository;
 import com.example.foodplanner.Presenter.MealPresenterImpl;
 import com.example.foodplanner.R;
+import com.example.foodplanner.View.LoginBottomSheetFragment;
 import com.example.foodplanner.View.Menu.Adapters.IngredientAdapter;
+import com.example.foodplanner.View.Menu.Interfaces.MealExistCallback;
 import com.example.foodplanner.View.Menu.Interfaces.MealView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,11 +56,15 @@ public class MealDetailsFragment extends Fragment implements MealView {
     private TextView mealTitle, mealOrigin, mealIngredients, mealSteps, steps;
     private WebView webView;
     private FrameLayout fullscreenContainer;
+    FloatingActionButton fab;
+    MealEntity currentMeal;
     private WebChromeClient.CustomViewCallback customViewCallback;
     private ImageView mealImage, countryImage;
     private GridLayout ingredientImagesGrid;
     private RecyclerView recyclerView;
     IngredientAdapter adapter;
+    private static final String PREFS_NAME = "FoodPlannerPrefs";
+    private static final String KEY_LOGGED_IN = "loggedIn";
     List<IngredientResponse.Ingredient> ingredientImageUrls;
 
     public static final Map<String, Integer> COUNTRY_DRAWABLES = new HashMap<>();
@@ -120,6 +131,7 @@ public class MealDetailsFragment extends Fragment implements MealView {
         mealImage = view.findViewById(R.id.mealImage);
         countryImage = view.findViewById(R.id.imageView);
         recyclerView = view.findViewById(R.id.recyclerView2);
+        fab = view.findViewById(R.id.fab);
 
         adapter = new IngredientAdapter();
         recyclerView.setAdapter(adapter);
@@ -130,6 +142,45 @@ public class MealDetailsFragment extends Fragment implements MealView {
                 new MealRemoteDataSource(RetrofitClient.getClient().create(MealApi.class))));
 
         presenter.searchMeals(mealName);
+
+        SharedPreferences prefs = getActivity().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        boolean loggedIn = prefs.getBoolean(KEY_LOGGED_IN, false);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Toast.makeText(getContext(), "Added to favourites!", Toast.LENGTH_SHORT).show();
+//                int newColor = (currentFabColor == ContextCompat.getColor(getContext(), R.color.gray))
+//                        ? ContextCompat.getColor(getContext(), R.color.areaBackgroundColor)
+//                        : ContextCompat.getColor(getContext(), R.color.gray);
+//                animateFabColor(newColor);
+                if(loggedIn)
+                {
+                    doesMealExist(currentMeal.getIdMeal(), exists -> {
+                        getActivity().runOnUiThread(() -> {
+                            String message;
+
+                            if (exists) {
+                                getActivity().runOnUiThread(() ->
+                                        Toast.makeText(getContext(), currentMeal.getStrMeal() + " deleted from favorites", Toast.LENGTH_SHORT).show()
+                                );
+                                presenter.deleteMeal(currentMeal);
+                            } else {
+                                getActivity().runOnUiThread(() ->
+                                        Toast.makeText(getContext(), currentMeal.getStrMeal() + " added to favorites", Toast.LENGTH_SHORT).show()
+                                );
+                                presenter.insertMeal(currentMeal);
+                            }
+                            updateFabColorAfterUpdate(currentMeal.getIdMeal());
+                        });
+                    });
+                }
+                else
+                {
+                    LoginBottomSheetFragment bottomSheet = new LoginBottomSheetFragment();
+                    bottomSheet.show(getActivity().getSupportFragmentManager(), "LoginBottomSheetFragment");
+                }
+            }
+        });
     }
 
     @Override
@@ -137,9 +188,45 @@ public class MealDetailsFragment extends Fragment implements MealView {
         // Implement this method if you need to show a single meal
     }
 
+    private void doesMealExist(String mealId, MealExistCallback callback) {
+        presenter.isMealExists(mealId, exists -> {
+            callback.onResult(exists);
+        });
+    }
+    private void updateFabColor(String mealId) {
+        doesMealExist(mealId, exists -> {
+            getActivity().runOnUiThread(() -> {
+                int color;
+
+                if (exists) {
+                    color = ContextCompat.getColor(getContext(), R.color.areaBackgroundColor);
+                } else {
+                    color = ContextCompat.getColor(getContext(), R.color.gray);
+                }
+                fab.setBackgroundTintList(ColorStateList.valueOf(color));
+            });
+        });
+    }
+    private void updateFabColorAfterUpdate(String mealId) {
+        doesMealExist(mealId, exists -> {
+            getActivity().runOnUiThread(() -> {
+                int color;
+
+                if (exists) {
+                    color = ContextCompat.getColor(getContext(), R.color.gray);
+                } else {
+                    color = ContextCompat.getColor(getContext(), R.color.areaBackgroundColor);
+                }
+
+                fab.setBackgroundTintList(ColorStateList.valueOf(color));
+            });
+        });
+    }
     @Override
     public void showMealDetails(MealEntity meal) {
         if (meal != null) {
+            currentMeal = meal;
+            updateFabColor(meal.getIdMeal());
             mealTitle.setText(meal.getStrMeal());
             mealOrigin.setText("Origin: " + meal.getStrArea());
 

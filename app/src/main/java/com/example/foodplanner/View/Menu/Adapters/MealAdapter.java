@@ -1,5 +1,7 @@
 package com.example.foodplanner.View.Menu.Adapters;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,10 +32,14 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
     private OnFabClickListener onFabClickListener;
     private List<MealEntity> filteredMeals = new ArrayList<>(); // Initialize to an empty list
     private MealPresenterImpl presenter; // Add this line
+    private static final String PREFS_NAME = "FoodPlannerPrefs";
+    private static final String KEY_LOGGED_IN = "loggedIn";
 
+    private Context context;
     // Add a constructor or setter for the presenter
-    public MealAdapter(MealPresenterImpl presenter) {
+    public MealAdapter(MealPresenterImpl presenter,Context context) {
         this.presenter = presenter;
+        this.context = context;
     }
     @NonNull
     @Override
@@ -77,13 +83,20 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
                 onMealClickListener.onMealClick(meal);
             }
         });
+
+        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        boolean loggedIn = prefs.getBoolean(KEY_LOGGED_IN, false);
+
         holder.fab.setOnClickListener(v -> {
             if (onFabClickListener != null) {
                 onFabClickListener.onFabClick(meal);
-                presenter.isMealExists(meal.getIdMeal(), exists -> {
-                    int color = exists ? defaultColor : ContextCompat.getColor(holder.itemView.getContext(), R.color.areaBackgroundColor);
-                    holder.fab.setBackgroundTintList(ColorStateList.valueOf(color));
-                });
+                if(loggedIn)
+                {
+                    presenter.isMealExists(meal.getIdMeal(), exists -> {
+                        int color = exists ? defaultColor : ContextCompat.getColor(holder.itemView.getContext(), R.color.areaBackgroundColor);
+                        holder.fab.setBackgroundTintList(ColorStateList.valueOf(color));
+                    });
+                }
             }
         });
 

@@ -8,7 +8,7 @@
         android:id="@+id/randomMeal"
         android:name="com.example.foodplanner.View.Menu.Fragments.HomeFragment"
         android:label="randomMeal"
-        tools:layout="@layout/fragment_random_meal" >
+        tools:layout="@layout/fragment_home_meal" >
         <action
             android:id="@+id/action_randomMeal_to_mealDetailsFragment"
             app:destination="@id/mealDetailsFragment" />
@@ -20,7 +20,7 @@
         android:id="@+id/nameSearchFragment"
         android:name="com.example.foodplanner.View.Menu.Fragments.SearchMealsFragment"
         android:label="fragment_name_search"
-        tools:layout="@layout/fragment_name_search" >
+        tools:layout="@layout/fragment_meals" >
         <action
             android:id="@+id/action_nameSearchFragment_to_mealDetailsFragment"
             app:destination="@id/mealDetailsFragment" />
@@ -70,7 +70,7 @@
         android:id="@+id/mealsFragment"
         android:name="com.example.foodplanner.View.Menu.Fragments.MealsFragment"
         android:label="fragment_meals"
-        tools:layout="@layout/fragment_meals_by_category" >
+        tools:layout="@layout/fragment_meals_by_type" >
         <argument
             android:name="categoryName"
             app:argType="string" />

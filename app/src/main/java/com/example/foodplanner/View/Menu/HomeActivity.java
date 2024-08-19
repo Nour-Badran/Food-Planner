@@ -24,6 +24,7 @@ import androidx.navigation.Navigation;
 
 import com.example.foodplanner.R;
 import com.example.foodplanner.View.Auth.AuthActivity;
+import com.example.foodplanner.View.LoginBottomSheetFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -42,7 +43,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        floatingActionButton = findViewById(R.id.floatingActionButton);
+        //floatingActionButton = findViewById(R.id.floatingActionButton);
         prefs = getSharedPreferences("FoodPlannerPrefs", MODE_PRIVATE);
         NavigationView navigationView = findViewById(R.id.navigation);
         drawerLayout = findViewById(R.id.main);
@@ -54,16 +55,16 @@ public class HomeActivity extends AppCompatActivity {
         String email = prefs.getString("email", "Guest");
         nameTextView.setText(email);
 
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NavOptions navOptions = new NavOptions.Builder()
-                        .setPopUpTo(R.id.nav_host_fragment2, true) // Clear back stack up to nav host
-                        .setLaunchSingleTop(true) // Prevent re-adding if already at the top
-                        .build();
-                navController.navigate(R.id.favouritesFragment, null, navOptions);
-            }
-        });
+//        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                NavOptions navOptions = new NavOptions.Builder()
+//                        .setPopUpTo(R.id.nav_host_fragment2, true) // Clear back stack up to nav host
+//                        .setLaunchSingleTop(true) // Prevent re-adding if already at the top
+//                        .build();
+//                navController.navigate(R.id.favouritesFragment, null, navOptions);
+//            }
+//        });
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -97,6 +98,24 @@ public class HomeActivity extends AppCompatActivity {
                     else if(id ==R.id.ingredientSearchFragment)
                     {
                         navController.navigate(R.id.ingredientSearchFragment);
+                    }
+                    else if(id == R.id.favouritesFragment)
+                    {
+                        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+                        boolean loggedIn = prefs.getBoolean(KEY_LOGGED_IN, false);
+                        if(loggedIn)
+                        {
+                            NavOptions navOptions = new NavOptions.Builder()
+                                    .setPopUpTo(R.id.nav_host_fragment2, true)
+                                    .setLaunchSingleTop(true) // Prevent re-adding if already at the top
+                                    .build();
+                            navController.navigate(R.id.favouritesFragment,null, navOptions);
+                        }
+                        else
+                        {
+                            LoginBottomSheetFragment bottomSheet = new LoginBottomSheetFragment();
+                            bottomSheet.show(getSupportFragmentManager(), "LoginBottomSheetFragment");
+                        }
                     }
                     else if(id ==R.id.signout)
                     {

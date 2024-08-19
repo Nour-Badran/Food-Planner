@@ -19,6 +19,29 @@ public class MealRemoteDataSource implements MealModel {
     public MealRemoteDataSource(MealApi mealApi) {
         this.mealApi = mealApi;
     }
+    @Override
+    public void getMealDetailsById(String mealId, MealCallback<MealEntity> callback) {
+        mealApi.getMealDetails(mealId).enqueue(new Callback<MealResponse>() {
+            @Override
+            public void onResponse(Call<MealResponse> call, Response<MealResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<MealEntity> meals = response.body().getMeals();
+                    if (meals != null && !meals.isEmpty()) {
+                        callback.onSuccess(meals.get(0));
+                    } else {
+                        callback.onFailure("No meal details found");
+                    }
+                } else {
+                    callback.onFailure("Failed to load meal details: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MealResponse> call, Throwable t) {
+                callback.onFailure("Error: " + t.getMessage());
+            }
+        });
+    }
 
     @Override
     public void loadRandomMeal(MealCallback<MealEntity> callback) {

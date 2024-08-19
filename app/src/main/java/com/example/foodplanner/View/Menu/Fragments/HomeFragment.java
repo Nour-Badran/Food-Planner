@@ -2,6 +2,8 @@ package com.example.foodplanner.View.Menu.Fragments;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 
@@ -38,6 +40,7 @@ import com.example.foodplanner.Model.Repository.Repository.MealRepository;
 import com.example.foodplanner.Presenter.MealPresenter;
 import com.example.foodplanner.Presenter.MealPresenterImpl;
 import com.example.foodplanner.R;
+import com.example.foodplanner.View.LoginBottomSheetFragment;
 import com.example.foodplanner.View.Menu.Adapters.CategoryAdapter;
 import com.example.foodplanner.View.Menu.Adapters.IngredientAdapter;
 import com.example.foodplanner.View.Menu.Adapters.MealAdapter;
@@ -72,7 +75,8 @@ public class HomeFragment extends Fragment implements MealView {
     CategoryAdapter categoryAdapter;
 
     IngredientAdapter ingredientAdapter;
-
+    private static final String PREFS_NAME = "FoodPlannerPrefs";
+    private static final String KEY_LOGGED_IN = "loggedIn";
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,7 +94,7 @@ public class HomeFragment extends Fragment implements MealView {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_random_meal, container, false);
+        return inflater.inflate(R.layout.fragment_home_meal, container, false);
     }
 
     private void addChipToGroup(String chipName)
@@ -217,6 +221,9 @@ public class HomeFragment extends Fragment implements MealView {
         currentFabColor = ContextCompat.getColor(getContext(), R.color.blue_primary);
 
         animateFabColor(ContextCompat.getColor(getContext(), R.color.gray));
+
+        SharedPreferences prefs = getActivity().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        boolean loggedIn = prefs.getBoolean(KEY_LOGGED_IN, false);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -225,24 +232,32 @@ public class HomeFragment extends Fragment implements MealView {
 //                        ? ContextCompat.getColor(getContext(), R.color.areaBackgroundColor)
 //                        : ContextCompat.getColor(getContext(), R.color.gray);
 //                animateFabColor(newColor);
-                doesMealExist(mealsList.get(currentIndex).getIdMeal(), exists -> {
-                    getActivity().runOnUiThread(() -> {
-                        String message;
+                if(loggedIn)
+                {
+                    doesMealExist(mealsList.get(currentIndex).getIdMeal(), exists -> {
+                        getActivity().runOnUiThread(() -> {
+                            String message;
 
-                        if (exists) {
-                            getActivity().runOnUiThread(() ->
-                                    Toast.makeText(getContext(), mealsList.get(currentIndex).getStrMeal() + " deleted from favorites", Toast.LENGTH_SHORT).show()
-                            );
-                            presenter.deleteMeal(mealsList.get(currentIndex));
-                        } else {
-                            getActivity().runOnUiThread(() ->
-                                    Toast.makeText(getContext(), mealsList.get(currentIndex).getStrMeal() + " added to favorites", Toast.LENGTH_SHORT).show()
-                            );
-                            presenter.insertMeal(mealsList.get(currentIndex));
-                        }
-                        updateFabColorAfterUpdate(mealsList.get(currentIndex).getIdMeal());
+                            if (exists) {
+                                getActivity().runOnUiThread(() ->
+                                        Toast.makeText(getContext(), mealsList.get(currentIndex).getStrMeal() + " deleted from favorites", Toast.LENGTH_SHORT).show()
+                                );
+                                presenter.deleteMeal(mealsList.get(currentIndex));
+                            } else {
+                                getActivity().runOnUiThread(() ->
+                                        Toast.makeText(getContext(), mealsList.get(currentIndex).getStrMeal() + " added to favorites", Toast.LENGTH_SHORT).show()
+                                );
+                                presenter.insertMeal(mealsList.get(currentIndex));
+                            }
+                            updateFabColorAfterUpdate(mealsList.get(currentIndex).getIdMeal());
+                        });
                     });
-                });
+                }
+                else
+                {
+                    LoginBottomSheetFragment bottomSheet = new LoginBottomSheetFragment();
+                    bottomSheet.show(getActivity().getSupportFragmentManager(), "LoginBottomSheetFragment");
+                }
             }
         });
 //        fabMenuContainer = view.findViewById(R.id.fab_menu_container);

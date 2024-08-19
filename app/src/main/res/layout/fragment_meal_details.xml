@@ -23,6 +23,22 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <!-- Overlay View -->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:contentDescription="add"
+            android:src="@drawable/bookmark_24dp_e8eaed_fill0_wght400_grad0_opsz24"
+            app:backgroundTint="@color/gray"
+            app:elevation="9dp"
+            app:layout_anchorGravity="bottom|end"
+            app:layout_behavior="fab_behavior"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/mealImage"
+            app:rippleColor="@color/white" />
+
         <View
             android:id="@+id/overlay"
             android:layout_width="0dp"

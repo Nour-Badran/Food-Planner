@@ -64,7 +64,7 @@ public class FavouriteMealsFragment extends Fragment implements MealView {
 
         presenter = new MealPresenterImpl(this, new MealRepository(new MealLocalDataSourceImpl(FavoriteMealDatabase.getInstance(requireContext()).favoriteMealDao()),
                 new MealRemoteDataSource(RetrofitClient.getClient().create(MealApi.class))));
-        adapter = new MealAdapter(presenter);
+        adapter = new MealAdapter(presenter,requireContext());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         MealDao mealDao = FavoriteMealDatabase.getInstance(getContext()).favoriteMealDao();
@@ -87,7 +87,6 @@ public class FavouriteMealsFragment extends Fragment implements MealView {
         });
         adapter.setOnMealClickListener(meal -> {
             if (getActivity() != null) {
-                //Toast.makeText(getActivity(), meal.getStrMeal(), Toast.LENGTH_SHORT).show();
                 Bundle bundle = new Bundle();
                 bundle.putString("meal_name", meal.getStrMeal());
                 Navigation.findNavController(view).navigate(R.id.action_favouritesFragment_to_mealDetailsFragment,bundle);
@@ -95,7 +94,6 @@ public class FavouriteMealsFragment extends Fragment implements MealView {
         });
         adapter.setOnFabClickListener(meal -> {
             presenter.deleteMeal(meal);
-            Toast.makeText(getContext(), meal.getStrMeal() + " delete from favourites", Toast.LENGTH_SHORT).show();
         });
     }
 

@@ -68,5 +68,6 @@
     <string name="Tunisian">Tunis</string>
     <string name="Vietnamese">Vietnam</string>
     <string name="Turkish">Turkey</string>
+    <string name="Favourites">"Favourites Meals "</string>
 
 </resources>

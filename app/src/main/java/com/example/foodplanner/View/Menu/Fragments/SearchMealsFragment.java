@@ -1,5 +1,7 @@
 package com.example.foodplanner.View.Menu.Fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
@@ -27,11 +29,12 @@ import com.example.foodplanner.Model.POJO.MealEntity;
 import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealRemoteDataSource;
 import com.example.foodplanner.Model.Repository.MealRemoteDataSource.RetrofitClient;
 import com.example.foodplanner.Model.Repository.Repository.MealRepository;
-import com.example.foodplanner.Presenter.MealPresenter;
 import com.example.foodplanner.Presenter.MealPresenterImpl;
 import com.example.foodplanner.R;
+import com.example.foodplanner.View.LoginBottomSheetFragment;
 import com.example.foodplanner.View.Menu.Adapters.MealAdapter;
 import com.example.foodplanner.View.Menu.Interfaces.MealView;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
@@ -42,6 +45,8 @@ public class SearchMealsFragment extends Fragment implements MealView {
     private EditText editTextMealName;
     private TextView textViewError;
     private MealAdapter adapter;
+    private static final String PREFS_NAME = "FoodPlannerPrefs";
+    private static final String KEY_LOGGED_IN = "loggedIn";
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +63,7 @@ public class SearchMealsFragment extends Fragment implements MealView {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_name_search, container, false);
+        return inflater.inflate(R.layout.fragment_meals, container, false);
     }
 
     @Override
@@ -73,7 +78,7 @@ public class SearchMealsFragment extends Fragment implements MealView {
         presenter = new MealPresenterImpl(this, new MealRepository(new MealLocalDataSourceImpl(FavoriteMealDatabase.getInstance(requireContext()).favoriteMealDao()),
                 new MealRemoteDataSource(RetrofitClient.getClient().create(MealApi.class))));
 
-        adapter = new MealAdapter(presenter);
+        adapter = new MealAdapter(presenter,requireContext());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
 
@@ -100,20 +105,32 @@ public class SearchMealsFragment extends Fragment implements MealView {
                 Navigation.findNavController(view).navigate(R.id.action_nameSearchFragment_to_mealDetailsFragment, bundle);
             }
         });
+
+        SharedPreferences prefs = getActivity().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        boolean loggedIn = prefs.getBoolean(KEY_LOGGED_IN, false);
+
         adapter.setOnFabClickListener(meal -> {
-            presenter.isMealExists(meal.getIdMeal(), exists -> {
-                if (exists) {
-                    getActivity().runOnUiThread(() ->
-                            Toast.makeText(getContext(), meal.getStrMeal() + " deleted from favorites", Toast.LENGTH_SHORT).show()
-                    );
-                    presenter.deleteMeal(meal);
-                } else {
-                    getActivity().runOnUiThread(() ->
-                            Toast.makeText(getContext(), meal.getStrMeal() + " added to favorites", Toast.LENGTH_SHORT).show()
-                    );
-                    presenter.insertMeal(meal);
-                }
-            });
+            if(loggedIn)
+            {
+                presenter.isMealExists(meal.getIdMeal(), exists -> {
+                    if (exists) {
+                        getActivity().runOnUiThread(() ->
+                                Snackbar.make(view, meal.getStrMeal() + " deleted from favorites", Snackbar.LENGTH_SHORT).show()
+                        );
+                        presenter.deleteMeal(meal);
+                    } else {
+                        getActivity().runOnUiThread(() ->
+                                Snackbar.make(view, meal.getStrMeal() + " added to favorites", Snackbar.LENGTH_SHORT).show()
+                        );
+                        presenter.insertMeal(meal);
+                    }
+                });
+            }
+            else
+            {
+                LoginBottomSheetFragment bottomSheet = new LoginBottomSheetFragment();
+                bottomSheet.show(getActivity().getSupportFragmentManager(), "LoginBottomSheetFragment");
+            }
         });
     }
 

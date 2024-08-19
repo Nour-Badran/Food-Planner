@@ -7,6 +7,10 @@
             android:icon="@drawable/home_24dp_e8eaed_fill0_wght400_grad0_opsz24"
             android:title="@string/home" />
         <item
+            android:id="@+id/favouritesFragment"
+            android:icon="@drawable/bookmark_24dp_e8eaed_fill0_wght400_grad0_opsz24"
+            android:title="@string/Favourites" />
+        <item
             android:id="@+id/nameSearchFragment"
             android:icon="@drawable/lunch_dining_24dp_e8eaed_fill0_wght400_grad0_opsz24"
             android:title="@string/meals" />

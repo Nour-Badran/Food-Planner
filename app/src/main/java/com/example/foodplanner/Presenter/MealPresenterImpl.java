@@ -143,7 +143,16 @@ public class MealPresenterImpl implements MealPresenter {
 
     @Override
     public void insertMeal(MealEntity meal) {
-        repository.insertMeal(meal);
+        repository.getMealDetailsById(meal.getIdMeal(), new MealCallback<MealEntity>() {
+            @Override
+            public void onSuccess(MealEntity meal) {
+                repository.insertMeal(meal);
+            }
+            @Override
+            public void onFailure(String errorMessage) {
+                view.showError("Failed to fetch meal details: " + errorMessage);
+            }
+        });
     }
 
     @Override

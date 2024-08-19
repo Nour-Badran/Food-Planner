@@ -7,6 +7,7 @@ import com.example.foodplanner.Model.POJO.MealEntity;
 import java.util.List;
 
 public interface MealModel {
+    void getMealDetailsById(String mealId, MealCallback<MealEntity> callback);
     void loadRandomMeal(MealCallback<MealEntity> callback);
     void getAllMeals(MealCallback<List<MealEntity>> callback);
     void getMealByArea(String area, MealCallback<List<MealEntity>> callback);
