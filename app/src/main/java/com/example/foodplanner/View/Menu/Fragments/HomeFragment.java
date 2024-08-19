@@ -321,7 +321,8 @@ public class HomeFragment extends Fragment implements MealView {
                 String mealNameWithoutPrefix = fullMealName.replace("Meal Name: ", "").trim();
                 Bundle bundle = new Bundle();
                 bundle.putString("meal_name", mealNameWithoutPrefix);
-
+                currentIndex = 0;
+                mealsList.clear();
                 NavController navController = Navigation.findNavController(view);
 
                 // Create FragmentNavigator.Extras

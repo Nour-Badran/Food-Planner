@@ -37,11 +37,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        app:cardBackgroundColor="@color/bluePrimaryTransparent80"
+        app:cardBackgroundColor="@color/bluePrimaryTransparent60"
         app:cardCornerRadius="12dp"
         app:cardElevation="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/ingredientImage"
         app:layout_constraintTop_toBottomOf="@+id/ingredientImage">
 
         <TextView
@@ -50,14 +51,15 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:fontFamily="@font/poppins_bold"
+            android:gravity="center"
             android:padding="8dp"
             android:shadowColor="#AA000000"
             android:shadowDx="1"
             android:shadowDy="1"
             android:shadowRadius="4"
             android:text="Name"
-            android:textColor="@color/white"
-            android:textSize="24sp"
+            android:textColor="@color/textColorWhite"
+            android:textSize="16sp"
             android:textStyle="bold" />
     </androidx.cardview.widget.CardView>
 
