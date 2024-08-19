@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:scrollbars="vertical"
     app:layout_scrollFlags="scroll"
-    tools:context=".View.Menu.HomeActivity">
+    tools:context=".View.Activities.HomeActivity">
 
     <!-- Main content of the app -->
     <androidx.constraintlayout.widget.ConstraintLayout

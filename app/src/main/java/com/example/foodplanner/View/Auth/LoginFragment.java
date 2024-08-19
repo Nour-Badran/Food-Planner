@@ -23,7 +23,7 @@ import android.widget.Toast;
 import com.example.foodplanner.Model.AuthModel.AuthModel;
 import com.example.foodplanner.Presenter.AuthPresenter;
 import com.example.foodplanner.R;
-import com.example.foodplanner.View.Menu.HomeActivity;
+import com.example.foodplanner.View.Activities.HomeActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;

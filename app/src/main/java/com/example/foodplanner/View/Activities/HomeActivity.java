@@ -1,4 +1,4 @@
-package com.example.foodplanner.View.Menu;
+package com.example.foodplanner.View.Activities;
 
 import static android.view.View.VISIBLE;
 

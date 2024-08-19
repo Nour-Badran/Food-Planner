@@ -1,4 +1,4 @@
-package com.example.foodplanner.View.Splash;
+package com.example.foodplanner.View.Activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.foodplanner.R;
 import com.example.foodplanner.View.Auth.AuthActivity;
-import com.example.foodplanner.View.Menu.HomeActivity;
 
 public class SplashActivity extends AppCompatActivity {
     private static final String PREFS_NAME = "FoodPlannerPrefs";

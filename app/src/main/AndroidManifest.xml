@@ -15,13 +15,13 @@
         android:theme="@style/Theme.FoodPlanner"
         tools:targetApi="31">
         <activity
-            android:name=".View.Menu.HomeActivity"
+            android:name=".View.Activities.HomeActivity"
             android:exported="false" />
         <activity
             android:name=".View.Auth.AuthActivity"
             android:exported="false" />
         <activity
-            android:name=".View.Splash.SplashActivity"
+            android:name=".View.Activities.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
