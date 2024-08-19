@@ -20,7 +20,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.example.foodplanner.Model.AuthModel;
+import com.example.foodplanner.Model.AuthModel.AuthModel;
 import com.example.foodplanner.Presenter.AuthPresenter;
 import com.example.foodplanner.R;
 import com.example.foodplanner.View.Menu.HomeActivity;

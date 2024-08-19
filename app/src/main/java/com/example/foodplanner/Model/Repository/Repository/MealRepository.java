@@ -2,12 +2,13 @@ package com.example.foodplanner.Model.Repository.Repository;
 
 import androidx.lifecycle.LiveData;
 
-import com.example.foodplanner.Model.CategoryResponse;
+import com.example.foodplanner.Model.POJO.CategoryResponse;
+import com.example.foodplanner.Model.Repository.DataBase.OnMealExistsCallback;
 import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealCallback;
 import com.example.foodplanner.Model.Repository.DataBase.MealLocalDataSource;
-import com.example.foodplanner.Model.MealEntity;
+import com.example.foodplanner.Model.POJO.MealEntity;
 import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealRemoteDataSource;
-import com.example.foodplanner.Model.IngredientResponse;
+import com.example.foodplanner.Model.POJO.IngredientResponse;
 
 import java.util.List;
 
@@ -20,9 +21,9 @@ public class MealRepository {
         this.remoteDataSource = remoteDataSource;
     }
 
-    // Get all meals from the local database
-    public LiveData<List<MealEntity>> getAllMeals() {
-        return localDataSource.getAllMeals();
+    public LiveData<List<MealEntity>> getStoredMeals()
+    {
+        return localDataSource.getStoredMeals();
     }
     public void insertMeal(MealEntity meal) {
         localDataSource.insertMeal(meal);
@@ -80,5 +81,11 @@ public class MealRepository {
     // Get categories from the remote source
     public void getCategories(MealCallback<List<CategoryResponse.Category>> callback) {
         remoteDataSource.getCategories(callback);
+    }
+    public void isMealExists(String mealId, OnMealExistsCallback callback) {
+        localDataSource.isMealExists(mealId, callback);
+    }
+    public boolean isMealExistsByName(String mealName) {
+        return localDataSource.isMealExistsByName(mealName);
     }
 }

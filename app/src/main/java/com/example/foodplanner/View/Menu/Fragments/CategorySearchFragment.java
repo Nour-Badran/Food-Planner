@@ -7,21 +7,20 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-import com.example.foodplanner.Model.CategoryResponse;
-import com.example.foodplanner.Model.IngredientResponse;
+import com.example.foodplanner.Model.POJO.CategoryResponse;
+import com.example.foodplanner.Model.POJO.IngredientResponse;
 import com.example.foodplanner.Model.Repository.DataBase.FavoriteMealDatabase;
-import com.example.foodplanner.Model.Repository.DataBase.MealLocalDataSource;
 import com.example.foodplanner.Model.Repository.DataBase.MealLocalDataSourceImpl;
 import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealApi;
-import com.example.foodplanner.Model.MealEntity;
-import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealModel;
+import com.example.foodplanner.Model.POJO.MealEntity;
 import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealRemoteDataSource;
 import com.example.foodplanner.Model.Repository.MealRemoteDataSource.RetrofitClient;
 import com.example.foodplanner.Model.Repository.Repository.MealRepository;
@@ -61,7 +60,7 @@ public class CategorySearchFragment extends Fragment implements MealView {
         recyclerView = view.findViewById(R.id.recyclerViewMeals);
         adapter = new CategoryAdapter();
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
 
         presenter = new MealPresenterImpl(this, new MealRepository(new MealLocalDataSourceImpl(FavoriteMealDatabase.getInstance(requireContext()).favoriteMealDao()),
                 new MealRemoteDataSource(RetrofitClient.getClient().create(MealApi.class))));
@@ -90,6 +89,11 @@ public class CategorySearchFragment extends Fragment implements MealView {
     @Override
     public void showError(String message) {
 
+    }
+
+    @Override
+    public void showMessage(String message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     @Override

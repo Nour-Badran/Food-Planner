@@ -1,30 +1,41 @@
-package com.example.foodplanner.Model;
+package com.example.foodplanner.Model.POJO;
 
 import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
-public class CountryResponse {
+public class CategoryResponse {
+    @SerializedName("categories")
+    private List<Category> categories;
 
-    @SerializedName("meals")
-    private List<Country> countries;
-
-    public List<Country> getCountries() {
-        return countries;
+    public List<Category> getCategories() {
+        return categories;
     }
 
-    public void setCountries(List<Country> countries) {
-        this.countries = countries;
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
     }
 
-    public static class Country {
-        @SerializedName("strCountry")
+    public static class Category {
+        @SerializedName("idCategory")
+        private String id;
+
+        @SerializedName("strCategory")
         private String name;
 
-        @SerializedName("strCountryThumb")
+        @SerializedName("strCategoryThumb")
         private String thumbnailUrl;
 
-        @SerializedName("strCountryDescription")
+        @SerializedName("strCategoryDescription")
         private String description;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
 
         public String getName() {
             return name;

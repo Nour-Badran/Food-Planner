@@ -1,6 +1,6 @@
 package com.example.foodplanner.Presenter;
 
-import com.example.foodplanner.Model.AuthModel;
+import com.example.foodplanner.Model.AuthModel.AuthModel;
 import com.example.foodplanner.View.Auth.AuthView;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 

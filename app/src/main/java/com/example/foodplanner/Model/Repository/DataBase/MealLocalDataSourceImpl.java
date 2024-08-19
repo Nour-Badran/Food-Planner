@@ -2,7 +2,7 @@ package com.example.foodplanner.Model.Repository.DataBase;
 
 import androidx.lifecycle.LiveData;
 
-import com.example.foodplanner.Model.MealEntity;
+import com.example.foodplanner.Model.POJO.MealEntity;
 
 import java.util.List;
 
@@ -10,24 +10,42 @@ public class MealLocalDataSourceImpl implements MealLocalDataSource {
 
     private final MealDao mealDao;
 
+    private LiveData<List<MealEntity>> storedMeals;
+
     public MealLocalDataSourceImpl(MealDao mealDao) {
         this.mealDao = mealDao;
+        this.storedMeals = mealDao.getAllMeals();
     }
-
     @Override
     public void insertMeal(MealEntity meal) {
-        // Use ExecutorService or other async mechanisms if needed
         new Thread(() -> mealDao.insertMeal(meal)).start();
     }
 
     @Override
     public void deleteMeal(String mealId) {
-        // Use ExecutorService or other async mechanisms if needed
         new Thread(() -> mealDao.delete(mealId)).start();
     }
 
     @Override
-    public LiveData<List<MealEntity>> getAllMeals() {
-        return mealDao.getAllMeals();  // Return LiveData directly
+    public LiveData<List<MealEntity>> getStoredMeals() {
+        return storedMeals;
     }
+
+    @Override
+    public MealEntity checkMealExists(String mealId) {
+        return null;
+    }
+
+    public void isMealExists(String mealId, OnMealExistsCallback callback) {
+        new Thread(() -> {
+            boolean exists = mealDao.isMealExists(mealId);
+            callback.onResult(exists);
+        }).start();
+    }
+
+    @Override
+    public boolean isMealExistsByName(String mealName) {
+        return mealDao.isMealExistsByName(mealName);
+    }
+
 }

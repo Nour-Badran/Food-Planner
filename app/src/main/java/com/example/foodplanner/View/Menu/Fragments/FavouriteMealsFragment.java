@@ -2,16 +2,46 @@ package com.example.foodplanner.View.Menu.Fragments;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.example.foodplanner.Model.POJO.CategoryResponse;
+import com.example.foodplanner.Model.POJO.IngredientResponse;
+import com.example.foodplanner.Model.POJO.MealEntity;
+import com.example.foodplanner.Model.Repository.DataBase.FavoriteMealDatabase;
+import com.example.foodplanner.Model.Repository.DataBase.MealDao;
+import com.example.foodplanner.Model.Repository.DataBase.MealLocalDataSourceImpl;
+import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealApi;
+import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealRemoteDataSource;
+import com.example.foodplanner.Model.Repository.MealRemoteDataSource.RetrofitClient;
+import com.example.foodplanner.Model.Repository.Repository.MealRepository;
+import com.example.foodplanner.Presenter.MealPresenterImpl;
 import com.example.foodplanner.R;
+import com.example.foodplanner.View.Menu.Adapters.MealAdapter;
+import com.example.foodplanner.View.Menu.Interfaces.MealView;
 
-public class FavouriteMealsFragment extends Fragment {
+import java.util.List;
 
+public class FavouriteMealsFragment extends Fragment implements MealView {
+
+    MealPresenterImpl presenter;
+
+    private RecyclerView recyclerView;
+    private MealAdapter adapter;
+    private SearchView searchViewMeal;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,5 +52,101 @@ public class FavouriteMealsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_favourites, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        recyclerView = view.findViewById(R.id.recyclerViewMeals);
+        searchViewMeal = view.findViewById(R.id.searchViewMeal);
+        searchViewMeal.setIconifiedByDefault(false); // Ensure SearchView is always expanded
+
+
+        presenter = new MealPresenterImpl(this, new MealRepository(new MealLocalDataSourceImpl(FavoriteMealDatabase.getInstance(requireContext()).favoriteMealDao()),
+                new MealRemoteDataSource(RetrofitClient.getClient().create(MealApi.class))));
+        adapter = new MealAdapter(presenter);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        MealDao mealDao = FavoriteMealDatabase.getInstance(getContext()).favoriteMealDao();
+        LiveData<List<MealEntity>> mealList = mealDao.getAllMeals();
+        mealList.observe(getViewLifecycleOwner(), mealEntities -> {
+            adapter.setMeals(mealEntities);
+        });
+        searchViewMeal.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                adapter.getFilter().filter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+        adapter.setOnMealClickListener(meal -> {
+            if (getActivity() != null) {
+                //Toast.makeText(getActivity(), meal.getStrMeal(), Toast.LENGTH_SHORT).show();
+                Bundle bundle = new Bundle();
+                bundle.putString("meal_name", meal.getStrMeal());
+                Navigation.findNavController(view).navigate(R.id.action_favouritesFragment_to_mealDetailsFragment,bundle);
+            }
+        });
+        adapter.setOnFabClickListener(meal -> {
+            presenter.deleteMeal(meal);
+            Toast.makeText(getContext(), meal.getStrMeal() + " delete from favourites", Toast.LENGTH_SHORT).show();
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MealDao mealDao = FavoriteMealDatabase.getInstance(getContext()).favoriteMealDao();
+        LiveData<List<MealEntity>> mealList = mealDao.getAllMeals();
+        mealList.observe(getViewLifecycleOwner(), mealEntities -> {
+            adapter.setMeals(mealEntities);
+        });
+    }
+
+    @Override
+    public void showMeal(MealEntity meal) {
+
+    }
+
+    @Override
+    public void showMealDetails(MealEntity meal) {
+
+    }
+
+    @Override
+    public void showMessage(String message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showError(String message) {
+
+    }
+
+    @Override
+    public void showCategories(List<CategoryResponse.Category> categories) {
+
+    }
+
+    @Override
+    public void showMeals(List<MealEntity> meals) {
+        adapter.setMeals(meals);
+    }
+
+
+    @Override
+    public void showIngredients(List<IngredientResponse.Ingredient> ingredients) {
+
+    }
+
+    @Override
+    public void getMealsByCategory(String categoryName) {
+
     }
 }
