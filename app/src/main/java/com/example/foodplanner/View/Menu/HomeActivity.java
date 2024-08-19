@@ -19,10 +19,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 
 import com.example.foodplanner.R;
 import com.example.foodplanner.View.Auth.AuthActivity;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -31,19 +33,17 @@ public class HomeActivity extends AppCompatActivity {
     DrawerLayout drawerLayout;
     TextView nameTextView;
     ProgressBar progressBar;
+    FloatingActionButton floatingActionButton;
     private static final String PREFS_NAME = "FoodPlannerPrefs";
     private static final String KEY_LOGGED_IN = "loggedIn";
     SharedPreferences prefs;
+    NavController navController;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        floatingActionButton = findViewById(R.id.floatingActionButton);
         prefs = getSharedPreferences("FoodPlannerPrefs", MODE_PRIVATE);
-//        SharedPreferences.Editor editor = prefs.edit();
-//        editor.remove("password");
-//        editor.remove("email");
-//        editor.remove("loggedIn");
-//        editor.apply();
         NavigationView navigationView = findViewById(R.id.navigation);
         drawerLayout = findViewById(R.id.main);
 
@@ -54,13 +54,23 @@ public class HomeActivity extends AppCompatActivity {
         String email = prefs.getString("email", "Guest");
         nameTextView.setText(email);
 
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavOptions navOptions = new NavOptions.Builder()
+                        .setPopUpTo(R.id.nav_host_fragment2, true) // Clear back stack up to nav host
+                        .setLaunchSingleTop(true) // Prevent re-adding if already at the top
+                        .build();
+                navController.navigate(R.id.favouritesFragment, null, navOptions);
+            }
+        });
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setHomeAsUpIndicator(R.drawable.home_24dp_e8eaed_fill0_wght400_grad0_opsz24);
             actionBar.setDisplayShowHomeEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
-            NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment2);
+            navController = Navigation.findNavController(this, R.id.nav_host_fragment2);
             //NavigationUI.setupWithNavController(navigationView, navController);
             // Set up navigation item selected listener
             navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {

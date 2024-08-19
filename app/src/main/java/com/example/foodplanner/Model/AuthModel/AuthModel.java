@@ -1,4 +1,4 @@
-package com.example.foodplanner.Model;
+package com.example.foodplanner.Model.AuthModel;
 
 import android.content.Context;
 import android.content.SharedPreferences;

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.transition.Slide;
@@ -23,13 +24,12 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide; // Add this dependency for loading images
 import com.bumptech.glide.request.RequestOptions;
-import com.example.foodplanner.Model.CategoryResponse;
-import com.example.foodplanner.Model.IngredientResponse;
-import com.example.foodplanner.Model.MealEntity;
+import com.example.foodplanner.Model.POJO.CategoryResponse;
+import com.example.foodplanner.Model.POJO.IngredientResponse;
+import com.example.foodplanner.Model.POJO.MealEntity;
 import com.example.foodplanner.Model.Repository.DataBase.FavoriteMealDatabase;
 import com.example.foodplanner.Model.Repository.DataBase.MealLocalDataSourceImpl;
 import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealApi;
-import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealModel;
 import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealRemoteDataSource;
 import com.example.foodplanner.Model.Repository.MealRemoteDataSource.RetrofitClient;
 import com.example.foodplanner.Model.Repository.Repository.MealRepository;
@@ -123,7 +123,7 @@ public class MealDetailsFragment extends Fragment implements MealView {
 
         adapter = new IngredientAdapter();
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         mealTitle.setText(mealName);
 
         presenter = new MealPresenterImpl(this, new MealRepository(new MealLocalDataSourceImpl(FavoriteMealDatabase.getInstance(requireContext()).favoriteMealDao()),
@@ -322,7 +322,10 @@ public class MealDetailsFragment extends Fragment implements MealView {
         }
         return videoId;
     }
-
+    @Override
+    public void showMessage(String message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+    }
     @Override
     public void showError(String message) {
         if(message!=null)

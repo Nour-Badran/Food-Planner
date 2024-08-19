@@ -7,21 +7,21 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.foodplanner.Model.CategoryResponse;
-import com.example.foodplanner.Model.IngredientResponse;
+import com.example.foodplanner.Model.POJO.CategoryResponse;
+import com.example.foodplanner.Model.POJO.IngredientResponse;
 import com.example.foodplanner.Model.Repository.DataBase.FavoriteMealDatabase;
 import com.example.foodplanner.Model.Repository.DataBase.MealLocalDataSourceImpl;
 import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealApi;
-import com.example.foodplanner.Model.MealEntity;
-import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealModel;
+import com.example.foodplanner.Model.POJO.MealEntity;
 import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealRemoteDataSource;
 import com.example.foodplanner.Model.Repository.MealRemoteDataSource.RetrofitClient;
 import com.example.foodplanner.Model.Repository.Repository.MealRepository;
@@ -113,12 +113,12 @@ public class MealsFragment extends Fragment implements MealView {
             txtCategoryName.setText(ingredientName + " Meals");
         }
 
-        adapter = new MealAdapter();
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         presenter = new MealPresenterImpl(this, new MealRepository(new MealLocalDataSourceImpl(FavoriteMealDatabase.getInstance(requireContext()).favoriteMealDao()),
                 new MealRemoteDataSource(RetrofitClient.getClient().create(MealApi.class))));
+        adapter = new MealAdapter(presenter);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
 
         if(categoryName!=null)
         {
@@ -155,6 +155,21 @@ public class MealsFragment extends Fragment implements MealView {
                 Navigation.findNavController(view).navigate(R.id.action_mealsFragment_to_mealDetailsFragment,bundle);
             }
         });
+        adapter.setOnFabClickListener(meal -> {
+            presenter.isMealExists(meal.getIdMeal(), exists -> {
+                if (exists) {
+                    getActivity().runOnUiThread(() ->
+                            Toast.makeText(getContext(), meal.getStrMeal() + " deleted from favorites", Toast.LENGTH_SHORT).show()
+                    );
+                    presenter.deleteMeal(meal);
+                } else {
+                    getActivity().runOnUiThread(() ->
+                            Toast.makeText(getContext(), meal.getStrMeal() + " added to favorites", Toast.LENGTH_SHORT).show()
+                    );
+                    presenter.insertMeal(meal);
+                }
+            });
+        });
         //presenter.getCategories();
     }
 
@@ -172,7 +187,10 @@ public class MealsFragment extends Fragment implements MealView {
     public void showError(String message) {
 
     }
-
+    @Override
+    public void showMessage(String message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+    }
     @Override
     public void showCategories(List<CategoryResponse.Category> categories) {
 

@@ -1,11 +1,13 @@
 package com.example.foodplanner.Presenter;
 
-import com.example.foodplanner.Model.CategoryResponse;
-import com.example.foodplanner.Model.IngredientResponse;
-import com.example.foodplanner.Model.MealEntity;
+import android.util.Log;
+
+import com.example.foodplanner.Model.POJO.CategoryResponse;
+import com.example.foodplanner.Model.POJO.IngredientResponse;
+import com.example.foodplanner.Model.POJO.MealEntity;
+import com.example.foodplanner.Model.Repository.DataBase.OnMealExistsCallback;
 import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealCallback;
 import com.example.foodplanner.Model.Repository.Repository.MealRepository;
-import com.example.foodplanner.Presenter.MealPresenter;
 import com.example.foodplanner.View.Menu.Interfaces.MealView;
 
 import java.util.List;
@@ -19,6 +21,7 @@ public class MealPresenterImpl implements MealPresenter {
         this.view = view;
         this.repository = repository;
     }
+
 
     @Override
     public void loadRandomMeal() {
@@ -110,6 +113,42 @@ public class MealPresenterImpl implements MealPresenter {
                 view.showError(errorMessage);
             }
         });
+    }
+
+    @Override
+    public void getFavMeals() {
+        // Retrieve all meals and manually notify view
+        repository.getStoredMeals().observeForever(meals -> {
+            if (meals == null || meals.isEmpty()) {
+                view.showError("No favorite meals found");
+            } else {
+                view.showMeals(meals);
+            }
+        });
+    }
+    @Override
+    public void isMealExists(String mealId, OnMealExistsCallback callback) {
+        repository.isMealExists(mealId, new OnMealExistsCallback() {
+            @Override
+            public void onResult(boolean exists) {
+                callback.onResult(exists);
+            }
+        });
+    }
+
+    @Override
+    public boolean isMealExistsByName(String mealName){
+        return repository.isMealExistsByName(mealName);
+    }
+
+    @Override
+    public void insertMeal(MealEntity meal) {
+        repository.insertMeal(meal);
+    }
+
+    @Override
+    public void deleteMeal(MealEntity meal) {
+        repository.deleteMeal(meal.getIdMeal());
     }
 
     @Override

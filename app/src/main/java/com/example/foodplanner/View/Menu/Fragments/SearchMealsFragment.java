@@ -8,7 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -16,14 +16,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.foodplanner.Model.CategoryResponse;
-import com.example.foodplanner.Model.IngredientResponse;
+import com.example.foodplanner.Model.POJO.CategoryResponse;
+import com.example.foodplanner.Model.POJO.IngredientResponse;
 import com.example.foodplanner.Model.Repository.DataBase.FavoriteMealDatabase;
 import com.example.foodplanner.Model.Repository.DataBase.MealLocalDataSourceImpl;
 import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealApi;
-import com.example.foodplanner.Model.MealEntity;
-import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealModel;
+import com.example.foodplanner.Model.POJO.MealEntity;
 import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealRemoteDataSource;
 import com.example.foodplanner.Model.Repository.MealRemoteDataSource.RetrofitClient;
 import com.example.foodplanner.Model.Repository.Repository.MealRepository;
@@ -38,7 +38,7 @@ import java.util.List;
 public class SearchMealsFragment extends Fragment implements MealView {
 
     private RecyclerView recyclerView;
-    private MealPresenter presenter;
+    private MealPresenterImpl presenter;
     private EditText editTextMealName;
     private TextView textViewError;
     private MealAdapter adapter;
@@ -68,12 +68,14 @@ public class SearchMealsFragment extends Fragment implements MealView {
         searchViewMeal.setIconifiedByDefault(false); // Ensure SearchView is always expanded
         //textViewError = view.findViewById(R.id.textViewError);
         recyclerView = view.findViewById(R.id.recyclerViewMeals);
-        adapter = new MealAdapter();
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
 
         presenter = new MealPresenterImpl(this, new MealRepository(new MealLocalDataSourceImpl(FavoriteMealDatabase.getInstance(requireContext()).favoriteMealDao()),
                 new MealRemoteDataSource(RetrofitClient.getClient().create(MealApi.class))));
+
+        adapter = new MealAdapter(presenter);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
 
         presenter.getAllMeals();
 
@@ -98,6 +100,21 @@ public class SearchMealsFragment extends Fragment implements MealView {
                 Navigation.findNavController(view).navigate(R.id.action_nameSearchFragment_to_mealDetailsFragment, bundle);
             }
         });
+        adapter.setOnFabClickListener(meal -> {
+            presenter.isMealExists(meal.getIdMeal(), exists -> {
+                if (exists) {
+                    getActivity().runOnUiThread(() ->
+                            Toast.makeText(getContext(), meal.getStrMeal() + " deleted from favorites", Toast.LENGTH_SHORT).show()
+                    );
+                    presenter.deleteMeal(meal);
+                } else {
+                    getActivity().runOnUiThread(() ->
+                            Toast.makeText(getContext(), meal.getStrMeal() + " added to favorites", Toast.LENGTH_SHORT).show()
+                    );
+                    presenter.insertMeal(meal);
+                }
+            });
+        });
     }
 
     @Override
@@ -109,7 +126,14 @@ public class SearchMealsFragment extends Fragment implements MealView {
     public void showMealDetails(MealEntity meal) {
 
     }
-
+    @Override
+    public void showMessage(String message) {
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(() ->
+                    Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show()
+            );
+        }
+    }
     @Override
     public void showError(String message) {
 //        textViewError.setText(message);

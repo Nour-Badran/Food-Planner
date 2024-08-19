@@ -1,7 +1,6 @@
 package com.example.foodplanner.View.Menu.Interfaces;
 
-import com.example.foodplanner.Model.CategoryResponse;
-import com.example.foodplanner.Model.IngredientResponse;
+import com.example.foodplanner.Model.POJO.IngredientResponse;
 
 public interface OnIngredientClickListener {
     void onIngredientClick(IngredientResponse.Ingredient ingredient);

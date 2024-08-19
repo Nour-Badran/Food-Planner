@@ -6,14 +6,14 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import com.example.foodplanner.Model.MealEntity;
+import com.example.foodplanner.Model.POJO.MealEntity;
 
 @Database(entities = {MealEntity.class}, version = 1, exportSchema = false)
 public abstract class FavoriteMealDatabase extends RoomDatabase {
 
-    private static volatile FavoriteMealDatabase instance;  // Use volatile for thread safety
+    private static FavoriteMealDatabase instance = null;
 
-    public abstract MealDao favoriteMealDao();  // Consistent naming
+    public abstract MealDao favoriteMealDao();
 
     public static synchronized FavoriteMealDatabase getInstance(Context context) {
         if (instance == null) {
