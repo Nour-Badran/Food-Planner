@@ -389,7 +389,7 @@ public class HomeFragment extends Fragment implements MealView {
         mealsList.add(meal);
         mealName.setText("Meal Name: " + meal.getStrMeal());
         mealCategory.setText("Category: " + meal.getStrCategory());
-        mealArea.setText("Area: " + meal.getStrArea());
+        mealArea.setText("Country: " + meal.getStrArea());
         Glide.with(this).load(meal.getStrMealThumb()).apply(new RequestOptions())
                 .placeholder(R.drawable.img_11).into(mealImage);
     }
@@ -398,7 +398,7 @@ public class HomeFragment extends Fragment implements MealView {
     {
         mealName.setText("Meal Name: " + meal.getStrMeal());
         mealCategory.setText("Category: " + meal.getStrCategory());
-        mealArea.setText("Area: " + meal.getStrArea());
+        mealArea.setText("Country: " + meal.getStrArea());
         Glide.with(this).load(meal.getStrMealThumb()).apply(new RequestOptions())
                 .placeholder(R.drawable.img_11).into(mealImage);
     }

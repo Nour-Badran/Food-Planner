@@ -20,7 +20,7 @@
         android:id="@+id/text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="You need sign up to access favourite meals"
+        android:text="@string/you_need_sign_up_to_access_favourite_meals"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:gravity="center"
         android:padding="8dp" />
@@ -29,7 +29,7 @@
         android:id="@+id/btnLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Log In"
+        android:text="@string/log_in"
         android:backgroundTint="?attr/colorPrimary"
         android:textColor="@android:color/white"
         android:layout_marginTop="16dp"/>
