@@ -19,7 +19,8 @@ public interface MealPresenter {
     void insertMeal(MealEntity meal);
     void deleteMeal(MealEntity meal);
     void isMealExists(String mealId, OnMealExistsCallback callback);
-    boolean isMealExistsByName(String mealName);
     void loadRandomMealForDay(int dayIndex);
+    void addRandomMealForDay(int dayIndex);
+
 
     }

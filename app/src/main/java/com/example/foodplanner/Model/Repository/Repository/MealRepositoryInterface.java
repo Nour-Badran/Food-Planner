@@ -52,5 +52,4 @@ public interface MealRepositoryInterface {
 
     void isMealExists(String mealId, OnMealExistsCallback callback);
 
-    boolean isMealExistsByName(String mealName);
 }

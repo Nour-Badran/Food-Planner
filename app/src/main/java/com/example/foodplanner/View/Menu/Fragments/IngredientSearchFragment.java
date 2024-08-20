@@ -139,6 +139,11 @@ public class IngredientSearchFragment extends Fragment implements MealView {
     }
 
     @Override
+    public void addMeal(MealEntity meal) {
+
+    }
+
+    @Override
     public void showIngredients(List<IngredientResponse.Ingredient> ingredients) {
         adapter.setIngredients(ingredients);
         recyclerView.setVisibility(View.VISIBLE);

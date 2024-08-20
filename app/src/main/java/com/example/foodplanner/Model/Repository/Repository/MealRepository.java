@@ -103,8 +103,5 @@ public class MealRepository implements MealRepositoryInterface {
     public void isMealExists(String mealId, OnMealExistsCallback callback) {
         localDataSource.isMealExists(mealId, callback);
     }
-    @Override
-    public boolean isMealExistsByName(String mealName) {
-        return localDataSource.isMealExistsByName(mealName);
-    }
+
 }

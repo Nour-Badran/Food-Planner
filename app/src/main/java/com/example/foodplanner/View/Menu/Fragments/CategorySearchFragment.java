@@ -108,6 +108,11 @@ public class CategorySearchFragment extends Fragment implements MealView {
     }
 
     @Override
+    public void addMeal(MealEntity meal) {
+
+    }
+
+    @Override
     public void showIngredients(List<IngredientResponse.Ingredient> ingredients) {
 
     }
@@ -116,4 +121,5 @@ public class CategorySearchFragment extends Fragment implements MealView {
     public void getMealsByCategory(String categoryName) {
 
     }
+
 }

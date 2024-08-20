@@ -12,12 +12,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodplanner.Model.POJO.MealEntity;
 import com.example.foodplanner.R;
+import com.example.foodplanner.View.Menu.Interfaces.OnAddClickListener;
+import com.example.foodplanner.View.Menu.Interfaces.OnDeleteListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
+
 public class DaysAdapter extends RecyclerView.Adapter<DaysAdapter.DayViewHolder> {
     private final List<String> daysOfWeek;
     private final Context context;
-    private final List<List<MealEntity>> weeklyMeals; // List of lists
+    private OnAddClickListener onAddClickListener;
+    private final List<List<MealEntity>> weeklyMeals;
 
     public DaysAdapter(Context context, List<String> daysOfWeek, List<List<MealEntity>> weeklyMeals) {
         this.context = context;
@@ -38,8 +43,25 @@ public class DaysAdapter extends RecyclerView.Adapter<DaysAdapter.DayViewHolder>
 
         List<MealEntity> mealsForDay = weeklyMeals.get(position);
         PlannedMealsAdapter plannedMealsAdapter = new PlannedMealsAdapter(context, mealsForDay);
+
+        plannedMealsAdapter.setOnDeleteListener(position1 -> {
+            mealsForDay.remove(position1);
+            plannedMealsAdapter.notifyItemRemoved(position1);
+            plannedMealsAdapter.notifyItemRangeChanged(position1, mealsForDay.size());
+        });
+
         holder.rvMealsForDay.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
         holder.rvMealsForDay.setAdapter(plannedMealsAdapter);
+
+        holder.fab.setOnClickListener(v -> {
+            if(onAddClickListener != null){
+                onAddClickListener.onAddClick(position);
+            }
+        });
+    }
+
+    public void setOnAddClickListener(OnAddClickListener listener) {
+        this.onAddClickListener = listener;
     }
 
     @Override
@@ -50,11 +72,13 @@ public class DaysAdapter extends RecyclerView.Adapter<DaysAdapter.DayViewHolder>
     static class DayViewHolder extends RecyclerView.ViewHolder {
         TextView tvDayName;
         RecyclerView rvMealsForDay;
+        FloatingActionButton fab;
 
         public DayViewHolder(@NonNull View itemView) {
             super(itemView);
             tvDayName = itemView.findViewById(R.id.tv_day_name);
             rvMealsForDay = itemView.findViewById(R.id.rv_meals_for_day);
+            fab = itemView.findViewById(R.id.add);
         }
     }
 }

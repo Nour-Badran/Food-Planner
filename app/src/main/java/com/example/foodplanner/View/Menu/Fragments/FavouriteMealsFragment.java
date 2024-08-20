@@ -137,6 +137,11 @@ public class FavouriteMealsFragment extends Fragment implements MealView {
         adapter.setMeals(meals);
     }
 
+    @Override
+    public void addMeal(MealEntity meal) {
+
+    }
+
 
     @Override
     public void showIngredients(List<IngredientResponse.Ingredient> ingredients) {

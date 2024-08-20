@@ -31,11 +31,6 @@ public class MealLocalDataSourceImpl implements MealLocalDataSource {
         return storedMeals;
     }
 
-    @Override
-    public MealEntity checkMealExists(String mealId) {
-        return null;
-    }
-
     public void isMealExists(String mealId, OnMealExistsCallback callback) {
         new Thread(() -> {
             boolean exists = mealDao.isMealExists(mealId);
@@ -43,9 +38,5 @@ public class MealLocalDataSourceImpl implements MealLocalDataSource {
         }).start();
     }
 
-    @Override
-    public boolean isMealExistsByName(String mealName) {
-        return mealDao.isMealExistsByName(mealName);
-    }
 
 }

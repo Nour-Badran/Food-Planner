@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.foodplanner.Model.POJO.MealEntity;
 import com.example.foodplanner.R;
+import com.example.foodplanner.View.Menu.Interfaces.OnDeleteListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class PlannedMealsAdapter extends RecyclerView.Adapter<PlannedMealsAdapte
 
     private final Context context;
     private final List<MealEntity> meals;
+    private OnDeleteListener onDeleteListener;
 
     public PlannedMealsAdapter(Context context, List<MealEntity> meals) {
         this.context = context;
@@ -42,34 +44,43 @@ public class PlannedMealsAdapter extends RecyclerView.Adapter<PlannedMealsAdapte
         Log.d("MealsAdapter", "Binding meal: " + meal.getStrMeal());
         holder.tvMealName.setText(meal.getStrMeal());
 
-        // Load meal image using Glide or any image loading library
-//        Glide.with(context).load(meal.getStrMealThumb()).into(holder.ivMealImage);
-        holder.fab.setImageResource(R.drawable.swap_calls_24dp_e8eaed_fill0_wght400_grad0_opsz24);
         Glide.with(context)
                 .load(meal.getStrMealThumb())
                 .apply(new RequestOptions())
                 .placeholder(R.drawable.img_11)
                 .into(holder.ivMealImage);
+
+        holder.fabExit.setOnClickListener(v -> {
+            if (onDeleteListener != null) {
+                onDeleteListener.onMealDelete(position);
+            }
+        });
+
     }
 
     @Override
     public int getItemCount() {
         Log.d("MealsAdapter", "Binding meal: " + meals.size());
-
         return meals.size();
+    }
+
+    public void setOnDeleteListener(OnDeleteListener listener) {
+        this.onDeleteListener = listener;
     }
 
     static class MealViewHolder extends RecyclerView.ViewHolder {
         ImageView ivMealImage;
         TextView tvMealName;
-        FloatingActionButton fab;
+        FloatingActionButton fabExit;
+        FloatingActionButton fabSwap;
+
 
         public MealViewHolder(@NonNull View itemView) {
             super(itemView);
             ivMealImage = itemView.findViewById(R.id.mealImage);
             tvMealName = itemView.findViewById(R.id.mealName);
-            fab = itemView.findViewById(R.id.fab);
-
+            fabSwap = itemView.findViewById(R.id.fab);
+            fabExit = itemView.findViewById(R.id.fabexit);
         }
     }
 }

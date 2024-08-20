@@ -35,7 +35,20 @@ public class MealPresenterImpl implements MealPresenter {
             }
         });
     }
+    @Override
+    public void addRandomMealForDay(int dayIndex) {
+        repository.loadRandomMeal(new MealCallback<MealEntity>() {
+            @Override
+            public void onSuccess(MealEntity meal) {
+                view.addMeal(meal);
+            }
 
+            @Override
+            public void onFailure(String errorMessage) {
+                view.showError("Failed to load meal for day " + dayIndex + ": " + errorMessage);
+            }
+        });
+    }
 
     @Override
     public void loadRandomMeal() {
@@ -148,11 +161,6 @@ public class MealPresenterImpl implements MealPresenter {
                 callback.onResult(exists);
             }
         });
-    }
-
-    @Override
-    public boolean isMealExistsByName(String mealName){
-        return repository.isMealExistsByName(mealName);
     }
 
     @Override

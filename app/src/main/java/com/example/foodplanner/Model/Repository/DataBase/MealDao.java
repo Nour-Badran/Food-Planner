@@ -19,15 +19,9 @@ public interface MealDao {
 
     @Query("DELETE FROM meals WHERE idMeal = :mealId")
     void delete(String mealId);
-
-    @Query("SELECT * FROM meals WHERE idMeal = :mealId LIMIT 1")
-    MealEntity checkMealExists(String mealId);
-
     // Check if a meal exists by its ID
     @Query("SELECT COUNT(*) > 0 FROM meals WHERE idMeal = :mealId")
     boolean isMealExists(String mealId);
 
-    // Alternatively, check if a meal exists by its name
-    @Query("SELECT COUNT(*) > 0 FROM meals WHERE strMeal = :mealName")
-    boolean isMealExistsByName(String mealName);
+
 }

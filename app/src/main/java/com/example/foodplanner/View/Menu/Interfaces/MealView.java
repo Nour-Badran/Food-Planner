@@ -14,6 +14,7 @@ public interface MealView {
     void showMessage(String message);
     void showCategories(List<CategoryResponse.Category> categories);
     void showMeals(List<MealEntity> meals);
+    void addMeal(MealEntity meal);
     void showIngredients(List<IngredientResponse.Ingredient> ingredients);
     void getMealsByCategory(String categoryName);
 }
