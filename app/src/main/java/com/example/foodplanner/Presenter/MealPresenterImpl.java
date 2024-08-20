@@ -21,6 +21,20 @@ public class MealPresenterImpl implements MealPresenter {
         this.view = view;
         this.repository = repository;
     }
+    @Override
+    public void loadRandomMealForDay(int dayIndex) {
+        repository.loadRandomMeal(new MealCallback<MealEntity>() {
+            @Override
+            public void onSuccess(MealEntity meal) {
+                view.showMeal(meal);
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                view.showError("Failed to load meal for day " + dayIndex + ": " + errorMessage);
+            }
+        });
+    }
 
 
     @Override

@@ -57,6 +57,12 @@ public class MealEntity {
     private String strMeasure18;
     private String strMeasure19;
     private String strMeasure20;
+    public MealEntity() {
+    }
+    public MealEntity(String name, String imageUrl) {
+        strMeal = name;
+        strMealThumb = imageUrl;
+    }
     @NonNull
     public String getIdMeal() {
         return idMeal;

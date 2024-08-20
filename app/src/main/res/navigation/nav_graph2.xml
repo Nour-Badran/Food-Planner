@@ -103,4 +103,8 @@
             android:id="@+id/action_favouritesFragment_to_mealDetailsFragment"
             app:destination="@id/mealDetailsFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/mealPlannerFragment"
+        android:name="com.example.foodplanner.View.Menu.Fragments.MealPlannerFragment"
+        android:label="MealPlannerFragment" />
 </navigation>

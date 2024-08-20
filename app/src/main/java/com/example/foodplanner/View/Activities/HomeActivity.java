@@ -99,6 +99,23 @@ public class HomeActivity extends AppCompatActivity {
                     {
                         navController.navigate(R.id.ingredientSearchFragment);
                     }
+                    else if(id ==R.id.mealPlannerFragment)
+                    {
+                        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+                        boolean loggedIn = prefs.getBoolean(KEY_LOGGED_IN, false);
+                        if(loggedIn) {
+                            NavOptions navOptions = new NavOptions.Builder()
+                                    .setPopUpTo(R.id.nav_host_fragment2, true)
+                                    .setLaunchSingleTop(true) // Prevent re-adding if already at the top
+                                    .build();
+                            navController.navigate(R.id.mealPlannerFragment,null, navOptions);
+                        }
+                        else
+                        {
+                            LoginBottomSheetFragment bottomSheet = new LoginBottomSheetFragment();
+                            bottomSheet.show(getSupportFragmentManager(), "LoginBottomSheetFragment");
+                        }
+                    }
                     else if(id == R.id.favouritesFragment)
                     {
                         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
