@@ -25,6 +25,7 @@ import com.example.foodplanner.Presenter.MealPresenter;
 import com.example.foodplanner.R;
 import com.example.foodplanner.View.Menu.Interfaces.OnAddClickListener;
 import com.example.foodplanner.View.Menu.Interfaces.OnFabClickListener;
+import com.example.foodplanner.View.Menu.Interfaces.OnMealClickListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -38,6 +39,8 @@ public class DaysAdapter extends RecyclerView.Adapter<DaysAdapter.DayViewHolder>
     MealPresenter presenter;
     MealRepository repository;
     private OnFabClickListener onFabClickListener;
+    private OnMealClickListener onMealClickListener;
+
 
     public DaysAdapter(Context context, List<String> daysOfWeek, List<List<MealEntity>> weeklyMeals,MealPresenter presenter,MealRepository repository) {
         this.context = context;
@@ -70,13 +73,17 @@ public class DaysAdapter extends RecyclerView.Adapter<DaysAdapter.DayViewHolder>
             removeMealFromDatabase(dayIndex, mealToDelete);
 
         });
+
+        plannedMealsAdapter.setOnMealClickListener(meal -> {
+            if (onMealClickListener != null) {
+                onMealClickListener.onMealClick(meal);
+            }
+        });
+
         plannedMealsAdapter.setOnFabClickListener(meal -> {
             if (onFabClickListener != null) {
                 onFabClickListener.onFabClick(meal);
             }
-            // Handle FAB click for each meal
-            // For example, you might want to show a dialog or perform an action
-            Toast.makeText(context, "FAB clicked for meal: " + meal.getStrMeal(), Toast.LENGTH_SHORT).show();
         });
         holder.rvMealsForDay.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
         holder.rvMealsForDay.setAdapter(plannedMealsAdapter);
@@ -89,6 +96,9 @@ public class DaysAdapter extends RecyclerView.Adapter<DaysAdapter.DayViewHolder>
     }
     public void setOnFabClickListener(OnFabClickListener listener) {
         this.onFabClickListener = listener;
+    }
+    public void setOnMealClickListener(OnMealClickListener listener) {
+        this.onMealClickListener = listener;
     }
     private void removeMealFromDatabase(int dayIndex, MealEntity meal) {
         List<Monday> mondayMeals;

@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -49,7 +50,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class MealPlannerFragment extends Fragment implements MealView, OnAddClickListener, OnFabClickListener {
+public class MealPlannerFragment extends Fragment implements MealView, OnAddClickListener {
 
     private RecyclerView rvDaysOfWeek;
     private DaysAdapter daysAdapter;
@@ -114,7 +115,7 @@ public class MealPlannerFragment extends Fragment implements MealView, OnAddClic
                 presenter.isMealExists(meal.getIdMeal(), exists -> {
                     if (exists) {
                         getActivity().runOnUiThread(() ->
-                                Snackbar.make(view, meal.getStrMeal() + " deleted from favorites", Snackbar.LENGTH_SHORT).show()
+                                Snackbar.make(view, meal.getStrMeal() + " removed from favorites", Snackbar.LENGTH_SHORT).show()
                         );
                         presenter.deleteMeal(meal);
                     } else {
@@ -126,6 +127,15 @@ public class MealPlannerFragment extends Fragment implements MealView, OnAddClic
                 });
             }
         );
+
+        daysAdapter.setOnMealClickListener(meal -> {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("meal_name", meal.getStrMeal());
+                    Navigation.findNavController(view).navigate(R.id.action_mealPlannerFragment_to_mealDetailsFragment,bundle);
+                    //Toast.makeText(getContext(), meal.getStrMeal() + " was clicked", Toast.LENGTH_SHORT).show();
+                }
+        );
+
         Observer<List<?>> observer = new Observer<List<?>>() {
             @Override
             public void onChanged(List<?> meals) {
@@ -426,10 +436,5 @@ public class MealPlannerFragment extends Fragment implements MealView, OnAddClic
 
     private void showLoading(boolean isLoading) {
         progressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
-    }
-
-    @Override
-    public void onFabClick(MealEntity meal) {
-        Toast.makeText(getContext(), meal.getStrMeal() + " fab was clicked", Toast.LENGTH_SHORT).show();
     }
 }

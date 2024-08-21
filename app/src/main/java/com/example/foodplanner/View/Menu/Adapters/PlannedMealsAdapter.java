@@ -1,7 +1,6 @@
 package com.example.foodplanner.View.Menu.Adapters;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +20,7 @@ import com.example.foodplanner.Presenter.MealPresenter;
 import com.example.foodplanner.R;
 import com.example.foodplanner.View.Menu.Interfaces.OnDeleteListener;
 import com.example.foodplanner.View.Menu.Interfaces.OnFabClickListener;
+import com.example.foodplanner.View.Menu.Interfaces.OnMealClickListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
@@ -33,6 +33,8 @@ public class PlannedMealsAdapter extends RecyclerView.Adapter<PlannedMealsAdapte
     private int dayIndex;
     MealPresenter presenter;
     private OnFabClickListener onFabClickListener;
+    private OnMealClickListener onMealClickListener;
+
 
     public PlannedMealsAdapter(Context context, List<MealEntity> meals, int dayIndex,MealPresenter presenter) {
         this.context = context;
@@ -50,7 +52,9 @@ public class PlannedMealsAdapter extends RecyclerView.Adapter<PlannedMealsAdapte
     public void setOnFabClickListener(OnFabClickListener listener) {
         this.onFabClickListener = listener;
     }
-
+    public void setOnMealClickListener(OnMealClickListener listener) {
+        this.onMealClickListener = listener;
+    }
     @Override
     public void onBindViewHolder(@NonNull MealViewHolder holder, int position) {
         MealEntity meal = meals.get(position);
@@ -63,24 +67,29 @@ public class PlannedMealsAdapter extends RecyclerView.Adapter<PlannedMealsAdapte
                 .placeholder(R.drawable.img_11)
                 .into(holder.ivMealImage);
         int defaultColor = ContextCompat.getColor(holder.itemView.getContext(), R.color.gray);
-        holder.fabSwap.setBackgroundTintList(ColorStateList.valueOf(defaultColor));
+        holder.fabFav.setBackgroundTintList(ColorStateList.valueOf(defaultColor));
 
         // Check if meal exists in the database
         presenter.isMealExists(meal.getIdMeal(), exists -> {
             int color = exists ? ContextCompat.getColor(holder.itemView.getContext(), R.color.areaBackgroundColor) : defaultColor;
-            holder.fabSwap.setBackgroundTintList(ColorStateList.valueOf(color));
+            holder.fabFav.setBackgroundTintList(ColorStateList.valueOf(color));
         });
 
-        holder.fabSwap.setOnClickListener(v -> {
+        holder.fabFav.setOnClickListener(v -> {
             if (onFabClickListener != null) {
                 onFabClickListener.onFabClick(meal);
                 presenter.isMealExists(meal.getIdMeal(), exists -> {
                     int color = exists ? defaultColor : ContextCompat.getColor(holder.itemView.getContext(), R.color.areaBackgroundColor);
-                    holder.fabSwap.setBackgroundTintList(ColorStateList.valueOf(color));
+                    holder.fabFav.setBackgroundTintList(ColorStateList.valueOf(color));
                 });
             }
         });
 
+        holder.ivMealImage.setOnClickListener(v -> {
+            if (onMealClickListener != null) {
+                onMealClickListener.onMealClick(meal);
+            }
+        });
 
         holder.fabExit.setOnClickListener(v -> {
             if (onDeleteListener != null) {
@@ -104,14 +113,14 @@ public class PlannedMealsAdapter extends RecyclerView.Adapter<PlannedMealsAdapte
         ImageView ivMealImage;
         TextView tvMealName;
         FloatingActionButton fabExit;
-        FloatingActionButton fabSwap;
+        FloatingActionButton fabFav;
 
 
         public MealViewHolder(@NonNull View itemView) {
             super(itemView);
             ivMealImage = itemView.findViewById(R.id.mealImage);
             tvMealName = itemView.findViewById(R.id.mealName);
-            fabSwap = itemView.findViewById(R.id.fab);
+            fabFav = itemView.findViewById(R.id.fab);
             fabExit = itemView.findViewById(R.id.fabexit);
         }
     }
