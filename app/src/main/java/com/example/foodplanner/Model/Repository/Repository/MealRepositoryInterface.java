@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData;
 
 import com.example.foodplanner.Model.POJO.CategoryResponse;
 import com.example.foodplanner.Model.POJO.IngredientResponse;
-import com.example.foodplanner.Model.POJO.MealEntity;
-import com.example.foodplanner.Model.Repository.DataBase.OnMealExistsCallback;
+import com.example.foodplanner.Model.Repository.MealDB.MealEntity;
+import com.example.foodplanner.Model.Repository.MealDB.OnMealExistsCallback;
 import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealCallback;
 
 import java.util.List;
@@ -51,5 +51,4 @@ public interface MealRepositoryInterface {
     void getCategories(MealCallback<List<CategoryResponse.Category>> callback);
 
     void isMealExists(String mealId, OnMealExistsCallback callback);
-
 }

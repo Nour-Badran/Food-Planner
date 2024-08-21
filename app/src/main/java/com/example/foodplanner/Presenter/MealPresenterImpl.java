@@ -1,12 +1,19 @@
 package com.example.foodplanner.Presenter;
 
-import android.util.Log;
+import androidx.lifecycle.LiveData;
 
 import com.example.foodplanner.Model.POJO.CategoryResponse;
 import com.example.foodplanner.Model.POJO.IngredientResponse;
-import com.example.foodplanner.Model.POJO.MealEntity;
-import com.example.foodplanner.Model.Repository.DataBase.OnMealExistsCallback;
+import com.example.foodplanner.Model.Repository.MealDB.MealEntity;
+import com.example.foodplanner.Model.Repository.MealDB.OnMealExistsCallback;
 import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealCallback;
+import com.example.foodplanner.Model.Repository.PlanDB.Days.Friday;
+import com.example.foodplanner.Model.Repository.PlanDB.Days.Monday;
+import com.example.foodplanner.Model.Repository.PlanDB.Days.Saturday;
+import com.example.foodplanner.Model.Repository.PlanDB.Days.Sunday;
+import com.example.foodplanner.Model.Repository.PlanDB.Days.Thursday;
+import com.example.foodplanner.Model.Repository.PlanDB.Days.Tuesday;
+import com.example.foodplanner.Model.Repository.PlanDB.Days.Wednesday;
 import com.example.foodplanner.Model.Repository.Repository.MealRepository;
 import com.example.foodplanner.View.Menu.Interfaces.MealView;
 
@@ -280,5 +287,152 @@ public class MealPresenterImpl implements MealPresenter {
                 view.showError(errorMessage);
             }
         });
+    }
+
+    // Monday methods
+    @Override
+    public void insertMondayMeal(Monday meal) {
+        repository.insertMondayMeal(meal);
+    }
+
+    @Override
+    public void updateMondayMeal(Monday meal) {
+        repository.updateMondayMeal(meal);
+    }
+
+    @Override
+    public void deleteMondayMeal(String mealId) {
+        repository.deleteMondayMeal(mealId);
+    }
+
+    @Override
+    public LiveData<List<Monday>> getMondayMeals() {
+        return repository.getMondayMeals();
+    }
+
+    // Tuesday methods
+    @Override
+    public void insertTuesdayMeal(Tuesday meal) {
+        repository.insertTuesdayMeal(meal);
+    }
+
+    @Override
+    public void updateTuesdayMeal(Tuesday meal) {
+        repository.updateTuesdayMeal(meal);
+    }
+
+    @Override
+    public void deleteTuesdayMeal(String mealId) {
+        repository.deleteTuesdayMeal(mealId);
+    }
+
+    @Override
+    public LiveData<List<Tuesday>> getTuesdayMeals() {
+        return repository.getTuesdayMeals();
+    }
+
+    // Wednesday methods
+    @Override
+    public void insertWednesdayMeal(Wednesday meal) {
+        repository.insertWednesdayMeal(meal);
+    }
+
+    @Override
+    public void updateWednesdayMeal(Wednesday meal) {
+        repository.updateWednesdayMeal(meal);
+    }
+
+    @Override
+    public void deleteWednesdayMeal(String mealId) {
+        repository.deleteWednesdayMeal(mealId);
+    }
+
+    @Override
+    public LiveData<List<Wednesday>> getWednesdayMeals() {
+        return repository.getWednesdayMeals();
+    }
+
+    // Thursday methods
+    @Override
+    public void insertThursdayMeal(Thursday meal) {
+        repository.insertThursdayMeal(meal);
+    }
+
+    @Override
+    public void updateThursdayMeal(Thursday meal) {
+        repository.updateThursdayMeal(meal);
+    }
+
+    @Override
+    public void deleteThursdayMeal(String mealId) {
+        repository.deleteThursdayMeal(mealId);
+    }
+
+    @Override
+    public LiveData<List<Thursday>> getThursdayMeals() {
+        return repository.getThursdayMeals();
+    }
+
+    // Friday methods
+    @Override
+    public void insertFridayMeal(Friday meal) {
+        repository.insertFridayMeal(meal);
+    }
+
+    @Override
+    public void updateFridayMeal(Friday meal) {
+        repository.updateFridayMeal(meal);
+    }
+
+    @Override
+    public void deleteFridayMeal(String mealId) {
+        repository.deleteFridayMeal(mealId);
+    }
+
+    @Override
+    public LiveData<List<Friday>> getFridayMeals() {
+        return repository.getFridayMeals();
+    }
+
+    // Saturday methods
+    @Override
+    public void insertSaturdayMeal(Saturday meal) {
+        repository.insertSaturdayMeal(meal);
+    }
+
+    @Override
+    public void updateSaturdayMeal(Saturday meal) {
+        repository.updateSaturdayMeal(meal);
+    }
+
+    @Override
+    public void deleteSaturdayMeal(String mealId) {
+        repository.deleteSaturdayMeal(mealId);
+    }
+
+    @Override
+    public LiveData<List<Saturday>> getSaturdayMeals() {
+        return repository.getSaturdayMeals();
+    }
+
+    // Sunday methods
+    @Override
+    public void insertSundayMeal(Sunday meal) {
+        repository.insertSundayMeal(meal);
+    }
+
+    @Override
+    public void updateSundayMeal(Sunday meal) {
+        repository.updateSundayMeal(meal);
+    }
+
+    @Override
+    public void deleteSundayMeal(String mealId) {
+        repository.deleteSundayMeal(mealId);
+    }
+
+    @Override
+    public LiveData<List<Sunday>> getSundayMeals() {
+        return repository.getSundayMeals();
     }
 }

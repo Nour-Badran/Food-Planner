@@ -1,12 +1,10 @@
-package com.example.foodplanner.Model.Repository.DataBase;
+package com.example.foodplanner.Model.Repository.MealDB;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
-
-import com.example.foodplanner.Model.POJO.MealEntity;
 
 import java.util.List;
 

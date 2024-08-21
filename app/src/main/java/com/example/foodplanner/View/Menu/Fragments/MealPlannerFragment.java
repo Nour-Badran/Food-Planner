@@ -1,16 +1,15 @@
 package com.example.foodplanner.View.Menu.Fragments;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,12 +19,19 @@ import android.widget.TextView;
 
 import com.example.foodplanner.Model.POJO.CategoryResponse;
 import com.example.foodplanner.Model.POJO.IngredientResponse;
-import com.example.foodplanner.Model.POJO.MealEntity;
-import com.example.foodplanner.Model.Repository.DataBase.FavoriteMealDatabase;
-import com.example.foodplanner.Model.Repository.DataBase.MealLocalDataSourceImpl;
+import com.example.foodplanner.Model.Repository.MealDB.MealEntity;
+import com.example.foodplanner.Model.Repository.DB.FavoriteMealDatabase;
+import com.example.foodplanner.Model.Repository.MealDB.MealLocalDataSourceImpl;
 import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealApi;
 import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealRemoteDataSource;
 import com.example.foodplanner.Model.Repository.MealRemoteDataSource.RetrofitClient;
+import com.example.foodplanner.Model.Repository.PlanDB.Days.Friday;
+import com.example.foodplanner.Model.Repository.PlanDB.Days.Monday;
+import com.example.foodplanner.Model.Repository.PlanDB.Days.Saturday;
+import com.example.foodplanner.Model.Repository.PlanDB.Days.Sunday;
+import com.example.foodplanner.Model.Repository.PlanDB.Days.Thursday;
+import com.example.foodplanner.Model.Repository.PlanDB.Days.Tuesday;
+import com.example.foodplanner.Model.Repository.PlanDB.Days.Wednesday;
 import com.example.foodplanner.Model.Repository.Repository.MealRepository;
 import com.example.foodplanner.R;
 import com.example.foodplanner.View.Menu.Adapters.DaysAdapter;
@@ -50,11 +56,15 @@ public class MealPlannerFragment extends Fragment implements MealView, OnAddClic
     private Button btnStartPlan;
     private List<Integer> selectedDays;
     int pos;
+    Boolean flag = true;
+
+    MealRepository repo;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter = new MealPresenterImpl(this, new MealRepository(
-                new MealLocalDataSourceImpl(FavoriteMealDatabase.getInstance(requireContext()).favoriteMealDao()),
+        repo = new MealRepository(new MealLocalDataSourceImpl(FavoriteMealDatabase.getInstance(requireContext())),
+                new MealRemoteDataSource(RetrofitClient.getClient().create(MealApi.class)));
+        presenter = new MealPresenterImpl(this, new MealRepository(new MealLocalDataSourceImpl(FavoriteMealDatabase.getInstance(requireContext())),
                 new MealRemoteDataSource(RetrofitClient.getClient().create(MealApi.class))));
     }
 
@@ -87,6 +97,122 @@ public class MealPlannerFragment extends Fragment implements MealView, OnAddClic
 
         return view;
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+// Initialize a counter for checking all days
+        final int[] daysChecked = {0}; // Counter for days checked
+        final int totalDays = 7; // Total number of days to check
+
+        Observer<List<?>> observer = new Observer<List<?>>() {
+            @Override
+            public void onChanged(List<?> meals) {
+                daysChecked[0]++;
+                if (meals.isEmpty()) {
+                    if (daysChecked[0] == totalDays) {
+                        // All days checked and none has meals
+                        showInitialView();
+                    }
+                } else {
+                    showPlanningView();
+                    loadMealsFromDatabase();
+                }
+            }
+        };
+
+        repo.getMondayMeals().observe(getViewLifecycleOwner(), observer);
+        repo.getTuesdayMeals().observe(getViewLifecycleOwner(), observer);
+        repo.getWednesdayMeals().observe(getViewLifecycleOwner(), observer);
+        repo.getThursdayMeals().observe(getViewLifecycleOwner(), observer);
+        repo.getFridayMeals().observe(getViewLifecycleOwner(), observer);
+        repo.getSaturdayMeals().observe(getViewLifecycleOwner(), observer);
+        repo.getSundayMeals().observe(getViewLifecycleOwner(), observer);
+    }
+    private void loadMealsFromDatabase() {
+        showLoading(true); // Show progress bar while loading
+
+        repo.getMondayMeals().observe(getViewLifecycleOwner(), mondays -> {
+            if (mondays != null) {
+                List<MealEntity> mondayMeals = new ArrayList<>();
+                for (Monday monday : mondays) {
+                    mondayMeals.add(new MealEntity(monday.getMealId(), monday.getMealName(), monday.getStrMealThumb()));
+                }
+                weeklyMeals.set(0, mondayMeals);
+                daysAdapter.notifyItemChanged(0);
+            }
+        });
+
+        repo.getTuesdayMeals().observe(getViewLifecycleOwner(), tuesdays -> {
+            if (tuesdays != null) {
+                List<MealEntity> tuesdayMeals = new ArrayList<>();
+                for (Tuesday tuesday : tuesdays) {
+                    tuesdayMeals.add(new MealEntity(tuesday.getMealId(), tuesday.getMealName(), tuesday.getStrMealThumb()));
+                }
+                weeklyMeals.set(1, tuesdayMeals);
+                daysAdapter.notifyItemChanged(1);
+            }
+        });
+
+        repo.getWednesdayMeals().observe(getViewLifecycleOwner(), wednesdays -> {
+            if (wednesdays != null) {
+                List<MealEntity> wednesdayMeals = new ArrayList<>();
+                for (Wednesday wednesday : wednesdays) {
+                    wednesdayMeals.add(new MealEntity(wednesday.getMealId(), wednesday.getMealName(), wednesday.getStrMealThumb()));
+                }
+                weeklyMeals.set(2, wednesdayMeals);
+                daysAdapter.notifyItemChanged(2);
+            }
+        });
+
+        repo.getThursdayMeals().observe(getViewLifecycleOwner(), thursdays -> {
+            if (thursdays != null) {
+                List<MealEntity> thursdayMeals = new ArrayList<>();
+                for (Thursday thursday : thursdays) {
+                    thursdayMeals.add(new MealEntity(thursday.getMealId(), thursday.getMealName(), thursday.getStrMealThumb()));
+                }
+                weeklyMeals.set(3, thursdayMeals);
+                daysAdapter.notifyItemChanged(3);
+            }
+        });
+
+        repo.getFridayMeals().observe(getViewLifecycleOwner(), fridays -> {
+            if (fridays != null) {
+                List<MealEntity> fridayMeals = new ArrayList<>();
+                for (Friday friday : fridays) {
+                    fridayMeals.add(new MealEntity(friday.getMealId(), friday.getMealName(), friday.getStrMealThumb()));
+                }
+                weeklyMeals.set(4, fridayMeals);
+                daysAdapter.notifyItemChanged(4);
+            }
+        });
+
+        repo.getSaturdayMeals().observe(getViewLifecycleOwner(), saturdays -> {
+            if (saturdays != null) {
+                List<MealEntity> saturdayMeals = new ArrayList<>();
+                for (Saturday saturday : saturdays) {
+                    saturdayMeals.add(new MealEntity(saturday.getMealId(), saturday.getMealName(), saturday.getStrMealThumb()));
+                }
+                weeklyMeals.set(5, saturdayMeals);
+                daysAdapter.notifyItemChanged(5);
+            }
+        });
+
+        repo.getSundayMeals().observe(getViewLifecycleOwner(), sundays -> {
+            if (sundays != null) {
+                List<MealEntity> sundayMeals = new ArrayList<>();
+                for (Sunday sunday : sundays) {
+                    sundayMeals.add(new MealEntity(sunday.getMealId(), sunday.getMealName(), sunday.getStrMealThumb()));
+                }
+                weeklyMeals.set(6, sundayMeals);
+                daysAdapter.notifyItemChanged(6);
+            }
+
+            // Hide progress bar when all meals are loaded
+            showLoading(false);
+        });
+    }
+
     private void loadMealsForSelectedDays(List<Integer> selectedDays) {
         showPlanningView();
         for (Integer dayIndex : selectedDays) {
@@ -138,6 +264,7 @@ public class MealPlannerFragment extends Fragment implements MealView, OnAddClic
         btnStartPlan.setVisibility(View.GONE);
         rvDaysOfWeek.setVisibility(View.VISIBLE);
     }
+
     @Override
     public void showMeal(MealEntity meal) {
         if (selectedDays == null) {
@@ -147,6 +274,36 @@ public class MealPlannerFragment extends Fragment implements MealView, OnAddClic
         for (Integer dayIndex : selectedDays) {
             if (weeklyMeals.get(dayIndex).size() < 3) {
                 weeklyMeals.get(dayIndex).add(meal);
+                switch (daysOfWeek.get(dayIndex)) {
+                    case "Monday":
+                        Monday monday = new Monday(meal.getIdMeal(), meal.getStrMeal(), meal.getStrMealThumb());
+                        repo.insertMondayMeal(monday);
+                        break;
+                    case "Tuesday":
+                        Tuesday tuesday = new Tuesday(meal.getIdMeal(), meal.getStrMeal(), meal.getStrMealThumb());
+                        repo.insertTuesdayMeal(tuesday);
+                        break;
+                    case "Wednesday":
+                        Wednesday wednesday = new Wednesday(meal.getIdMeal(), meal.getStrMeal(), meal.getStrMealThumb());
+                        repo.insertWednesdayMeal(wednesday);
+                        break;
+                    case "Thursday":
+                        Thursday thursday = new Thursday(meal.getIdMeal(), meal.getStrMeal(), meal.getStrMealThumb());
+                        repo.insertThursdayMeal(thursday);
+                        break;
+                    case "Friday":
+                        Friday friday = new Friday(meal.getIdMeal(), meal.getStrMeal(), meal.getStrMealThumb());
+                        repo.insertFridayMeal(friday);
+                        break;
+                    case "Saturday":
+                        Saturday saturday= new Saturday(meal.getIdMeal(), meal.getStrMeal(), meal.getStrMealThumb());
+                        repo.insertSaturdayMeal(saturday);
+                        break;
+                    case "Sunday":
+                        Sunday sunday = new Sunday(meal.getIdMeal(), meal.getStrMeal(), meal.getStrMealThumb());
+                        repo.insertSundayMeal(sunday);
+                        break;
+                }
                 daysAdapter.notifyItemChanged(dayIndex);
                 // Hide progress bar when all meals are loaded
                 if (areAllSelectedMealsLoaded()) {
@@ -156,7 +313,6 @@ public class MealPlannerFragment extends Fragment implements MealView, OnAddClic
             }
         }
     }
-
 
     private boolean areAllSelectedMealsLoaded() {
         // Check if selected days have at least 3 meals each
@@ -183,6 +339,36 @@ public class MealPlannerFragment extends Fragment implements MealView, OnAddClic
 
     @Override
     public void addMeal(MealEntity meal) {
+        switch (daysOfWeek.get(pos)) {
+            case "Monday":
+                Monday monday = new Monday(meal.getIdMeal(), meal.getStrMeal(), meal.getStrMealThumb());
+                repo.insertMondayMeal(monday);
+                break;
+            case "Tuesday":
+                Tuesday tuesday = new Tuesday(meal.getIdMeal(), meal.getStrMeal(), meal.getStrMealThumb());
+                repo.insertTuesdayMeal(tuesday);
+                break;
+            case "Wednesday":
+                Wednesday wednesday = new Wednesday(meal.getIdMeal(), meal.getStrMeal(), meal.getStrMealThumb());
+                repo.insertWednesdayMeal(wednesday);
+                break;
+            case "Thursday":
+                Thursday thursday = new Thursday(meal.getIdMeal(), meal.getStrMeal(), meal.getStrMealThumb());
+                repo.insertThursdayMeal(thursday);
+                break;
+            case "Friday":
+                Friday friday = new Friday(meal.getIdMeal(), meal.getStrMeal(), meal.getStrMealThumb());
+                repo.insertFridayMeal(friday);
+                break;
+            case "Saturday":
+                Saturday saturday = new Saturday(meal.getIdMeal(), meal.getStrMeal(), meal.getStrMealThumb());
+                repo.insertSaturdayMeal(saturday);
+                break;
+            case "Sunday":
+                Sunday sunday = new Sunday(meal.getIdMeal(), meal.getStrMeal(), meal.getStrMealThumb());
+                repo.insertSundayMeal(sunday);
+                break;
+        }
         weeklyMeals.get(pos).add(meal);
         daysAdapter.notifyItemChanged(pos);
     }

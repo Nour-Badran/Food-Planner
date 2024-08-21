@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.foodplanner.Model.POJO.MealEntity;
+import com.example.foodplanner.Model.Repository.MealDB.MealEntity;
 import com.example.foodplanner.R;
 import com.example.foodplanner.View.Menu.Interfaces.OnDeleteListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;

@@ -1,5 +1,7 @@
 package com.example.foodplanner.Model.POJO;
 
+import com.example.foodplanner.Model.Repository.MealDB.MealEntity;
+
 import java.util.List;
 
 public class MealResponse {

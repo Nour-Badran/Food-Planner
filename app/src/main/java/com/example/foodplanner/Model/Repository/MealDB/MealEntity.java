@@ -1,4 +1,4 @@
-package com.example.foodplanner.Model.POJO;
+package com.example.foodplanner.Model.Repository.MealDB;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
@@ -59,7 +59,8 @@ public class MealEntity {
     private String strMeasure20;
     public MealEntity() {
     }
-    public MealEntity(String name, String imageUrl) {
+    public MealEntity(String idMeal,String name, String imageUrl) {
+        this.idMeal = idMeal;
         strMeal = name;
         strMealThumb = imageUrl;
     }
