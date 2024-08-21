@@ -202,7 +202,13 @@ public class HomeFragment extends Fragment implements MealView {
 
         presenter = new MealPresenterImpl(this, new MealRepository(new MealLocalDataSourceImpl(FavoriteMealDatabase.getInstance(requireContext())),
                 new MealRemoteDataSource(RetrofitClient.getClient().create(MealApi.class))));
-
+//        presenter.deleteAllThursdayMeals();
+//        presenter.deleteAllFridayMeals();
+//        presenter.deleteAllSaturdayMeals();
+//        presenter.deleteAllSundayMeals();
+//        presenter.deleteAllMondayMeals();
+//        presenter.deleteAllTuesdayMeals();;
+//        presenter.deleteAllWednesdayMeals();
         presenter.loadRandomMeal();
 
         categoryAdapter = new CategoryAdapter();

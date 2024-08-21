@@ -10,12 +10,14 @@ import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.foodplanner.Model.POJO.CategoryResponse;
 import com.example.foodplanner.Model.POJO.IngredientResponse;
@@ -34,17 +36,20 @@ import com.example.foodplanner.Model.Repository.PlanDB.Days.Tuesday;
 import com.example.foodplanner.Model.Repository.PlanDB.Days.Wednesday;
 import com.example.foodplanner.Model.Repository.Repository.MealRepository;
 import com.example.foodplanner.R;
+import com.example.foodplanner.View.LoginBottomSheetFragment;
 import com.example.foodplanner.View.Menu.Adapters.DaysAdapter;
 import com.example.foodplanner.Presenter.MealPresenter;
 import com.example.foodplanner.Presenter.MealPresenterImpl;
 import com.example.foodplanner.View.Menu.Interfaces.MealView;
 import com.example.foodplanner.View.Menu.Interfaces.OnAddClickListener;
+import com.example.foodplanner.View.Menu.Interfaces.OnFabClickListener;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class MealPlannerFragment extends Fragment implements MealView, OnAddClickListener {
+public class MealPlannerFragment extends Fragment implements MealView, OnAddClickListener, OnFabClickListener {
 
     private RecyclerView rvDaysOfWeek;
     private DaysAdapter daysAdapter;
@@ -83,7 +88,7 @@ public class MealPlannerFragment extends Fragment implements MealView, OnAddClic
             weeklyMeals.add(new ArrayList<>());
         }
 
-        daysAdapter = new DaysAdapter(getContext(), daysOfWeek, weeklyMeals);
+        daysAdapter = new DaysAdapter(getContext(), daysOfWeek, weeklyMeals,presenter,repo);
         rvDaysOfWeek.setLayoutManager(new LinearLayoutManager(getContext()));
         rvDaysOfWeek.setAdapter(daysAdapter);
 
@@ -94,32 +99,53 @@ public class MealPlannerFragment extends Fragment implements MealView, OnAddClic
             showDaySelectionDialog();
         });
 
-
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-// Initialize a counter for checking all days
+
         final int[] daysChecked = {0}; // Counter for days checked
         final int totalDays = 7; // Total number of days to check
+        final boolean[] hasMeals = {false}; // Flag to track if any day has meals
 
+        daysAdapter.setOnFabClickListener(meal -> {
+                presenter.isMealExists(meal.getIdMeal(), exists -> {
+                    if (exists) {
+                        getActivity().runOnUiThread(() ->
+                                Snackbar.make(view, meal.getStrMeal() + " deleted from favorites", Snackbar.LENGTH_SHORT).show()
+                        );
+                        presenter.deleteMeal(meal);
+                    } else {
+                        getActivity().runOnUiThread(() ->
+                                Snackbar.make(view, meal.getStrMeal() + " added to favorites", Snackbar.LENGTH_SHORT).show()
+                        );
+                        presenter.insertMeal(meal);
+                    }
+                });
+            }
+        );
         Observer<List<?>> observer = new Observer<List<?>>() {
             @Override
             public void onChanged(List<?> meals) {
                 daysChecked[0]++;
-                if (meals.isEmpty()) {
-                    if (daysChecked[0] == totalDays) {
-                        // All days checked and none has meals
+                if (!meals.isEmpty()) {
+                    hasMeals[0] = true;
+                }
+
+                if (daysChecked[0] == totalDays) {
+                    // All days have been checked
+                    if (hasMeals[0]) {
+                        showPlanningView();
+                        loadMealsFromDatabase();
+                    } else {
                         showInitialView();
                     }
-                } else {
-                    showPlanningView();
-                    loadMealsFromDatabase();
                 }
             }
         };
+
 
         repo.getMondayMeals().observe(getViewLifecycleOwner(), observer);
         repo.getTuesdayMeals().observe(getViewLifecycleOwner(), observer);
@@ -400,5 +426,10 @@ public class MealPlannerFragment extends Fragment implements MealView, OnAddClic
 
     private void showLoading(boolean isLoading) {
         progressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    public void onFabClick(MealEntity meal) {
+        Toast.makeText(getContext(), meal.getStrMeal() + " fab was clicked", Toast.LENGTH_SHORT).show();
     }
 }

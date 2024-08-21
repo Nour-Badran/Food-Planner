@@ -310,6 +310,11 @@ public class MealPresenterImpl implements MealPresenter {
         return repository.getMondayMeals();
     }
 
+    @Override
+    public void deleteAllMondayMeals() {
+        repository.deleteAllMondayMeals();
+    }
+
     // Tuesday methods
     @Override
     public void insertTuesdayMeal(Tuesday meal) {
@@ -329,6 +334,11 @@ public class MealPresenterImpl implements MealPresenter {
     @Override
     public LiveData<List<Tuesday>> getTuesdayMeals() {
         return repository.getTuesdayMeals();
+    }
+
+    @Override
+    public void deleteAllTuesdayMeals() {
+        repository.deleteAllTuesdayMeals();
     }
 
     // Wednesday methods
@@ -352,6 +362,11 @@ public class MealPresenterImpl implements MealPresenter {
         return repository.getWednesdayMeals();
     }
 
+    @Override
+    public void deleteAllWednesdayMeals() {
+        repository.deleteAllWednesdayMeals();
+    }
+
     // Thursday methods
     @Override
     public void insertThursdayMeal(Thursday meal) {
@@ -371,6 +386,11 @@ public class MealPresenterImpl implements MealPresenter {
     @Override
     public LiveData<List<Thursday>> getThursdayMeals() {
         return repository.getThursdayMeals();
+    }
+
+    @Override
+    public void deleteAllThursdayMeals() {
+        repository.deleteAllThursdayMeals();
     }
 
     // Friday methods
@@ -394,6 +414,11 @@ public class MealPresenterImpl implements MealPresenter {
         return repository.getFridayMeals();
     }
 
+    @Override
+    public void deleteAllFridayMeals() {
+        repository.deleteAllFridayMeals();
+    }
+
     // Saturday methods
     @Override
     public void insertSaturdayMeal(Saturday meal) {
@@ -415,6 +440,11 @@ public class MealPresenterImpl implements MealPresenter {
         return repository.getSaturdayMeals();
     }
 
+    @Override
+    public void deleteAllSaturdayMeals() {
+        repository.deleteAllSaturdayMeals();
+    }
+
     // Sunday methods
     @Override
     public void insertSundayMeal(Sunday meal) {
@@ -434,5 +464,10 @@ public class MealPresenterImpl implements MealPresenter {
     @Override
     public LiveData<List<Sunday>> getSundayMeals() {
         return repository.getSundayMeals();
+    }
+
+    @Override
+    public void deleteAllSundayMeals() {
+        repository.deleteAllSundayMeals();
     }
 }

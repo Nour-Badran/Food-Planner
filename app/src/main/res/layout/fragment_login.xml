@@ -43,15 +43,18 @@
             <!-- Username input field -->
             <EditText
                 android:id="@+id/username"
-                android:drawablePadding="8dp"
-                android:drawableStart="@drawable/mail_24dp_e8eaed_fill0_wght400_grad0_opsz24"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="32dp"
                 android:background="@drawable/edittext_background"
+                android:drawableStart="@drawable/mail_24dp_e8eaed_fill0_wght400_grad0_opsz24"
+                android:drawablePadding="8dp"
+                android:fontFamily="casual"
                 android:hint="Email"
                 android:inputType="text"
                 android:padding="16dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/colorPrimaryLight"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
@@ -59,17 +62,20 @@
 
             <!-- Password input field -->
             <EditText
-                android:drawablePadding="8dp"
-                android:drawableStart="@drawable/lock_24dp_e8eaed_fill0_wght400_grad0_opsz24"
                 android:id="@+id/password"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="32dp"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/edittext_background"
+                android:drawableStart="@drawable/lock_24dp_e8eaed_fill0_wght400_grad0_opsz24"
+                android:drawablePadding="8dp"
+                android:fontFamily="casual"
                 android:hint="Password"
                 android:inputType="textPassword"
                 android:padding="16dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/colorPrimaryLight"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
@@ -78,46 +84,36 @@
             <!-- Login Button -->
             <Button
                 android:id="@+id/loginButton"
-                android:layout_width="300dp"
-                android:layout_height="51dp"
+                android:layout_width="240dp"
+                android:layout_height="50dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="4dp"
                 android:drawableRight="@drawable/login_24dp_e8eaed_fill0_wght400_grad0_opsz24"
-                android:fontFamily="@font/poppins_medium"
+                android:fontFamily="casual"
                 android:text="Login"
                 android:textSize="20sp"
+                app:layout_constraintEnd_toStartOf="@+id/google"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/password" />
 
             <!-- Guest Login Button -->
             <Button
                 android:id="@+id/guestLoginButton"
-                android:layout_width="wrap_content"
+                android:layout_width="300dp"
                 android:layout_height="51dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
                 android:drawableRight="@drawable/arrow_forward_ios_24dp_e8eaed_fill0_wght400_grad0_opsz24"
+                android:fontFamily="casual"
                 android:text="Continue as guest"
                 android:textSize="20sp"
-                app:layout_constraintEnd_toStartOf="@+id/google"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/loginButton" />
 
             <!-- Profile Image -->
 
             <!-- ProgressBar -->
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/google"
-                android:layout_width="67dp"
-                android:layout_height="60dp"
-                android:src="@drawable/img_14"
-                app:civ_border_color="@color/colorPrimary"
-                app:civ_border_overlay="true"
-                app:civ_border_width="4dp"
-                app:layout_constraintStart_toEndOf="@+id/guestLoginButton"
-                app:layout_constraintTop_toBottomOf="@+id/loginButton" />
 
             <ProgressBar
                 android:id="@+id/progressBar"
@@ -129,6 +125,19 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/username" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/google"
+                android:layout_width="54dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:src="@drawable/img_14"
+                app:civ_border_color="@color/colorPrimary"
+                app:civ_border_overlay="true"
+                app:civ_border_width="4dp"
+                app:layout_constraintStart_toEndOf="@+id/loginButton"
+                app:layout_constraintTop_toBottomOf="@+id/password" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

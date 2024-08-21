@@ -38,40 +38,47 @@ public interface MealPresenter {
     void updateMondayMeal(Monday meal);
     void deleteMondayMeal(String mealId);
     LiveData<List<Monday>> getMondayMeals();
+    public void deleteAllMondayMeals();
 
-    // Tuesday methods
+        // Tuesday methods
     void insertTuesdayMeal(Tuesday meal);
     void updateTuesdayMeal(Tuesday meal);
     void deleteTuesdayMeal(String mealId);
     LiveData<List<Tuesday>> getTuesdayMeals();
+    public void deleteAllTuesdayMeals();
 
-    // Wednesday methods
+        // Wednesday methods
     void insertWednesdayMeal(Wednesday meal);
     void updateWednesdayMeal(Wednesday meal);
     void deleteWednesdayMeal(String mealId);
     LiveData<List<Wednesday>> getWednesdayMeals();
+    public void deleteAllWednesdayMeals();
 
-    // Thursday methods
+        // Thursday methods
     void insertThursdayMeal(Thursday meal);
     void updateThursdayMeal(Thursday meal);
     void deleteThursdayMeal(String mealId);
     LiveData<List<Thursday>> getThursdayMeals();
+    public void deleteAllThursdayMeals();
 
-    // Friday methods
+        // Friday methods
     void insertFridayMeal(Friday meal);
     void updateFridayMeal(Friday meal);
     void deleteFridayMeal(String mealId);
     LiveData<List<Friday>> getFridayMeals();
+    public void deleteAllFridayMeals();
 
-    // Saturday methods
+        // Saturday methods
     void insertSaturdayMeal(Saturday meal);
     void updateSaturdayMeal(Saturday meal);
     void deleteSaturdayMeal(String mealId);
     LiveData<List<Saturday>> getSaturdayMeals();
+    public void deleteAllSaturdayMeals();
 
-    // Sunday methods
+        // Sunday methods
     void insertSundayMeal(Sunday meal);
     void updateSundayMeal(Sunday meal);
     void deleteSundayMeal(String mealId);
     LiveData<List<Sunday>> getSundayMeals();
+    public void deleteAllSundayMeals();
     }

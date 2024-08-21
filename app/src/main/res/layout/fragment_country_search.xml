@@ -16,7 +16,7 @@
         android:layout_marginEnd="73dp"
         android:layout_marginBottom="24dp"
         android:background="@drawable/rounded_edit_text"
-        android:fontFamily="@font/roboto"
+        android:fontFamily="casual"
         android:gravity="center"
         android:padding="8dp"
         android:text="@string/Countries"

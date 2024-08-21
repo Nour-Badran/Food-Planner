@@ -69,7 +69,7 @@ public class IngredientSearchFragment extends Fragment implements MealView {
         recyclerView = view.findViewById(R.id.recyclerViewMeals);
         adapter = new IngredientAdapter();
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
 
         presenter = new MealPresenterImpl(this, new MealRepository(new MealLocalDataSourceImpl(FavoriteMealDatabase.getInstance(requireContext())),
                 new MealRemoteDataSource(RetrofitClient.getClient().create(MealApi.class))));

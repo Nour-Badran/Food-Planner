@@ -3,9 +3,10 @@
     android:id="@+id/action_bar_title"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:fontFamily="casual"
+    android:gravity="center"
+    android:padding="8dp"
     android:text="TheMealDB"
     android:textColor="@android:color/white"
     android:textSize="24dp"
-    android:textStyle="bold"
-    android:padding="8dp"
-    android:gravity="center"/>
+    android:textStyle="bold" />
