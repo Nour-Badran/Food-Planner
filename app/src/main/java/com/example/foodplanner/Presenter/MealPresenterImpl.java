@@ -1,7 +1,11 @@
 package com.example.foodplanner.Presenter;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import androidx.lifecycle.LiveData;
 
+import com.example.foodplanner.Model.DataRepository;
 import com.example.foodplanner.Model.POJO.CategoryResponse;
 import com.example.foodplanner.Model.POJO.IngredientResponse;
 import com.example.foodplanner.Model.Repository.MealDB.MealEntity;
@@ -23,11 +27,13 @@ public class MealPresenterImpl implements MealPresenter {
 
     private final MealView view;
     private final MealRepository repository;
-
+    DataRepository dataRepository;
     public MealPresenterImpl(MealView view, MealRepository repository) {
         this.view = view;
         this.repository = repository;
+        dataRepository = new DataRepository();
     }
+
     @Override
     public void loadRandomMealForDay(int dayIndex) {
         repository.loadRandomMeal(new MealCallback<MealEntity>() {
@@ -42,6 +48,7 @@ public class MealPresenterImpl implements MealPresenter {
             }
         });
     }
+
     @Override
     public void addRandomMealForDay(int dayIndex) {
         repository.loadRandomMeal(new MealCallback<MealEntity>() {
@@ -160,6 +167,7 @@ public class MealPresenterImpl implements MealPresenter {
             }
         });
     }
+
     @Override
     public void isMealExists(String mealId, OnMealExistsCallback callback) {
         repository.isMealExists(mealId, new OnMealExistsCallback() {
@@ -177,11 +185,16 @@ public class MealPresenterImpl implements MealPresenter {
             public void onSuccess(MealEntity meal) {
                 repository.insertMeal(meal);
             }
+
             @Override
             public void onFailure(String errorMessage) {
                 view.showError("Failed to fetch meal details: " + errorMessage);
             }
         });
+    }
+
+    public void updateMeals(List<MealEntity> newMeals) {
+        repository.updateMeals(newMeals);
     }
 
     @Override
@@ -314,6 +327,10 @@ public class MealPresenterImpl implements MealPresenter {
     public void deleteAllMondayMeals() {
         repository.deleteAllMondayMeals();
     }
+    @Override
+    public void updateMondayMeals(List<Monday> newMeals) {
+        repository.updateMondayMeals(newMeals);
+    }
 
     // Tuesday methods
     @Override
@@ -339,6 +356,10 @@ public class MealPresenterImpl implements MealPresenter {
     @Override
     public void deleteAllTuesdayMeals() {
         repository.deleteAllTuesdayMeals();
+    }
+    @Override
+    public void updateTuesdayMeals(List<Tuesday> newMeals) {
+        repository.updateTuesdayMeals(newMeals);
     }
 
     // Wednesday methods
@@ -366,6 +387,10 @@ public class MealPresenterImpl implements MealPresenter {
     public void deleteAllWednesdayMeals() {
         repository.deleteAllWednesdayMeals();
     }
+    @Override
+    public void updateWednesdayMeals(List<Wednesday> newMeals) {
+        repository.updateWednesdayMeals(newMeals);
+    }
 
     // Thursday methods
     @Override
@@ -391,6 +416,10 @@ public class MealPresenterImpl implements MealPresenter {
     @Override
     public void deleteAllThursdayMeals() {
         repository.deleteAllThursdayMeals();
+    }
+    @Override
+    public void updateThursdayMeals(List<Thursday> newMeals) {
+        repository.updateThursdayMeals(newMeals);
     }
 
     // Friday methods
@@ -418,6 +447,10 @@ public class MealPresenterImpl implements MealPresenter {
     public void deleteAllFridayMeals() {
         repository.deleteAllFridayMeals();
     }
+    @Override
+    public void updateFridayMeals(List<Friday> newMeals) {
+        repository.updateFridayMeals(newMeals);
+    }
 
     // Saturday methods
     @Override
@@ -444,6 +477,10 @@ public class MealPresenterImpl implements MealPresenter {
     public void deleteAllSaturdayMeals() {
         repository.deleteAllSaturdayMeals();
     }
+    @Override
+    public void updateSaturdayMeals(List<Saturday> newMeals) {
+        repository.updateSaturdayMeals(newMeals);
+    }
 
     // Sunday methods
     @Override
@@ -469,5 +506,9 @@ public class MealPresenterImpl implements MealPresenter {
     @Override
     public void deleteAllSundayMeals() {
         repository.deleteAllSundayMeals();
+    }
+    @Override
+    public void updateSundayMeals(List<Sunday> newMeals) {
+        repository.updateSundayMeals(newMeals);
     }
 }

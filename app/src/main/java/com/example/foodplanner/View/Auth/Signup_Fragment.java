@@ -21,6 +21,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.foodplanner.Model.AuthModel.AuthModel;
+import com.example.foodplanner.Model.NetworkUtil;
 import com.example.foodplanner.Presenter.AuthPresenter;
 import com.example.foodplanner.R;
 import com.example.foodplanner.View.Activities.HomeActivity;
@@ -91,7 +92,16 @@ public class Signup_Fragment extends Fragment implements AuthView {
         guestButton = view.findViewById(R.id.guestButton);
 
         ImageView googleSignIn = view.findViewById(R.id.google);
-        googleSignIn.setOnClickListener(v -> googleSignIn());
+        googleSignIn.setOnClickListener(v -> {
+            if(NetworkUtil.isNetworkConnected(getContext()))
+            {
+                googleSignIn();
+            }
+            else
+            {
+                Toast.makeText(getContext(), "Please connect to the internet", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         guestButton.setOnClickListener(v -> {
             showLoading();
@@ -105,11 +115,18 @@ public class Signup_Fragment extends Fragment implements AuthView {
         });
 
         signUp.setOnClickListener(v -> {
-            String user = username.getText().toString().trim();
-            String emaill = email.getText().toString().trim();
-            String pass = password.getText().toString().trim();
-            String confirmPass = confirmPassword.getText().toString().trim();
-            presenter.signUp(user, emaill, pass, confirmPass);
+            if(NetworkUtil.isNetworkConnected(getContext()))
+            {
+                String user = username.getText().toString().trim();
+                String emaill = email.getText().toString().trim();
+                String pass = password.getText().toString().trim();
+                String confirmPass = confirmPassword.getText().toString().trim();
+                presenter.signUp(user, emaill, pass, confirmPass);
+            }
+            else
+            {
+                Toast.makeText(getContext(), "Please connect to the internet", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 

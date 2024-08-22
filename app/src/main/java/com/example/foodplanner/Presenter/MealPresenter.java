@@ -39,27 +39,33 @@ public interface MealPresenter {
     void deleteMondayMeal(String mealId);
     LiveData<List<Monday>> getMondayMeals();
     public void deleteAllMondayMeals();
-
+    public void updateMondayMeals(List<Monday> newMeals);
         // Tuesday methods
+
     void insertTuesdayMeal(Tuesday meal);
     void updateTuesdayMeal(Tuesday meal);
     void deleteTuesdayMeal(String mealId);
     LiveData<List<Tuesday>> getTuesdayMeals();
     public void deleteAllTuesdayMeals();
+    public void updateTuesdayMeals(List<Tuesday> newMeals);
 
         // Wednesday methods
+
     void insertWednesdayMeal(Wednesday meal);
     void updateWednesdayMeal(Wednesday meal);
     void deleteWednesdayMeal(String mealId);
     LiveData<List<Wednesday>> getWednesdayMeals();
     public void deleteAllWednesdayMeals();
+    public void updateWednesdayMeals(List<Wednesday> newMeals);
 
         // Thursday methods
+
     void insertThursdayMeal(Thursday meal);
     void updateThursdayMeal(Thursday meal);
     void deleteThursdayMeal(String mealId);
     LiveData<List<Thursday>> getThursdayMeals();
     public void deleteAllThursdayMeals();
+    public void updateThursdayMeals(List<Thursday> newMeals);
 
         // Friday methods
     void insertFridayMeal(Friday meal);
@@ -67,18 +73,23 @@ public interface MealPresenter {
     void deleteFridayMeal(String mealId);
     LiveData<List<Friday>> getFridayMeals();
     public void deleteAllFridayMeals();
+    public void updateFridayMeals(List<Friday> newMeals);
 
         // Saturday methods
+
     void insertSaturdayMeal(Saturday meal);
     void updateSaturdayMeal(Saturday meal);
     void deleteSaturdayMeal(String mealId);
     LiveData<List<Saturday>> getSaturdayMeals();
     public void deleteAllSaturdayMeals();
+    public void updateSaturdayMeals(List<Saturday> newMeals);
 
         // Sunday methods
+
     void insertSundayMeal(Sunday meal);
     void updateSundayMeal(Sunday meal);
     void deleteSundayMeal(String mealId);
     LiveData<List<Sunday>> getSundayMeals();
     public void deleteAllSundayMeals();
+    public void updateSundayMeals(List<Sunday> newMeals);
     }

@@ -154,24 +154,30 @@ public class MealDetailsFragment extends Fragment implements MealView {
 //                animateFabColor(newColor);
                 if(loggedIn)
                 {
-                    doesMealExist(currentMeal.getIdMeal(), exists -> {
-                        getActivity().runOnUiThread(() -> {
-                            String message;
+                    if(currentMeal!=null)
+                    {
+                        doesMealExist(currentMeal.getIdMeal(), exists -> {
+                            getActivity().runOnUiThread(() -> {
+                                String message;
 
-                            if (exists) {
-                                getActivity().runOnUiThread(() ->
-                                        Toast.makeText(getContext(), currentMeal.getStrMeal() + " deleted from favorites", Toast.LENGTH_SHORT).show()
-                                );
-                                presenter.deleteMeal(currentMeal);
-                            } else {
-                                getActivity().runOnUiThread(() ->
-                                        Toast.makeText(getContext(), currentMeal.getStrMeal() + " added to favorites", Toast.LENGTH_SHORT).show()
-                                );
-                                presenter.insertMeal(currentMeal);
-                            }
-                            updateFabColorAfterUpdate(currentMeal.getIdMeal());
+                                if (exists) {
+                                    getActivity().runOnUiThread(() ->
+                                            Toast.makeText(getContext(), currentMeal.getStrMeal() + " deleted from favorites", Toast.LENGTH_SHORT).show()
+                                    );
+                                    presenter.deleteMeal(currentMeal);
+                                } else {
+                                    getActivity().runOnUiThread(() ->
+                                            Toast.makeText(getContext(), currentMeal.getStrMeal() + " added to favorites", Toast.LENGTH_SHORT).show()
+                                    );
+                                    presenter.insertMeal(currentMeal);
+                                }
+                                updateFabColorAfterUpdate(currentMeal.getIdMeal());
+                            });
                         });
-                    });
+                    }
+                    else {
+                        Toast.makeText(getContext(), "No internet connection", Toast.LENGTH_SHORT).show();
+                    }
                 }
                 else
                 {

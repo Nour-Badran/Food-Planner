@@ -68,6 +68,13 @@ public class MealLocalDataSourceImpl implements MealLocalDataSource {
         }).start();
     }
 
+    @Override
+    public void updateMeals(List<MealEntity> newMeals) {
+        new Thread(() -> {
+            mealDao.updateMeals(newMeals);
+        }).start();
+    }
+
     // Monday methods
     @Override
     public void insertMondayMeal(Monday meal) {

@@ -18,6 +18,8 @@ public interface MealLocalDataSource {
     void deleteMeal(String mealId);
     LiveData<List<MealEntity>> getStoredMeals();
     void isMealExists(String mealId,OnMealExistsCallback callback);
+    void updateMeals(List<MealEntity> newMeals);
+
 
     // Daily meal methods
     void insertMondayMeal(Monday meal);

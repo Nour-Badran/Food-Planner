@@ -52,6 +52,7 @@ dependencies {
     implementation libs.lifecycle.viewmodel.ktx
     implementation libs.firebase.auth
     implementation libs.firebase.database
+    implementation libs.firebase.firestore
     annotationProcessor 'androidx.room:room-compiler:2.5.1'
 
     implementation 'com.facebook.android:facebook-android-sdk:latest.release'

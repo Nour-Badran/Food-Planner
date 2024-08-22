@@ -28,19 +28,24 @@ import com.example.foodplanner.View.Menu.Interfaces.OnFabClickListener;
 import com.example.foodplanner.View.Menu.Interfaces.OnMealClickListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 
 public class DaysAdapter extends RecyclerView.Adapter<DaysAdapter.DayViewHolder> {
     private final List<String> daysOfWeek;
     private final Context context;
     private OnAddClickListener onAddClickListener;
+    private final List<String> dayDates;
     private final List<List<MealEntity>> weeklyMeals;
     MealPresenter presenter;
     MealRepository repository;
     private OnFabClickListener onFabClickListener;
     private OnMealClickListener onMealClickListener;
-
 
     public DaysAdapter(Context context, List<String> daysOfWeek, List<List<MealEntity>> weeklyMeals,MealPresenter presenter,MealRepository repository) {
         this.context = context;
@@ -48,6 +53,7 @@ public class DaysAdapter extends RecyclerView.Adapter<DaysAdapter.DayViewHolder>
         this.weeklyMeals = weeklyMeals;
         this.presenter = presenter;
         this.repository = repository;
+        this.dayDates = calculateWeekDates();
     }
 
     @NonNull
@@ -59,7 +65,9 @@ public class DaysAdapter extends RecyclerView.Adapter<DaysAdapter.DayViewHolder>
 
     @Override
     public void onBindViewHolder(@NonNull DayViewHolder holder, int position) {
-        holder.tvDayName.setText(daysOfWeek.get(position));
+        String dayName = daysOfWeek.get(position);
+        String dayDate = dayDates.get(position);
+        holder.tvDayName.setText(dayName + " (" + dayDate + ")");
 
         List<MealEntity> mealsForDay = weeklyMeals.get(position);
         PlannedMealsAdapter plannedMealsAdapter = new PlannedMealsAdapter(context, mealsForDay, position,presenter);  // Pass position as dayIndex
@@ -112,43 +120,59 @@ public class DaysAdapter extends RecyclerView.Adapter<DaysAdapter.DayViewHolder>
         switch (daysOfWeek.get(dayIndex)) {
             case "Monday":
                 mondayMeals = convertMealEntitiesToMondays(weeklyMeals.get(dayIndex));
-                repository.updateMondayMeals(mondayMeals);
+                presenter.updateMondayMeals(mondayMeals);
                 break;
 
             case "Tuesday":
                 tuesdayMeals = convertMealEntitiesToTuesdays(weeklyMeals.get(dayIndex));
-                repository.updateTuesdayMeals(tuesdayMeals);
+                presenter.updateTuesdayMeals(tuesdayMeals);
                 break;
 
             case "Wednesday":
                 wednesdayMeals = convertMealEntitiesToWednesdays(weeklyMeals.get(dayIndex));
-                repository.updateWednesdayMeals(wednesdayMeals);
+                presenter.updateWednesdayMeals(wednesdayMeals);
                 break;
 
             case "Thursday":
                 thursdayMeals = convertMealEntitiesToThursdays(weeklyMeals.get(dayIndex));
-                repository.updateThursdayMeals(thursdayMeals);
+                presenter.updateThursdayMeals(thursdayMeals);
                 break;
 
             case "Friday":
                 fridayMeals = convertMealEntitiesToFridays(weeklyMeals.get(dayIndex));
-                repository.updateFridayMeals(fridayMeals);
+                presenter.updateFridayMeals(fridayMeals);
                 break;
 
             case "Saturday":
                 saturdayMeals = convertMealEntitiesToSaturdays(weeklyMeals.get(dayIndex));
-                repository.updateSaturdayMeals(saturdayMeals);
+                presenter.updateSaturdayMeals(saturdayMeals);
                 break;
 
             case "Sunday":
                 sundayMeals = convertMealEntitiesToSundays(weeklyMeals.get(dayIndex));
-                repository.updateSundayMeals(sundayMeals);
+                presenter.updateSundayMeals(sundayMeals);
                 break;
         }
     }
 
-// Convert methods for each day
+    private List<String> calculateWeekDates() {
+        List<String> dates = new ArrayList<>();
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
 
+        // Find the start of the week (Monday)
+        while (calendar.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY) {
+            calendar.add(Calendar.DAY_OF_YEAR, -1);
+        }
+
+        // Add dates for the week
+        for (String day : daysOfWeek) {
+            dates.add(sdf.format(calendar.getTime()));
+            calendar.add(Calendar.DAY_OF_YEAR, 1);
+        }
+
+        return dates;
+    }
     private List<Monday> convertMealEntitiesToMondays(List<MealEntity> mealEntities) {
         List<Monday> mondays = new ArrayList<>();
         for (MealEntity mealEntity : mealEntities) {

@@ -5,6 +5,9 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Transaction;
+
+import com.example.foodplanner.Model.Repository.PlanDB.Days.Friday;
 
 import java.util.List;
 
@@ -18,8 +21,19 @@ public interface MealDao {
     @Query("DELETE FROM meals WHERE idMeal = :mealId")
     void delete(String mealId);
     // Check if a meal exists by its ID
+
     @Query("SELECT COUNT(*) > 0 FROM meals WHERE idMeal = :mealId")
     boolean isMealExists(String mealId);
 
+    @Query("DELETE FROM meals")
+    void deleteAllMeals();
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertMeals(List<MealEntity> meals);
+
+    @Transaction
+    default void updateMeals(List<MealEntity> newMeals) {
+        deleteAllMeals();;
+        insertMeals(newMeals);
+    }
 }

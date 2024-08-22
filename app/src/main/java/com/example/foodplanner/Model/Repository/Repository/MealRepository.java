@@ -28,7 +28,10 @@ public class MealRepository implements MealRepositoryInterface {
         this.remoteDataSource = remoteDataSource;
     }
 
-    @Override
+    public void updateMeals(List<MealEntity> newMeals) {
+        localDataSource.updateMeals(newMeals);
+    }
+        @Override
     public LiveData<List<MealEntity>> getStoredMeals()
     {
         return localDataSource.getStoredMeals();

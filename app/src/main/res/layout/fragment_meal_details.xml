@@ -57,6 +57,7 @@
             android:gravity="center"
             android:padding="16dp"
             android:text="@string/meal_name"
+            android:maxLines="2"
             android:textColor="@color/white"
             android:textSize="28sp"
             android:textStyle="bold"

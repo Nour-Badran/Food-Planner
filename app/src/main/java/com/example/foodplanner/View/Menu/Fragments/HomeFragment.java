@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.FragmentNavigator;
@@ -28,6 +30,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.foodplanner.Model.NetworkUtil;
 import com.example.foodplanner.Model.POJO.CategoryResponse;
 import com.example.foodplanner.Model.POJO.IngredientResponse;
 import com.example.foodplanner.Model.Repository.DB.FavoriteMealDatabase;
@@ -174,8 +177,8 @@ public class HomeFragment extends Fragment implements MealView {
                 } else {
                     color = ContextCompat.getColor(getContext(), R.color.areaBackgroundColor);
                 }
-
-                fab.setBackgroundTintList(ColorStateList.valueOf(color));
+                animateFabColor(color);
+                //fab.setBackgroundTintList(ColorStateList.valueOf(color));
             });
         });
     }
@@ -184,11 +187,12 @@ public class HomeFragment extends Fragment implements MealView {
             callback.onResult(exists);
         });
     }
-
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+//        if (!NetworkUtil.isNetworkConnected(getContext())) {
+//            Toast.makeText(getContext(), "No network connection. Please check your internet settings.", Toast.LENGTH_LONG).show();
+//        }
         mealImage = view.findViewById(R.id.mealImage);
         mealName = view.findViewById(R.id.mealName);
         chipGroup = view.findViewById(R.id.chipGroup);
@@ -224,7 +228,7 @@ public class HomeFragment extends Fragment implements MealView {
         addChipToGroup("Categories");
 //        addChipToGroup("Meals");
 //        addChipToGroup("Ingredients");
-        currentFabColor = ContextCompat.getColor(getContext(), R.color.blue_primary);
+        currentFabColor = ContextCompat.getColor(getContext(), R.color.gray);
 
         animateFabColor(ContextCompat.getColor(getContext(), R.color.gray));
 
@@ -233,31 +237,34 @@ public class HomeFragment extends Fragment implements MealView {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Toast.makeText(getContext(), "Added to favourites!", Toast.LENGTH_SHORT).show();
 //                int newColor = (currentFabColor == ContextCompat.getColor(getContext(), R.color.gray))
 //                        ? ContextCompat.getColor(getContext(), R.color.areaBackgroundColor)
 //                        : ContextCompat.getColor(getContext(), R.color.gray);
 //                animateFabColor(newColor);
                 if(loggedIn)
                 {
-                    doesMealExist(mealsList.get(currentIndex).getIdMeal(), exists -> {
-                        getActivity().runOnUiThread(() -> {
-                            String message;
-
-                            if (exists) {
-                                getActivity().runOnUiThread(() ->
-                                        Toast.makeText(getContext(), mealsList.get(currentIndex).getStrMeal() + " deleted from favorites", Toast.LENGTH_SHORT).show()
-                                );
-                                presenter.deleteMeal(mealsList.get(currentIndex));
-                            } else {
-                                getActivity().runOnUiThread(() ->
-                                        Toast.makeText(getContext(), mealsList.get(currentIndex).getStrMeal() + " added to favorites", Toast.LENGTH_SHORT).show()
-                                );
-                                presenter.insertMeal(mealsList.get(currentIndex));
-                            }
-                            updateFabColorAfterUpdate(mealsList.get(currentIndex).getIdMeal());
+                    if(NetworkUtil.isNetworkConnected(getContext()))
+                    {
+                        doesMealExist(mealsList.get(currentIndex).getIdMeal(), exists -> {
+                            getActivity().runOnUiThread(() -> {
+                                if (exists) {
+                                    getActivity().runOnUiThread(() ->
+                                            Toast.makeText(getContext(), mealsList.get(currentIndex).getStrMeal() + " deleted from favorites", Toast.LENGTH_SHORT).show()
+                                    );
+                                    presenter.deleteMeal(mealsList.get(currentIndex));
+                                } else {
+                                    getActivity().runOnUiThread(() ->
+                                            Toast.makeText(getContext(), mealsList.get(currentIndex).getStrMeal() + " added to favorites", Toast.LENGTH_SHORT).show()
+                                    );
+                                    presenter.insertMeal(mealsList.get(currentIndex));
+                                }
+                                updateFabColorAfterUpdate(mealsList.get(currentIndex).getIdMeal());
+                            });
                         });
-                    });
+                    }
+                    else {
+                        Toast.makeText(getContext(), "Please connect to the internet", Toast.LENGTH_SHORT).show();
+                    }
                 }
                 else
                 {
@@ -311,28 +318,40 @@ public class HomeFragment extends Fragment implements MealView {
 //        });
 
         next.setOnClickListener(v -> {
-            if (currentIndex < mealsList.size() - 1) {
-                currentIndex++;
-                updateFabColor(mealsList.get(currentIndex).getIdMeal());
-            } else {
-                presenter.loadRandomMeal();
-                currentIndex++;
+            if(NetworkUtil.isNetworkConnected(getContext()))
+            {
+                if (currentIndex < mealsList.size() - 1) {
+                    currentIndex++;
+                    updateFabColor(mealsList.get(currentIndex).getIdMeal());
+                } else {
+                    presenter.loadRandomMeal();
+                    currentIndex++;
+                }
+                animateMealSlide(false);
+                animateFabSlide(false);
+                back.setVisibility(View.VISIBLE);
             }
-            animateMealSlide(false);
-            animateFabSlide(false);
-            back.setVisibility(View.VISIBLE);
+            else {
+                Toast.makeText(getContext(), "Please connect to the internet", Toast.LENGTH_SHORT).show();
+            }
         });
 
         back.setOnClickListener(v -> {
-            if (currentIndex > 0) {
-                currentIndex--;
-                animateMealZoom();
-                if (currentIndex == 0) {
-                    back.setVisibility(View.INVISIBLE);
+            if(NetworkUtil.isNetworkConnected(getContext()))
+            {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    animateMealZoom();
+                    if (currentIndex == 0) {
+                        back.setVisibility(View.INVISIBLE);
+                    }
                 }
+                updateFabColor(mealsList.get(currentIndex).getIdMeal());
+                fabAnimateMealZoom();
             }
-            updateFabColor(mealsList.get(currentIndex).getIdMeal());
-            fabAnimateMealZoom();
+            else {
+                Toast.makeText(getContext(), "Please connect to the internet", Toast.LENGTH_SHORT).show();
+            }
         });
 
         mealImage.setOnClickListener(new View.OnClickListener() {
@@ -374,21 +393,6 @@ public class HomeFragment extends Fragment implements MealView {
         colorAnimator.start();
         currentFabColor = newColor;
     }
-//    private void openFabMenu() {
-//        fabMenuContainer.setVisibility(View.VISIBLE);
-//        fabMenuContainer.animate()
-//                .translationY(0)
-//                .setDuration(300)
-//                .start();
-//    }
-//
-//    private void closeFabMenu() {
-//        fabMenuContainer.animate()
-//                .translationY(fabMenuContainer.getHeight())
-//                .setDuration(300)
-//                .withEndAction(() -> fabMenuContainer.setVisibility(View.GONE))
-//                .start();
-//    }
     @Override
     public void showMeal(MealEntity meal) {
         updateFabColor(meal.getIdMeal());
