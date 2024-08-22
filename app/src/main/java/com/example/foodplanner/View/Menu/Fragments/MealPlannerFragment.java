@@ -11,17 +11,16 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.foodplanner.Model.POJO.CategoryResponse;
 import com.example.foodplanner.Model.POJO.IngredientResponse;
+import com.example.foodplanner.Model.Repository.MealDB.MealDao;
 import com.example.foodplanner.Model.Repository.MealDB.MealEntity;
 import com.example.foodplanner.Model.Repository.DB.FavoriteMealDatabase;
 import com.example.foodplanner.Model.Repository.MealDB.MealLocalDataSourceImpl;
@@ -37,19 +36,19 @@ import com.example.foodplanner.Model.Repository.PlanDB.Days.Tuesday;
 import com.example.foodplanner.Model.Repository.PlanDB.Days.Wednesday;
 import com.example.foodplanner.Model.Repository.Repository.MealRepository;
 import com.example.foodplanner.R;
-import com.example.foodplanner.View.LoginBottomSheetFragment;
+import com.example.foodplanner.View.MealSelectionDialogFragment;
 import com.example.foodplanner.View.Menu.Adapters.DaysAdapter;
 import com.example.foodplanner.Presenter.MealPresenter;
 import com.example.foodplanner.Presenter.MealPresenterImpl;
 import com.example.foodplanner.View.Menu.Interfaces.MealView;
 import com.example.foodplanner.View.Menu.Interfaces.OnAddClickListener;
-import com.example.foodplanner.View.Menu.Interfaces.OnFabClickListener;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class MealPlannerFragment extends Fragment implements MealView, OnAddClickListener {
 
@@ -64,8 +63,9 @@ public class MealPlannerFragment extends Fragment implements MealView, OnAddClic
     private List<Integer> selectedDays;
     int pos;
     Boolean flag = true;
-
+    Button createPlan;
     MealRepository repo;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,6 +83,7 @@ public class MealPlannerFragment extends Fragment implements MealView, OnAddClic
         progressBar = view.findViewById(R.id.progress_bar);
         tvStartPlanning = view.findViewById(R.id.tv_start_planning);
         btnStartPlan = view.findViewById(R.id.btn_start_plan);
+        createPlan = view.findViewById(R.id.btn_create_plan);
 
         daysOfWeek = Arrays.asList("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday");
         weeklyMeals = new ArrayList<>();
@@ -90,7 +91,7 @@ public class MealPlannerFragment extends Fragment implements MealView, OnAddClic
             weeklyMeals.add(new ArrayList<>());
         }
 
-        daysAdapter = new DaysAdapter(getContext(), daysOfWeek, weeklyMeals,presenter,repo);
+        daysAdapter = new DaysAdapter(getContext(), daysOfWeek, weeklyMeals, presenter, repo);
         rvDaysOfWeek.setLayoutManager(new LinearLayoutManager(getContext()));
         rvDaysOfWeek.setAdapter(daysAdapter);
 
@@ -101,6 +102,9 @@ public class MealPlannerFragment extends Fragment implements MealView, OnAddClic
             showDaySelectionDialog();
         });
 
+        createPlan.setOnClickListener(v -> {
+            showPlanningView();
+        });
         return view;
     }
 
@@ -113,27 +117,27 @@ public class MealPlannerFragment extends Fragment implements MealView, OnAddClic
         final boolean[] hasMeals = {false}; // Flag to track if any day has meals
 
         daysAdapter.setOnFabClickListener(meal -> {
-                presenter.isMealExists(meal.getIdMeal(), exists -> {
-                    if (exists) {
-                        getActivity().runOnUiThread(() ->
-                                Snackbar.make(view, meal.getStrMeal() + " removed from favorites", Snackbar.LENGTH_SHORT).show()
-                        );
-                        presenter.deleteMeal(meal);
-                    } else {
-                        getActivity().runOnUiThread(() ->
-                                Snackbar.make(view, meal.getStrMeal() + " added to favorites", Snackbar.LENGTH_SHORT).show()
-                        );
-                        presenter.insertMeal(meal);
-                    }
-                });
-            }
+                    presenter.isMealExists(meal.getIdMeal(), exists -> {
+                        if (exists) {
+                            getActivity().runOnUiThread(() ->
+                                    Snackbar.make(view, meal.getStrMeal() + " removed from favorites", Snackbar.LENGTH_SHORT).show()
+                            );
+                            presenter.deleteMeal(meal);
+                        } else {
+                            getActivity().runOnUiThread(() ->
+                                    Snackbar.make(view, meal.getStrMeal() + " added to favorites", Snackbar.LENGTH_SHORT).show()
+                            );
+                            presenter.insertMeal(meal);
+                        }
+                    });
+                }
         );
 
         daysAdapter.setOnMealClickListener(meal -> {
 
                     Bundle bundle = new Bundle();
                     bundle.putString("meal_name", meal.getStrMeal());
-                    Navigation.findNavController(view).navigate(R.id.action_mealPlannerFragment_to_mealDetailsFragment,bundle);
+                    Navigation.findNavController(view).navigate(R.id.action_mealPlannerFragment_to_mealDetailsFragment, bundle);
                 }
         );
 
@@ -166,6 +170,7 @@ public class MealPlannerFragment extends Fragment implements MealView, OnAddClic
         presenter.getSaturdayMeals().observe(getViewLifecycleOwner(), observer);
         presenter.getSundayMeals().observe(getViewLifecycleOwner(), observer);
     }
+
     private void loadMealsFromDatabase() {
         showLoading(true); // Show progress bar while loading
 
@@ -283,20 +288,59 @@ public class MealPlannerFragment extends Fragment implements MealView, OnAddClic
     }
 
 
+    @Override
     public void onAddClick(int position) {
-        // Add a random meal to the selected day
         pos = position;
-        presenter.addRandomMealForDay(position); // Adjust this method if necessary
+        // Show a dialog to choose between random or specific meal
+        showMealChoiceDialog();
     }
+
+    private void showMealChoiceDialog() {
+        AtomicReference<List<MealEntity>> mealList = new AtomicReference<>(new ArrayList<>());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.CustomDialogTheme);
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_choose_meal, null);
+        builder.setView(dialogView);
+
+        AlertDialog dialog = builder.create();
+
+        Button btnRandomMeal = dialogView.findViewById(R.id.btn_random_meal);
+        Button btnChooseMeal = dialogView.findViewById(R.id.btn_choose_meal);
+        Button btnChooseFromFavs = dialogView.findViewById(R.id.btn_favourite_meal);
+        MealDao mealDao = FavoriteMealDatabase.getInstance(getContext()).favoriteMealDao();
+        mealDao.getAllMeals().observe(getActivity(), meals -> {
+            if (meals != null) {
+                // Convert LiveData<List<MealEntity>> to List<MealEntity>
+                mealList.set(new ArrayList<>(meals));
+            }
+        });
+        btnRandomMeal.setOnClickListener(v -> {
+            presenter.addRandomMealForDay(pos);
+            dialog.dismiss();
+        });
+
+        btnChooseMeal.setOnClickListener(v -> {
+            presenter.getAllMeals();
+            dialog.dismiss();
+        });
+        btnChooseFromFavs.setOnClickListener(v -> {
+            mealSelectionDialog(mealList.get());
+            dialog.dismiss();
+        });
+        dialog.show();
+    }
+
+
     private void showInitialView() {
         tvStartPlanning.setVisibility(View.VISIBLE);
         btnStartPlan.setVisibility(View.VISIBLE);
+        createPlan.setVisibility(View.VISIBLE);
         rvDaysOfWeek.setVisibility(View.GONE);
     }
 
     private void showPlanningView() {
         tvStartPlanning.setVisibility(View.GONE);
         btnStartPlan.setVisibility(View.GONE);
+        createPlan.setVisibility(View.GONE);
         rvDaysOfWeek.setVisibility(View.VISIBLE);
     }
 
@@ -331,7 +375,7 @@ public class MealPlannerFragment extends Fragment implements MealView, OnAddClic
                         presenter.insertFridayMeal(friday);
                         break;
                     case "Saturday":
-                        Saturday saturday= new Saturday(meal.getIdMeal(), meal.getStrMeal(), meal.getStrMealThumb());
+                        Saturday saturday = new Saturday(meal.getIdMeal(), meal.getStrMeal(), meal.getStrMealThumb());
                         presenter.insertSaturdayMeal(saturday);
                         break;
                     case "Sunday":
@@ -364,16 +408,30 @@ public class MealPlannerFragment extends Fragment implements MealView, OnAddClic
 
     @Override
     public void showMealDetails(MealEntity meal) {
-        // Implement if needed
     }
 
     @Override
     public void showMeals(List<MealEntity> meals) {
-        // Handle display of a list of meals if needed
+        mealSelectionDialog(meals);
     }
 
+    public void mealSelectionDialog(List<MealEntity> meals)
+    {
+        if (meals != null) {
+            MealSelectionDialogFragment dialog = new MealSelectionDialogFragment(meals, selectedMeal -> {
+                addMealToPlanAndRoom(selectedMeal);
+
+            });
+            dialog.show(getParentFragmentManager(), "MealSelectionDialogFragment");
+        }
+    }
     @Override
     public void addMeal(MealEntity meal) {
+        addMealToPlanAndRoom(meal);
+    }
+
+    public void addMealToPlanAndRoom(MealEntity meal)
+    {
         switch (daysOfWeek.get(pos)) {
             case "Monday":
                 Monday monday = new Monday(meal.getIdMeal(), meal.getStrMeal(), meal.getStrMealThumb());
@@ -407,31 +465,20 @@ public class MealPlannerFragment extends Fragment implements MealView, OnAddClic
         weeklyMeals.get(pos).add(meal);
         daysAdapter.notifyItemChanged(pos);
     }
+    @Override
+    public void showIngredients(List<IngredientResponse.Ingredient> ingredients) {}
 
     @Override
-    public void showIngredients(List<IngredientResponse.Ingredient> ingredients) {
-        // Implement if needed
-    }
+    public void getMealsByCategory(String categoryName) {}
 
     @Override
-    public void getMealsByCategory(String categoryName) {
-        // Implement if needed
-    }
+    public void showError(String errorMessage) {}
 
     @Override
-    public void showError(String errorMessage) {
-        // Handle errors
-    }
+    public void showMessage(String message) {}
 
     @Override
-    public void showMessage(String message) {
-        // Implement if needed
-    }
-
-    @Override
-    public void showCategories(List<CategoryResponse.Category> categories) {
-        // Implement if needed
-    }
+    public void showCategories(List<CategoryResponse.Category> categories) {}
 
     private void showLoading(boolean isLoading) {
         progressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);

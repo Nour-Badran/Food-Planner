@@ -43,7 +43,7 @@
             android:id="@+id/overlay"
             android:layout_width="0dp"
             android:layout_height="75dp"
-            android:background="@color/bluePrimaryTransparent60"
+            android:background="@color/bluePrimaryTransparent80"
             app:layout_constraintBottom_toBottomOf="@id/mealImage"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

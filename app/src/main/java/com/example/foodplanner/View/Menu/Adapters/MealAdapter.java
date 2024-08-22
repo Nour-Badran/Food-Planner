@@ -17,10 +17,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.foodplanner.Model.Repository.MealDB.MealEntity;
+import com.example.foodplanner.Model.Repository.PlanDB.Days.Friday;
+import com.example.foodplanner.Model.Repository.PlanDB.Days.Monday;
+import com.example.foodplanner.Model.Repository.PlanDB.Days.Saturday;
+import com.example.foodplanner.Model.Repository.PlanDB.Days.Sunday;
+import com.example.foodplanner.Model.Repository.PlanDB.Days.Thursday;
+import com.example.foodplanner.Model.Repository.PlanDB.Days.Tuesday;
+import com.example.foodplanner.Model.Repository.PlanDB.Days.Wednesday;
 import com.example.foodplanner.Presenter.MealPresenterImpl;
 import com.example.foodplanner.R;
 import com.example.foodplanner.View.Menu.Interfaces.OnFabClickListener;
 import com.example.foodplanner.View.Menu.Interfaces.OnMealClickListener;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -30,13 +38,12 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
     private List<MealEntity> meals = new ArrayList<>();
     private OnMealClickListener onMealClickListener;
     private OnFabClickListener onFabClickListener;
-    private List<MealEntity> filteredMeals = new ArrayList<>(); // Initialize to an empty list
-    private MealPresenterImpl presenter; // Add this line
+    private List<MealEntity> filteredMeals = new ArrayList<>();
+    private MealPresenterImpl presenter;
     private static final String PREFS_NAME = "FoodPlannerPrefs";
     private static final String KEY_LOGGED_IN = "loggedIn";
 
     private Context context;
-    // Add a constructor or setter for the presenter
     public MealAdapter(MealPresenterImpl presenter,Context context) {
         this.presenter = presenter;
         this.context = context;
@@ -50,10 +57,9 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull MealViewHolder holder, int position) {
-        MealEntity meal = filteredMeals.get(position); // Use filteredMeals instead of meals
+        MealEntity meal = filteredMeals.get(position);
         holder.mealName.setText(meal.getStrMeal());
 
-        // Load image using Glide or another image loading library
         Glide.with(holder.itemView.getContext())
                 .load(meal.getStrMealThumb()).apply(new RequestOptions())
                 .placeholder(R.drawable.img_11)
@@ -68,15 +74,51 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
             holder.fab.setBackgroundTintList(ColorStateList.valueOf(color));
         });
 
-//        if (meal.isInDatabase()) {
-//            holder.fab.setBackgroundTintList(ColorStateList.valueOf(
-//                    holder.itemView.getContext().getResources().getColor(R.color.colorAccent) // Color when meal is in database
-//            ));
-//        } else {
-//            holder.fab.setBackgroundTintList(ColorStateList.valueOf(
-//                    holder.itemView.getContext().getResources().getColor(R.color.colorPrimary) // Default color
-//            ));
-//        }
+        holder.fabAdd.setOnClickListener(v -> {
+            BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(v.getContext());
+            View bottomSheetView = LayoutInflater.from(v.getContext()).inflate(
+                    R.layout.bottom_sheet_select_day,
+                    (ViewGroup) v.getParent(), false);
+
+            bottomSheetDialog.setContentView(bottomSheetView);
+            bottomSheetDialog.show();
+
+            bottomSheetView.findViewById(R.id.btnMonday).setOnClickListener(view -> {
+                presenter.insertMondayMeal(new Monday(meal.getIdMeal(),meal.getStrMeal(),meal.getStrMealThumb()));
+                bottomSheetDialog.dismiss();
+            });
+
+            bottomSheetView.findViewById(R.id.btnTuesday).setOnClickListener(view -> {
+                presenter.insertTuesdayMeal(new Tuesday(meal.getIdMeal(),meal.getStrMeal(),meal.getStrMealThumb()));
+                bottomSheetDialog.dismiss();
+            });
+
+            bottomSheetView.findViewById(R.id.btnWednesday).setOnClickListener(view -> {
+                presenter.insertWednesdayMeal(new Wednesday(meal.getIdMeal(),meal.getStrMeal(),meal.getStrMealThumb()));
+                bottomSheetDialog.dismiss();
+            });
+
+            bottomSheetView.findViewById(R.id.btnThursday).setOnClickListener(view -> {
+                presenter.insertThursdayMeal(new Thursday(meal.getIdMeal(),meal.getStrMeal(),meal.getStrMealThumb()));
+                bottomSheetDialog.dismiss();
+            });
+
+            bottomSheetView.findViewById(R.id.btnFriday).setOnClickListener(view -> {
+                presenter.insertFridayMeal(new Friday(meal.getIdMeal(),meal.getStrMeal(),meal.getStrMealThumb()));
+                bottomSheetDialog.dismiss();
+            });
+
+            bottomSheetView.findViewById(R.id.btnSaturday).setOnClickListener(view -> {
+                presenter.insertSaturdayMeal(new Saturday(meal.getIdMeal(),meal.getStrMeal(),meal.getStrMealThumb()));
+                bottomSheetDialog.dismiss();
+            });
+
+            bottomSheetView.findViewById(R.id.btnSunday).setOnClickListener(view -> {
+                presenter.insertSundayMeal(new Sunday(
+                        meal.getIdMeal(),meal.getStrMeal(),meal.getStrMealThumb()));
+                bottomSheetDialog.dismiss();
+            });
+        });
 
         holder.itemView.setOnClickListener(v -> {
             if (onMealClickListener != null) {
@@ -125,28 +167,16 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
         ImageView mealImage;
         TextView mealName;
         FloatingActionButton fab;
+        FloatingActionButton fabAdd;
 
         public MealViewHolder(@NonNull View itemView) {
             super(itemView);
             mealImage = itemView.findViewById(R.id.mealImage);
             mealName = itemView.findViewById(R.id.mealName);
             fab = itemView.findViewById(R.id.fab);
+            fabAdd = itemView.findViewById(R.id.fabPlan);
         }
     }
-//    public void updateMealState(List<MealEntity> mealsInDb) {
-//        for (MealEntity meal : filteredMeals) {
-//            // Check if the meal is in the database and update its state
-//            boolean exists = false;
-//            for (MealEntity dbMeal : mealsInDb) {
-//                if (meal.getIdMeal().equals(dbMeal.getIdMeal())) {
-//                    exists = true;
-//                    break;
-//                }
-//            }
-//            meal.setInDatabase(exists); // Make sure your MealEntity has this field
-//        }
-//        notifyDataSetChanged();
-//    }
 
     public Filter getFilter() {
         return new Filter() {

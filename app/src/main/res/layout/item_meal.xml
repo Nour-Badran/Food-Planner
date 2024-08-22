@@ -52,7 +52,7 @@
         android:id="@+id/cardView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="@color/bluePrimaryTransparent60"
+        app:cardBackgroundColor="@color/bluePrimaryTransparent80"
         app:cardCornerRadius="8dp"
         app:cardElevation="8dp"
         app:layout_constraintBottom_toBottomOf="@id/mealImage"

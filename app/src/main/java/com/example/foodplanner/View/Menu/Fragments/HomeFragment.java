@@ -12,8 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.FragmentNavigator;
@@ -30,7 +28,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.foodplanner.Model.NetworkUtil;
+import com.example.foodplanner.Model.Network.NetworkUtil;
 import com.example.foodplanner.Model.POJO.CategoryResponse;
 import com.example.foodplanner.Model.POJO.IngredientResponse;
 import com.example.foodplanner.Model.Repository.DB.FavoriteMealDatabase;
@@ -67,7 +65,7 @@ public class HomeFragment extends Fragment implements MealView {
     TextView mealCategory;
     TextView mealArea;
     List<MealEntity> mealsList;
-    int currentIndex = 0;
+    int currentIndex = -1;
     private FloatingActionButton fab;
 //    private LinearLayout fabMenuContainer;
 //    private boolean isFabMenuOpen = false;
@@ -243,7 +241,7 @@ public class HomeFragment extends Fragment implements MealView {
 //                animateFabColor(newColor);
                 if(loggedIn)
                 {
-                    if(NetworkUtil.isNetworkConnected(getContext()))
+                    if(NetworkUtil.isNetworkConnected(getContext()) && !mealsList.isEmpty())
                     {
                         doesMealExist(mealsList.get(currentIndex).getIdMeal(), exists -> {
                             getActivity().runOnUiThread(() -> {
@@ -318,14 +316,13 @@ public class HomeFragment extends Fragment implements MealView {
 //        });
 
         next.setOnClickListener(v -> {
-            if(NetworkUtil.isNetworkConnected(getContext()))
+            if(NetworkUtil.isNetworkConnected(getContext()) && !mealsList.isEmpty() && mealImage!=null)
             {
                 if (currentIndex < mealsList.size() - 1) {
                     currentIndex++;
                     updateFabColor(mealsList.get(currentIndex).getIdMeal());
                 } else {
                     presenter.loadRandomMeal();
-                    currentIndex++;
                 }
                 animateMealSlide(false);
                 animateFabSlide(false);
@@ -337,7 +334,7 @@ public class HomeFragment extends Fragment implements MealView {
         });
 
         back.setOnClickListener(v -> {
-            if(NetworkUtil.isNetworkConnected(getContext()))
+            if(NetworkUtil.isNetworkConnected(getContext()) && mealImage!=null)
             {
                 if (currentIndex > 0) {
                     currentIndex--;
@@ -361,7 +358,7 @@ public class HomeFragment extends Fragment implements MealView {
                 String mealNameWithoutPrefix = fullMealName.replace("Meal Name: ", "").trim();
                 Bundle bundle = new Bundle();
                 bundle.putString("meal_name", mealNameWithoutPrefix);
-                currentIndex = 0;
+                currentIndex = -1;
                 mealsList.clear();
                 NavController navController = Navigation.findNavController(view);
 
@@ -395,6 +392,7 @@ public class HomeFragment extends Fragment implements MealView {
     }
     @Override
     public void showMeal(MealEntity meal) {
+        currentIndex++;
         updateFabColor(meal.getIdMeal());
         mealsList.add(meal);
         mealName.setText("Meal Name: " + meal.getStrMeal());

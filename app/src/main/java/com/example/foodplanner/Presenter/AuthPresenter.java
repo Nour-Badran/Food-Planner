@@ -28,7 +28,7 @@ public class AuthPresenter {
             view.hideLoading();
             if (task.isSuccessful()) {
                 model.saveLoginState(email);
-                view.navigateToHome();
+                view.navigateToHome(email);
                 view.showToast("Login Successful");
             } else {
                 view.showToast("Login Failed");
@@ -52,7 +52,7 @@ public class AuthPresenter {
             view.hideLoading();
             if (task.isSuccessful()) {
                 model.saveLoginState(email);
-                view.navigateToHome();
+                view.navigateToHome(email);
                 view.showToast("Sign Up Successful");
             } else {
                 view.showToast("Sign Up Failed");
@@ -64,7 +64,7 @@ public class AuthPresenter {
         model.signInWithGoogle(account, task -> {
             if (task.isSuccessful()) {
                 model.saveLoginState(account.getEmail());
-                view.navigateToHome();
+                view.navigateToHome(account.getEmail());
                 view.showToast("Welcome " + account.getDisplayName());
             } else {
                 view.showToast("Google sign-in failed.");
@@ -72,9 +72,9 @@ public class AuthPresenter {
         });
     }
 
-    public void checkIfLoggedIn() {
+    /*public void checkIfLoggedIn() {
         if (model.isLoggedIn()) {
             view.navigateToHome();
         }
-    }
+    }*/
 }

@@ -20,7 +20,6 @@ public interface MealDao {
 
     @Query("DELETE FROM meals WHERE idMeal = :mealId")
     void delete(String mealId);
-    // Check if a meal exists by its ID
 
     @Query("SELECT COUNT(*) > 0 FROM meals WHERE idMeal = :mealId")
     boolean isMealExists(String mealId);

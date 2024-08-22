@@ -3,6 +3,13 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="semi_transparent_black">#80000000</color> <!-- 50% transparent black -->
+    <color name="semi_transparent_black_80">#CC000000</color> <!-- 80% transparent black -->
+    <color name="fabAccentColor">#4CAF50</color> <!-- Soft green -->
+    <color name="fabAccentColor2">#03A9F4</color> <!-- Light blue -->
+    <color name="fabAccentColor3">#FF9800</color> <!-- Vibrant orange -->
+    <color name="fabAccentColor4">#FB8C00</color> <!-- Muted orange -->
+    <color name="fabAccentColor5">#556B2F</color> <!-- Olive green -->
+
     <color name="colorAccent">#03DAC5</color>
     <color name="gray">#D3D3D3</color>
     <color name="dark_gray">#333333</color>

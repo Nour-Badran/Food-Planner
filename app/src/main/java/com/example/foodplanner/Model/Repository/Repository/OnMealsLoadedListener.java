@@ -1,4 +1,4 @@
-package com.example.foodplanner.Model;
+package com.example.foodplanner.Model.Repository.Repository;
 
 import com.example.foodplanner.Model.Repository.MealDB.MealEntity;
 

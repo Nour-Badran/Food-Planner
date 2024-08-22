@@ -21,23 +21,49 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.foodplanner.Model.AuthModel.AuthModel;
-import com.example.foodplanner.Model.NetworkUtil;
+import com.example.foodplanner.Model.Network.NetworkUtil;
+import com.example.foodplanner.Model.POJO.CategoryResponse;
+import com.example.foodplanner.Model.POJO.IngredientResponse;
+import com.example.foodplanner.Model.Repository.DB.FavoriteMealDatabase;
+import com.example.foodplanner.Model.Repository.MealDB.MealEntity;
+import com.example.foodplanner.Model.Repository.MealDB.MealLocalDataSourceImpl;
+import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealApi;
+import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealRemoteDataSource;
+import com.example.foodplanner.Model.Repository.MealRemoteDataSource.RetrofitClient;
+import com.example.foodplanner.Model.Repository.PlanDB.Days.Friday;
+import com.example.foodplanner.Model.Repository.PlanDB.Days.Monday;
+import com.example.foodplanner.Model.Repository.PlanDB.Days.Saturday;
+import com.example.foodplanner.Model.Repository.PlanDB.Days.Sunday;
+import com.example.foodplanner.Model.Repository.PlanDB.Days.Thursday;
+import com.example.foodplanner.Model.Repository.PlanDB.Days.Tuesday;
+import com.example.foodplanner.Model.Repository.PlanDB.Days.Wednesday;
+import com.example.foodplanner.Model.Repository.Repository.DataRepository;
+import com.example.foodplanner.Model.Repository.Repository.MealRepository;
+import com.example.foodplanner.Model.Repository.Repository.OnMealsLoadedListener;
 import com.example.foodplanner.Presenter.AuthPresenter;
+import com.example.foodplanner.Presenter.MealPresenter;
+import com.example.foodplanner.Presenter.MealPresenterImpl;
 import com.example.foodplanner.R;
 import com.example.foodplanner.View.Activities.HomeActivity;
+import com.example.foodplanner.View.Menu.Interfaces.MealView;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 
-public class Signup_Fragment extends Fragment implements AuthView {
+import java.util.ArrayList;
+import java.util.List;
+
+public class Signup_Fragment extends Fragment implements AuthView, MealView {
 
     private Button guestButton, signUp, goToLogin;
     private EditText username, email, password, confirmPassword;
     private ProgressBar progressBar;
     private GoogleSignInClient mGoogleSignInClient;
     private AuthPresenter presenter;
+    private MealPresenter mealPresenter;
+    DataRepository dataRepository;
 
     private final ActivityResultLauncher<Intent> googleSignInLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
@@ -56,13 +82,16 @@ public class Signup_Fragment extends Fragment implements AuthView {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        dataRepository = new DataRepository();
+
         presenter = new AuthPresenter(this, new AuthModel(requireContext()));
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
-
+        mealPresenter = new MealPresenterImpl(this, new MealRepository(new MealLocalDataSourceImpl(FavoriteMealDatabase.getInstance(getContext())),
+                new MealRemoteDataSource(RetrofitClient.getClient().create(MealApi.class))));
         mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso);
 
         requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
@@ -105,6 +134,7 @@ public class Signup_Fragment extends Fragment implements AuthView {
 
         guestButton.setOnClickListener(v -> {
             showLoading();
+            loadMealsFromfirebase("Guest");
             Intent intent = new Intent(getActivity(), HomeActivity.class);
             startActivity(intent);
             getActivity().finish();
@@ -129,7 +159,126 @@ public class Signup_Fragment extends Fragment implements AuthView {
             }
         });
     }
-
+    public void loadMealsFromfirebase(String email)
+    {
+        dataRepository.loadFromFirebase(email, "Favourites", new OnMealsLoadedListener() {
+            @Override
+            public void onMealsLoaded(List<MealEntity> meals) {
+                if (meals != null && !meals.isEmpty()) {
+                    mealPresenter.updateMeals(meals);
+                }
+                else
+                {
+                    mealPresenter.updateMeals(new ArrayList<>());
+                }
+            }
+        });
+        dataRepository.loadFromFirebase(email, "Monday", new OnMealsLoadedListener() {
+            @Override
+            public void onMealsLoaded(List<MealEntity> meals) {
+                if (meals != null && !meals.isEmpty()) {
+                    List<Monday> mondayMeals = new ArrayList<>();
+                    for (MealEntity meal : meals) {
+                        Monday monday = new Monday(meal.getIdMeal(), meal.getStrMeal(), meal.getStrMealThumb());
+                        mondayMeals.add(monday);
+                    }
+                    mealPresenter.updateMondayMeals(mondayMeals);
+                } else {
+                    mealPresenter.updateMondayMeals(new ArrayList<>());
+                }
+            }
+        });
+        dataRepository.loadFromFirebase(email, "Tuesday", new OnMealsLoadedListener() {
+            @Override
+            public void onMealsLoaded(List<MealEntity> meals) {
+                if (meals != null && !meals.isEmpty()) {
+                    List<Tuesday> tuesdayMeals = new ArrayList<>();
+                    for (MealEntity meal : meals) {
+                        Tuesday tuesday = new Tuesday(meal.getIdMeal(), meal.getStrMeal(), meal.getStrMealThumb());
+                        tuesdayMeals.add(tuesday);
+                    }
+                    mealPresenter.updateTuesdayMeals(tuesdayMeals);
+                } else {
+                    mealPresenter.updateTuesdayMeals(new ArrayList<>());
+                }
+            }
+        });
+        dataRepository.loadFromFirebase(email, "Wednesday", new OnMealsLoadedListener() {
+            @Override
+            public void onMealsLoaded(List<MealEntity> meals) {
+                if (meals != null && !meals.isEmpty()) {
+                    List<Wednesday> wednesdayMeals = new ArrayList<>();
+                    for (MealEntity meal : meals) {
+                        Wednesday wednesday = new Wednesday(meal.getIdMeal(), meal.getStrMeal(), meal.getStrMealThumb());
+                        wednesdayMeals.add(wednesday);
+                    }
+                    mealPresenter.updateWednesdayMeals(wednesdayMeals);
+                } else {
+                    mealPresenter.updateWednesdayMeals(new ArrayList<>());
+                }
+            }
+        });
+        dataRepository.loadFromFirebase(email, "Thursday", new OnMealsLoadedListener() {
+            @Override
+            public void onMealsLoaded(List<MealEntity> meals) {
+                if (meals != null && !meals.isEmpty()) {
+                    List<Thursday> thursdayMeals = new ArrayList<>();
+                    for (MealEntity meal : meals) {
+                        Thursday thursday = new Thursday(meal.getIdMeal(), meal.getStrMeal(), meal.getStrMealThumb());
+                        thursdayMeals.add(thursday);
+                    }
+                    mealPresenter.updateThursdayMeals(thursdayMeals);
+                } else {
+                    mealPresenter.updateThursdayMeals(new ArrayList<>());
+                }
+            }
+        });
+        dataRepository.loadFromFirebase(email, "Friday", new OnMealsLoadedListener() {
+            @Override
+            public void onMealsLoaded(List<MealEntity> meals) {
+                if (meals != null && !meals.isEmpty()) {
+                    List<Friday> fridayMeals = new ArrayList<>();
+                    for (MealEntity meal : meals) {
+                        Friday friday = new Friday(meal.getIdMeal(), meal.getStrMeal(), meal.getStrMealThumb());
+                        fridayMeals.add(friday);
+                    }
+                    mealPresenter.updateFridayMeals(fridayMeals);
+                } else {
+                    mealPresenter.updateFridayMeals(new ArrayList<>());
+                }
+            }
+        });
+        dataRepository.loadFromFirebase(email, "Saturday", new OnMealsLoadedListener() {
+            @Override
+            public void onMealsLoaded(List<MealEntity> meals) {
+                if (meals != null && !meals.isEmpty()) {
+                    List<Saturday> saturdayMeals = new ArrayList<>();
+                    for (MealEntity meal : meals) {
+                        Saturday saturday = new Saturday(meal.getIdMeal(), meal.getStrMeal(), meal.getStrMealThumb());
+                        saturdayMeals.add(saturday);
+                    }
+                    mealPresenter.updateSaturdayMeals(saturdayMeals);
+                } else {
+                    mealPresenter.updateSaturdayMeals(new ArrayList<>());
+                }
+            }
+        });
+        dataRepository.loadFromFirebase(email, "Sunday", new OnMealsLoadedListener() {
+            @Override
+            public void onMealsLoaded(List<MealEntity> meals) {
+                if (meals != null && !meals.isEmpty()) {
+                    List<Sunday> sundayMeals = new ArrayList<>();
+                    for (MealEntity meal : meals) {
+                        Sunday sunday = new Sunday(meal.getIdMeal(), meal.getStrMeal(), meal.getStrMealThumb());
+                        sundayMeals.add(sunday);
+                    }
+                    mealPresenter.updateSundayMeals(sundayMeals);
+                } else {
+                    mealPresenter.updateSundayMeals(new ArrayList<>());
+                }
+            }
+        });
+    }
     private void googleSignIn() {
         mGoogleSignInClient.signOut().addOnCompleteListener(task -> {
             Intent intent = mGoogleSignInClient.getSignInIntent();
@@ -153,7 +302,8 @@ public class Signup_Fragment extends Fragment implements AuthView {
     }
 
     @Override
-    public void navigateToHome() {
+    public void navigateToHome(String email) {
+        loadMealsFromfirebase(email);
         startActivity(new Intent(getActivity(), HomeActivity.class));
         getActivity().finish();
     }
@@ -166,6 +316,51 @@ public class Signup_Fragment extends Fragment implements AuthView {
     @Override
     public void setPasswordError(String error) {
         password.setError(error);
+    }
+
+    @Override
+    public void showMeal(MealEntity meal) {
+
+    }
+
+    @Override
+    public void showMealDetails(MealEntity meal) {
+
+    }
+
+    @Override
+    public void showError(String message) {
+
+    }
+
+    @Override
+    public void showMessage(String message) {
+
+    }
+
+    @Override
+    public void showCategories(List<CategoryResponse.Category> categories) {
+
+    }
+
+    @Override
+    public void showMeals(List<MealEntity> meals) {
+
+    }
+
+    @Override
+    public void addMeal(MealEntity meal) {
+
+    }
+
+    @Override
+    public void showIngredients(List<IngredientResponse.Ingredient> ingredients) {
+
+    }
+
+    @Override
+    public void getMealsByCategory(String categoryName) {
+
     }
 }
 

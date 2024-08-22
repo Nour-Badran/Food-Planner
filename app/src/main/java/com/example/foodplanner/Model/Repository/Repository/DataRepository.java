@@ -1,24 +1,13 @@
-package com.example.foodplanner.Model;
+package com.example.foodplanner.Model.Repository.Repository;
 
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
-import com.example.foodplanner.Model.Repository.DB.FavoriteMealDatabase;
 import com.example.foodplanner.Model.Repository.MealDB.MealEntity;
-import com.example.foodplanner.Model.Repository.MealDB.MealLocalDataSourceImpl;
-import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealApi;
-import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealRemoteDataSource;
-import com.example.foodplanner.Model.Repository.MealRemoteDataSource.RetrofitClient;
-import com.example.foodplanner.Model.Repository.Repository.MealRepository;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.example.foodplanner.Model.Repository.PlanDB.Days.Monday;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
@@ -26,7 +15,6 @@ import java.util.List;
 
 public class DataRepository {
     private FirebaseFirestore firestore;
-    MealRepository repo;
     public DataRepository() {
         firestore = FirebaseFirestore.getInstance();
     }
@@ -50,7 +38,7 @@ public class DataRepository {
                 WriteBatch saveBatch = firestore.batch();
 
                 for (MealEntity meal : meals) {
-                    DocumentReference mealRef = mealsRef.document(meal.getStrMeal());
+                    DocumentReference mealRef = mealsRef.document(); // Firestore generate a unique ID
                     saveBatch.set(mealRef, meal);
                 }
 

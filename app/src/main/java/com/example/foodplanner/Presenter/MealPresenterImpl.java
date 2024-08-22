@@ -1,11 +1,8 @@
 package com.example.foodplanner.Presenter;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-
 import androidx.lifecycle.LiveData;
 
-import com.example.foodplanner.Model.DataRepository;
+import com.example.foodplanner.Model.Repository.Repository.DataRepository;
 import com.example.foodplanner.Model.POJO.CategoryResponse;
 import com.example.foodplanner.Model.POJO.IngredientResponse;
 import com.example.foodplanner.Model.Repository.MealDB.MealEntity;
@@ -180,19 +177,9 @@ public class MealPresenterImpl implements MealPresenter {
 
     @Override
     public void insertMeal(MealEntity meal) {
-        repository.getMealDetailsById(meal.getIdMeal(), new MealCallback<MealEntity>() {
-            @Override
-            public void onSuccess(MealEntity meal) {
-                repository.insertMeal(meal);
-            }
-
-            @Override
-            public void onFailure(String errorMessage) {
-                view.showError("Failed to fetch meal details: " + errorMessage);
-            }
-        });
+        repository.insertMeal(meal);
     }
-
+    @Override
     public void updateMeals(List<MealEntity> newMeals) {
         repository.updateMeals(newMeals);
     }

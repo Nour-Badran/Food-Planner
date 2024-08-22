@@ -29,6 +29,7 @@ public interface MealPresenter {
     void getFavMeals();
     void insertMeal(MealEntity meal);
     void deleteMeal(MealEntity meal);
+    public void updateMeals(List<MealEntity> newMeals);
     void isMealExists(String mealId, OnMealExistsCallback callback);
     void loadRandomMealForDay(int dayIndex);
     void addRandomMealForDay(int dayIndex);

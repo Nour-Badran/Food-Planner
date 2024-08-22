@@ -10,15 +10,20 @@ import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.provider.CalendarContract;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.NumberPicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -133,8 +138,8 @@ public class PlannedMealsAdapter extends RecyclerView.Adapter<PlannedMealsAdapte
                                 calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                                 calendar.set(Calendar.MINUTE, minute);
 
-                                // Add the meal to the calendar with the selected date and time
-                                addEventToCalendar(meal, calendar);
+                                // Ask for reminder time
+                                showReminderTimePicker(meal, calendar);
                             },
                             calendar.get(Calendar.HOUR_OF_DAY),
                             calendar.get(Calendar.MINUTE),
@@ -147,7 +152,44 @@ public class PlannedMealsAdapter extends RecyclerView.Adapter<PlannedMealsAdapte
         datePickerDialog.show();
     }
 
-    private void addEventToCalendar(MealEntity meal, Calendar calendar) {
+    private void showReminderTimePicker(MealEntity meal, Calendar eventCalendar) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Set Reminder");
+
+        // Inflate the custom layout for the dialog
+        View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_set_reminder, null);
+        builder.setView(dialogView);
+
+        // Initialize NumberPickers for hours, minutes, and seconds
+        NumberPicker numberPickerHours = dialogView.findViewById(R.id.numberPickerHours);
+        NumberPicker numberPickerMinutes = dialogView.findViewById(R.id.numberPickerMinutes);
+        NumberPicker numberPickerSeconds = dialogView.findViewById(R.id.numberPickerSeconds);
+
+        numberPickerHours.setMinValue(0);
+        numberPickerHours.setMaxValue(23);
+
+        numberPickerMinutes.setMinValue(0);
+        numberPickerMinutes.setMaxValue(59);
+
+        numberPickerSeconds.setMinValue(0);
+        numberPickerSeconds.setMaxValue(59);
+
+        builder.setPositiveButton("OK", (dialog, which) -> {
+            int hours = numberPickerHours.getValue();
+            int minutes = numberPickerMinutes.getValue();
+            int seconds = numberPickerSeconds.getValue();
+
+            int totalSeconds = hours * 3600 + minutes * 60 + seconds;
+            addEventToCalendar(meal, eventCalendar, totalSeconds);
+        });
+
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+
+        builder.show();
+    }
+
+
+    private void addEventToCalendar(MealEntity meal, Calendar calendar, int reminderSeconds) {
         // Check for permissions
         if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions((Activity) context, new String[]{android.Manifest.permission.WRITE_CALENDAR}, 100);
@@ -167,9 +209,37 @@ public class PlannedMealsAdapter extends RecyclerView.Adapter<PlannedMealsAdapte
         Uri uri = cr.insert(CalendarContract.Events.CONTENT_URI, values);
         if (uri != null) {
             long eventID = Long.parseLong(uri.getLastPathSegment());
-            Log.d("Calendar", "Event added with ID: " + eventID + meal.getStrMeal());
+
+            // Set reminder
+            ContentValues reminderValues = new ContentValues();
+            reminderValues.put(CalendarContract.Reminders.EVENT_ID, eventID);
+            reminderValues.put(CalendarContract.Reminders.MINUTES, reminderSeconds / 60); // Convert seconds to minutes
+            reminderValues.put(CalendarContract.Reminders.MINUTES, reminderSeconds / 60);
+            reminderValues.put(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_ALERT);
+
+            Uri reminderUri = cr.insert(CalendarContract.Reminders.CONTENT_URI, reminderValues);
+            if (reminderUri != null) {
+                Log.d("Calendar", "Event added with ID: " + eventID + ", Reminder set.");
+                Toast.makeText(context, "Event added with ID: " + eventID + " Meal: " + meal.getStrMeal(), Toast.LENGTH_SHORT).show();
+            }
         }
     }
+
+
+    private void setReminder(long eventID, int reminderMinutes) {
+        ContentResolver cr = context.getContentResolver();
+        ContentValues values = new ContentValues();
+        values.put(CalendarContract.Reminders.MINUTES, reminderMinutes);
+        values.put(CalendarContract.Reminders.EVENT_ID, eventID);
+        values.put(CalendarContract.Reminders.MINUTES, reminderMinutes);
+        values.put(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_ALERT);
+
+        Uri uri = cr.insert(CalendarContract.Reminders.CONTENT_URI, values);
+        if (uri != null) {
+            Log.d("Calendar", "Reminder set for event ID: " + eventID + " with " + reminderMinutes + " minutes before.");
+        }
+    }
+
 
     @Override
     public int getItemCount() {
