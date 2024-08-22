@@ -2,80 +2,63 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@color/transparent"
     android:padding="12dp"> <!-- Background color for a clean look -->
 
     <!-- ImageView with rounded corners and a drop shadow -->
-
-    <!-- Semi-transparent View overlay placed after the ImageView to ensure it's on top -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="5dp"
-        android:contentDescription="@string/add"
-        android:src="@drawable/bookmark_24dp_e8eaed_fill0_wght400_grad0_opsz24"
-        app:backgroundTint="@color/gray"
-        app:elevation="9dp"
-        app:layout_anchorGravity="bottom|end"
-        app:layout_behavior="fab_behavior"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/mealImage"
-        app:rippleColor="@color/white" />
-
     <ImageView
         android:id="@+id/mealImage"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="180dp"
-        android:layout_marginTop="220dp"
         android:background="@drawable/rounded_corners"
         android:backgroundTint="@color/bluePrimaryTransparent80"
         android:elevation="8dp"
         android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="@+id/cardView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/google" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- FloatingActionButton on top of ImageView -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/add"
+        android:src="@drawable/bookmark_24dp_e8eaed_fill0_wght400_grad0_opsz24"
+        app:backgroundTint="@color/gray"
+        app:elevation="9dp"
+        app:layout_constraintEnd_toEndOf="@id/mealImage"
+        app:layout_constraintTop_toTopOf="@id/mealImage"
+        app:rippleColor="@color/white" />
 
     <!-- TextView with the name on top of the semi-transparent overlay -->
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textAlignment="center"
         app:cardBackgroundColor="@color/bluePrimaryTransparent60"
         app:cardCornerRadius="8dp"
         app:cardElevation="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/mealImage"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintBottom_toBottomOf="@id/mealImage"
+        app:layout_constraintStart_toStartOf="@id/mealImage"
+        app:layout_constraintEnd_toEndOf="@id/mealImage">
 
         <TextView
             android:id="@+id/mealName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:fontFamily="@font/poppins_bold_italic"
+            android:fontFamily="casual"
             android:gravity="center"
+            android:maxLines="1"
             android:padding="8dp"
             android:text="@string/name"
             android:textColor="@color/white"
             android:textSize="16sp"
             android:textStyle="bold" />
     </androidx.cardview.widget.CardView>
-
-    <View
-        android:id="@+id/view3"
-        android:layout_width="wrap_content"
-        android:layout_height="1dp"
-        android:layout_marginTop="8dp"
-        android:background="#000000"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

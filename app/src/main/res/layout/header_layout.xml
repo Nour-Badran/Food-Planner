@@ -27,7 +27,7 @@
         android:layout_marginEnd="16dp"
         android:background="@drawable/rounded_edit_text"
         android:ellipsize="end"
-        android:fontFamily="@font/poppins_medium"
+        android:fontFamily="casual"
         android:maxLines="1"
         android:text="@string/nour_badran"
         android:textColor="#000000"

@@ -9,7 +9,6 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.transition.Slide;
 import androidx.transition.TransitionInflater;
@@ -30,9 +29,9 @@ import com.bumptech.glide.Glide; // Add this dependency for loading images
 import com.bumptech.glide.request.RequestOptions;
 import com.example.foodplanner.Model.POJO.CategoryResponse;
 import com.example.foodplanner.Model.POJO.IngredientResponse;
-import com.example.foodplanner.Model.POJO.MealEntity;
-import com.example.foodplanner.Model.Repository.DataBase.FavoriteMealDatabase;
-import com.example.foodplanner.Model.Repository.DataBase.MealLocalDataSourceImpl;
+import com.example.foodplanner.Model.Repository.MealDB.MealEntity;
+import com.example.foodplanner.Model.Repository.DB.FavoriteMealDatabase;
+import com.example.foodplanner.Model.Repository.MealDB.MealLocalDataSourceImpl;
 import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealApi;
 import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealRemoteDataSource;
 import com.example.foodplanner.Model.Repository.MealRemoteDataSource.RetrofitClient;
@@ -138,7 +137,7 @@ public class MealDetailsFragment extends Fragment implements MealView {
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         mealTitle.setText(mealName);
 
-        presenter = new MealPresenterImpl(this, new MealRepository(new MealLocalDataSourceImpl(FavoriteMealDatabase.getInstance(requireContext()).favoriteMealDao()),
+        presenter = new MealPresenterImpl(this, new MealRepository(new MealLocalDataSourceImpl(FavoriteMealDatabase.getInstance(requireContext())),
                 new MealRemoteDataSource(RetrofitClient.getClient().create(MealApi.class))));
 
         presenter.searchMeals(mealName);
@@ -155,24 +154,30 @@ public class MealDetailsFragment extends Fragment implements MealView {
 //                animateFabColor(newColor);
                 if(loggedIn)
                 {
-                    doesMealExist(currentMeal.getIdMeal(), exists -> {
-                        getActivity().runOnUiThread(() -> {
-                            String message;
+                    if(currentMeal!=null)
+                    {
+                        doesMealExist(currentMeal.getIdMeal(), exists -> {
+                            getActivity().runOnUiThread(() -> {
+                                String message;
 
-                            if (exists) {
-                                getActivity().runOnUiThread(() ->
-                                        Toast.makeText(getContext(), currentMeal.getStrMeal() + " deleted from favorites", Toast.LENGTH_SHORT).show()
-                                );
-                                presenter.deleteMeal(currentMeal);
-                            } else {
-                                getActivity().runOnUiThread(() ->
-                                        Toast.makeText(getContext(), currentMeal.getStrMeal() + " added to favorites", Toast.LENGTH_SHORT).show()
-                                );
-                                presenter.insertMeal(currentMeal);
-                            }
-                            updateFabColorAfterUpdate(currentMeal.getIdMeal());
+                                if (exists) {
+                                    getActivity().runOnUiThread(() ->
+                                            Toast.makeText(getContext(), currentMeal.getStrMeal() + " deleted from favorites", Toast.LENGTH_SHORT).show()
+                                    );
+                                    presenter.deleteMeal(currentMeal);
+                                } else {
+                                    getActivity().runOnUiThread(() ->
+                                            Toast.makeText(getContext(), currentMeal.getStrMeal() + " added to favorites", Toast.LENGTH_SHORT).show()
+                                    );
+                                    presenter.insertMeal(currentMeal);
+                                }
+                                updateFabColorAfterUpdate(currentMeal.getIdMeal());
+                            });
                         });
-                    });
+                    }
+                    else {
+                        Toast.makeText(getContext(), "No internet connection", Toast.LENGTH_SHORT).show();
+                    }
                 }
                 else
                 {
@@ -433,6 +438,11 @@ public class MealDetailsFragment extends Fragment implements MealView {
         } else {
             showError("No meal details found");
         }
+    }
+
+    @Override
+    public void addMeal(MealEntity meal) {
+
     }
 
     @Override

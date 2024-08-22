@@ -3,12 +3,19 @@ package com.example.foodplanner.Model.Repository.Repository;
 import androidx.lifecycle.LiveData;
 
 import com.example.foodplanner.Model.POJO.CategoryResponse;
-import com.example.foodplanner.Model.Repository.DataBase.OnMealExistsCallback;
+import com.example.foodplanner.Model.Repository.MealDB.OnMealExistsCallback;
 import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealCallback;
-import com.example.foodplanner.Model.Repository.DataBase.MealLocalDataSource;
-import com.example.foodplanner.Model.POJO.MealEntity;
+import com.example.foodplanner.Model.Repository.MealDB.MealLocalDataSource;
+import com.example.foodplanner.Model.Repository.MealDB.MealEntity;
 import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealRemoteDataSource;
 import com.example.foodplanner.Model.POJO.IngredientResponse;
+import com.example.foodplanner.Model.Repository.PlanDB.Days.Friday;
+import com.example.foodplanner.Model.Repository.PlanDB.Days.Monday;
+import com.example.foodplanner.Model.Repository.PlanDB.Days.Saturday;
+import com.example.foodplanner.Model.Repository.PlanDB.Days.Sunday;
+import com.example.foodplanner.Model.Repository.PlanDB.Days.Thursday;
+import com.example.foodplanner.Model.Repository.PlanDB.Days.Tuesday;
+import com.example.foodplanner.Model.Repository.PlanDB.Days.Wednesday;
 
 import java.util.List;
 
@@ -21,7 +28,10 @@ public class MealRepository implements MealRepositoryInterface {
         this.remoteDataSource = remoteDataSource;
     }
 
-    @Override
+    public void updateMeals(List<MealEntity> newMeals) {
+        localDataSource.updateMeals(newMeals);
+    }
+        @Override
     public LiveData<List<MealEntity>> getStoredMeals()
     {
         return localDataSource.getStoredMeals();
@@ -103,8 +113,160 @@ public class MealRepository implements MealRepositoryInterface {
     public void isMealExists(String mealId, OnMealExistsCallback callback) {
         localDataSource.isMealExists(mealId, callback);
     }
-    @Override
-    public boolean isMealExistsByName(String mealName) {
-        return localDataSource.isMealExistsByName(mealName);
+    // Monday methods
+    public void insertMondayMeal(Monday meal) {
+        localDataSource.insertMondayMeal(meal);
     }
-}
+
+    public void updateMondayMeal(Monday meal) {
+        localDataSource.updateMondayMeal(meal);
+    }
+
+    public void deleteMondayMeal(String mealId) {
+        localDataSource.deleteMondayMeal(mealId);
+    }
+
+    public LiveData<List<Monday>> getMondayMeals() {
+        return localDataSource.getMondayMeals();
+    }
+
+    public void deleteAllMondayMeals() {
+        localDataSource.deleteAllMondayMeals();
+    }
+    public void updateMondayMeals(List<Monday> newMeals) {
+        localDataSource.updateMondayMeals(newMeals);
+    }
+    // Tuesday methods
+
+    public void insertTuesdayMeal(Tuesday meal) {
+        localDataSource.insertTuesdayMeal(meal);
+    }
+
+    public void updateTuesdayMeal(Tuesday meal) {
+        localDataSource.updateTuesdayMeal(meal);
+    }
+
+    public void deleteTuesdayMeal(String mealId) {
+        localDataSource.deleteTuesdayMeal(mealId);
+    }
+
+    public LiveData<List<Tuesday>> getTuesdayMeals() {
+        return localDataSource.getTuesdayMeals();
+    }
+    public void deleteAllTuesdayMeals() {
+        localDataSource.deleteAllTuesdayMeals();
+    }
+    public void updateTuesdayMeals(List<Tuesday> newMeals) {
+        localDataSource.updateTuesdayMeals(newMeals);
+    }
+        // Wednesday methods
+    public void insertWednesdayMeal(Wednesday meal) {
+        localDataSource.insertWednesdayMeal(meal);
+    }
+
+    public void updateWednesdayMeal(Wednesday meal) {
+        localDataSource.updateWednesdayMeal(meal);
+    }
+
+    public void deleteWednesdayMeal(String mealId) {
+        localDataSource.deleteWednesdayMeal(mealId);
+    }
+
+    public LiveData<List<Wednesday>> getWednesdayMeals() {
+        return localDataSource.getWednesdayMeals();
+    }
+    public void deleteAllWednesdayMeals() {
+        localDataSource.deleteAllWednesdayMeals();
+    }
+    public void updateWednesdayMeals(List<Wednesday> newMeals) {
+        localDataSource.updateWednesdayMeals(newMeals);
+    }
+        // Thursday methods
+    public void insertThursdayMeal(Thursday meal) {
+        localDataSource.insertThursdayMeal(meal);
+    }
+
+    public void updateThursdayMeal(Thursday meal) {
+        localDataSource.updateThursdayMeal(meal);
+    }
+
+    public void deleteThursdayMeal(String mealId) {
+        localDataSource.deleteThursdayMeal(mealId);
+    }
+
+    public LiveData<List<Thursday>> getThursdayMeals() {
+        return localDataSource.getThursdayMeals();
+    }
+    public void deleteAllThursdayMeals() {
+        localDataSource.deleteAllThursdayMeals();
+    }
+    public void updateThursdayMeals(List<Thursday> newMeals) {
+        localDataSource.updateThursdayMeals(newMeals);
+    }
+    // Friday methods
+    public void insertFridayMeal(Friday meal) {
+        localDataSource.insertFridayMeal(meal);
+    }
+
+    public void updateFridayMeal(Friday meal) {
+        localDataSource.updateFridayMeal(meal);
+    }
+
+    public void deleteFridayMeal(String mealId) {
+        localDataSource.deleteFridayMeal(mealId);
+    }
+
+    public LiveData<List<Friday>> getFridayMeals() {
+        return localDataSource.getFridayMeals();
+    }
+    public void deleteAllFridayMeals() {
+        localDataSource.deleteAllFridayMeals();
+    }
+    public void updateFridayMeals(List<Friday> newMeals) {
+        localDataSource.updateFridayMeals(newMeals);
+    }
+        // Saturday methods
+    public void insertSaturdayMeal(Saturday meal) {
+        localDataSource.insertSaturdayMeal(meal);
+    }
+
+    public void updateSaturdayMeal(Saturday meal) {
+        localDataSource.updateSaturdayMeal(meal);
+    }
+
+    public void deleteSaturdayMeal(String mealId) {
+        localDataSource.deleteSaturdayMeal(mealId);
+    }
+
+    public LiveData<List<Saturday>> getSaturdayMeals() {
+        return localDataSource.getSaturdayMeals();
+    }
+    public void deleteAllSaturdayMeals() {
+        localDataSource.deleteAllSaturdayMeals();
+    }
+
+    public void updateSaturdayMeals(List<Saturday> newMeals) {
+        localDataSource.updateSaturdayMeals(newMeals);
+    }
+        // Sunday methods
+    public void insertSundayMeal(Sunday meal) {
+        localDataSource.insertSundayMeal(meal);
+    }
+
+    public void updateSundayMeal(Sunday meal) {
+        localDataSource.updateSundayMeal(meal);
+    }
+
+    public void deleteSundayMeal(String mealId) {
+        localDataSource.deleteSundayMeal(mealId);
+    }
+
+    public LiveData<List<Sunday>> getSundayMeals() {
+        return localDataSource.getSundayMeals();
+    }
+    public void deleteAllSundayMeals() {
+        localDataSource.deleteAllSundayMeals();
+    }
+    public void updateSundayMeals(List<Sunday> newMeals) {
+        localDataSource.updateSundayMeals(newMeals);
+    }}

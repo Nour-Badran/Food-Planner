@@ -20,10 +20,11 @@
         android:id="@+id/text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/you_need_sign_up_to_access_favourite_meals"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:fontFamily="casual"
         android:gravity="center"
-        android:padding="8dp" />
+        android:padding="8dp"
+        android:text="@string/you_need_sign_up_to_access_favourite_meals"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
     <Button
         android:id="@+id/btnLogin"

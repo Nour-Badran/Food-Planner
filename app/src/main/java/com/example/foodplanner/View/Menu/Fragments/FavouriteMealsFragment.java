@@ -7,10 +7,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -20,10 +18,10 @@ import android.widget.Toast;
 
 import com.example.foodplanner.Model.POJO.CategoryResponse;
 import com.example.foodplanner.Model.POJO.IngredientResponse;
-import com.example.foodplanner.Model.POJO.MealEntity;
-import com.example.foodplanner.Model.Repository.DataBase.FavoriteMealDatabase;
-import com.example.foodplanner.Model.Repository.DataBase.MealDao;
-import com.example.foodplanner.Model.Repository.DataBase.MealLocalDataSourceImpl;
+import com.example.foodplanner.Model.Repository.MealDB.MealEntity;
+import com.example.foodplanner.Model.Repository.DB.FavoriteMealDatabase;
+import com.example.foodplanner.Model.Repository.MealDB.MealDao;
+import com.example.foodplanner.Model.Repository.MealDB.MealLocalDataSourceImpl;
 import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealApi;
 import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealRemoteDataSource;
 import com.example.foodplanner.Model.Repository.MealRemoteDataSource.RetrofitClient;
@@ -61,9 +59,9 @@ public class FavouriteMealsFragment extends Fragment implements MealView {
         searchViewMeal = view.findViewById(R.id.searchViewMeal);
         searchViewMeal.setIconifiedByDefault(false); // Ensure SearchView is always expanded
 
-
-        presenter = new MealPresenterImpl(this, new MealRepository(new MealLocalDataSourceImpl(FavoriteMealDatabase.getInstance(requireContext()).favoriteMealDao()),
+        presenter = new MealPresenterImpl(this, new MealRepository(new MealLocalDataSourceImpl(FavoriteMealDatabase.getInstance(requireContext())),
                 new MealRemoteDataSource(RetrofitClient.getClient().create(MealApi.class))));
+
         adapter = new MealAdapter(presenter,requireContext());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
@@ -135,6 +133,11 @@ public class FavouriteMealsFragment extends Fragment implements MealView {
     @Override
     public void showMeals(List<MealEntity> meals) {
         adapter.setMeals(meals);
+    }
+
+    @Override
+    public void addMeal(MealEntity meal) {
+
     }
 
 

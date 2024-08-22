@@ -27,6 +27,10 @@
             android:icon="@drawable/search_24dp_e8eaed_fill0_wght400_grad0_opsz24"
             android:title="@string/search_for_meal_by_ingredient" />
         <item
+            android:id="@+id/mealPlannerFragment"
+            android:icon="@drawable/calendar_today_24dp_e8eaed_fill0_wght400_grad0_opsz24"
+            android:title="@string/weekly_plan" />
+        <item
             android:id="@+id/signout"
             android:icon="@drawable/logout_24dp_e8eaed_fill0_wght400_grad0_opsz24"
             android:title="@string/sign_out" />

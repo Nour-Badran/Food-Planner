@@ -22,10 +22,10 @@ import android.widget.Toast;
 
 import com.example.foodplanner.Model.POJO.CategoryResponse;
 import com.example.foodplanner.Model.POJO.IngredientResponse;
-import com.example.foodplanner.Model.Repository.DataBase.FavoriteMealDatabase;
-import com.example.foodplanner.Model.Repository.DataBase.MealLocalDataSourceImpl;
+import com.example.foodplanner.Model.Repository.DB.FavoriteMealDatabase;
+import com.example.foodplanner.Model.Repository.MealDB.MealLocalDataSourceImpl;
 import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealApi;
-import com.example.foodplanner.Model.POJO.MealEntity;
+import com.example.foodplanner.Model.Repository.MealDB.MealEntity;
 import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealRemoteDataSource;
 import com.example.foodplanner.Model.Repository.MealRemoteDataSource.RetrofitClient;
 import com.example.foodplanner.Model.Repository.Repository.MealRepository;
@@ -74,8 +74,7 @@ public class SearchMealsFragment extends Fragment implements MealView {
         //textViewError = view.findViewById(R.id.textViewError);
         recyclerView = view.findViewById(R.id.recyclerViewMeals);
 
-
-        presenter = new MealPresenterImpl(this, new MealRepository(new MealLocalDataSourceImpl(FavoriteMealDatabase.getInstance(requireContext()).favoriteMealDao()),
+        presenter = new MealPresenterImpl(this, new MealRepository(new MealLocalDataSourceImpl(FavoriteMealDatabase.getInstance(requireContext())),
                 new MealRemoteDataSource(RetrofitClient.getClient().create(MealApi.class))));
 
         adapter = new MealAdapter(presenter,requireContext());
@@ -171,6 +170,11 @@ public class SearchMealsFragment extends Fragment implements MealView {
     }
 
     @Override
+    public void addMeal(MealEntity meal) {
+
+    }
+
+    @Override
     public void showIngredients(List<IngredientResponse.Ingredient> ingredients) {
 
     }
@@ -179,4 +183,5 @@ public class SearchMealsFragment extends Fragment implements MealView {
     public void getMealsByCategory(String categoryName) {
 
     }
+
 }

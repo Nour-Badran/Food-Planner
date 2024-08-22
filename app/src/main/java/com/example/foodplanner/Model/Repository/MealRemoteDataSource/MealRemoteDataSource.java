@@ -2,7 +2,7 @@ package com.example.foodplanner.Model.Repository.MealRemoteDataSource;
 
 import com.example.foodplanner.Model.POJO.CategoryResponse;
 import com.example.foodplanner.Model.POJO.IngredientResponse;
-import com.example.foodplanner.Model.POJO.MealEntity;
+import com.example.foodplanner.Model.Repository.MealDB.MealEntity;
 import com.example.foodplanner.Model.POJO.MealResponse;
 
 import java.util.ArrayList;
@@ -62,7 +62,7 @@ public class MealRemoteDataSource implements MealModel {
 
             @Override
             public void onFailure(Call<MealResponse> call, Throwable t) {
-                callback.onFailure("Error: " + t.getMessage());
+                callback.onFailure("No network, please Check your network connection");
             }
         });
     }
@@ -86,7 +86,7 @@ public class MealRemoteDataSource implements MealModel {
 
             @Override
             public void onFailure(Call<MealResponse> call, Throwable t) {
-                callback.onFailure("Error: " + t.getMessage());
+                callback.onFailure("No network, please Check your network connection");
             }
         });
     }
@@ -112,7 +112,7 @@ public class MealRemoteDataSource implements MealModel {
 
             @Override
             public void onFailure(Call<MealResponse> call, Throwable t) {
-                callback.onFailure("Error: " + t.getMessage());
+                callback.onFailure("No network, please Check your network connection");
             }
         });
     }
@@ -137,7 +137,7 @@ public class MealRemoteDataSource implements MealModel {
 
             @Override
             public void onFailure(Call<IngredientResponse> call, Throwable t) {
-                callback.onFailure("Error: " + t.getMessage());
+                callback.onFailure("No network, please Check your network connection");
             }
         });
     }
@@ -171,7 +171,7 @@ public class MealRemoteDataSource implements MealModel {
 
             @Override
             public void onFailure(Call<IngredientResponse> call, Throwable t) {
-                callback.onFailure("Error: " + t.getMessage());
+                callback.onFailure("No network, please Check your network connection");
             }
         });
     }
@@ -191,7 +191,7 @@ public class MealRemoteDataSource implements MealModel {
                         callback.onSuccess(meals);
                     }
                 } else {
-                    callback.onFailure("Failed to find meals: " + response.message());
+                    callback.onFailure("No network, please Check your network connection");
                 }
             }
 
@@ -223,7 +223,7 @@ public class MealRemoteDataSource implements MealModel {
 
             @Override
             public void onFailure(Call<MealResponse> call, Throwable t) {
-                callback.onFailure("Error: " + t.getMessage());
+                callback.onFailure("No network, please Check your network connection");
             }
         });
     }
@@ -249,7 +249,7 @@ public class MealRemoteDataSource implements MealModel {
 
             @Override
             public void onFailure(Call<MealResponse> call, Throwable t) {
-                callback.onFailure("Error: " + t.getMessage());
+                callback.onFailure("No network, please Check your network connection");
             }
         });
     }
@@ -277,7 +277,7 @@ public class MealRemoteDataSource implements MealModel {
 
             @Override
             public void onFailure(Call<MealResponse> call, Throwable t) {
-                callback.onFailure("Error: " + t.getMessage());
+                callback.onFailure("No network, please Check your network connection");
             }
         });
     }
@@ -305,7 +305,7 @@ public class MealRemoteDataSource implements MealModel {
 
             @Override
             public void onFailure(Call<CategoryResponse> call, Throwable t) {
-                callback.onFailure("Error: " + t.getMessage());
+                callback.onFailure("No network, please Check your network connection");
             }
         });
     }

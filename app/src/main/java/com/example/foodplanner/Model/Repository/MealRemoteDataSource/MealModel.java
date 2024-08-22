@@ -2,7 +2,7 @@ package com.example.foodplanner.Model.Repository.MealRemoteDataSource;
 
 import com.example.foodplanner.Model.POJO.CategoryResponse;
 import com.example.foodplanner.Model.POJO.IngredientResponse;
-import com.example.foodplanner.Model.POJO.MealEntity;
+import com.example.foodplanner.Model.Repository.MealDB.MealEntity;
 
 import java.util.List;
 

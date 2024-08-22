@@ -74,7 +74,8 @@
     <string name="nour_badran">Nour Badran</string>
     <string name="meal_name">Meal Name</string>
     <string name="category">Category</string>
-    <string name="you_need_sign_up_to_access_favourite_meals">You need sign up to access favourite meals</string>
+    <string name="you_need_sign_up_to_access_favourite_meals">You need sign up to access locked contents</string>
     <string name="log_in">Log In</string>
+    <string name="weekly_plan">Weekly Plan</string>
 
 </resources>
