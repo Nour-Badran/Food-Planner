@@ -51,4 +51,7 @@ public class AuthModel {
     public boolean isLoggedIn() {
         return sharedPreferences.getBoolean("loggedIn", false);
     }
+    public String getEmail() {
+        return sharedPreferences.getString("email", "Guest");
+    }
 }
