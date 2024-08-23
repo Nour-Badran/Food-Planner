@@ -52,7 +52,6 @@
             android:layout_gravity="center"
             android:fontFamily="@font/poppins_bold"
             android:gravity="center"
-            android:maxLines="1"
             android:padding="8dp"
             android:shadowColor="#AA000000"
             android:shadowDx="1"

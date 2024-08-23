@@ -287,19 +287,25 @@ public class HomeFragment extends Fragment implements MealView, AuthView {
         mealImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String fullMealName = mealName.getText().toString();
-                String mealNameWithoutPrefix = fullMealName.replace("Meal Name: ", "").trim();
-                Bundle bundle = new Bundle();
-                bundle.putString("meal_name", mealNameWithoutPrefix);
-                currentIndex = -1;
-                mealsList.clear();
-                NavController navController = Navigation.findNavController(view);
+                if(NetworkUtil.isNetworkConnected(getContext()))
+                {
+                    String fullMealName = mealName.getText().toString();
+                    String mealNameWithoutPrefix = fullMealName.replace("Meal Name: ", "").trim();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("meal_name", mealNameWithoutPrefix);
+                    currentIndex = -1;
+                    mealsList.clear();
+                    NavController navController = Navigation.findNavController(view);
 
-                FragmentNavigator.Extras extras = new FragmentNavigator.Extras.Builder()
-                        .addSharedElement(mealImage, "shared_image_transition")
-                        .build();
+                    FragmentNavigator.Extras extras = new FragmentNavigator.Extras.Builder()
+                            .addSharedElement(mealImage, "shared_image_transition")
+                            .build();
 
-                navController.navigate(R.id.action_randomMeal_to_mealDetailsFragment, bundle, null, extras);
+                    navController.navigate(R.id.action_randomMeal_to_mealDetailsFragment, bundle, null, extras);
+                }
+                else {
+                    Toast.makeText(getContext(), "Please connect to the internet", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -320,9 +326,12 @@ public class HomeFragment extends Fragment implements MealView, AuthView {
         currentIndex++;
         updateFabColor(meal.getIdMeal());
         mealsList.add(meal);
-        mealName.setText("Meal Name: " + meal.getStrMeal());
-        mealCategory.setText("Category: " + meal.getStrCategory());
-        mealArea.setText("Country: " + meal.getStrArea());
+        mealName.append(": " + meal.getStrMeal());
+        mealCategory.append(": " + meal.getStrCategory());
+        mealArea.append(": " + meal.getStrArea());
+        //mealName.setText("Meal Name: " + meal.getStrMeal());
+//        mealCategory.setText("Category: " + meal.getStrCategory());
+//        mealArea.setText("Country: " + meal.getStrArea());
         Glide.with(this).load(meal.getStrMealThumb()).apply(new RequestOptions())
                 .placeholder(R.drawable.img_11).into(mealImage);
     }

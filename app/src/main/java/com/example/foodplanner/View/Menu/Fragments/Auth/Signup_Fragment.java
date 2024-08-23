@@ -1,4 +1,4 @@
-package com.example.foodplanner.View.Auth;
+package com.example.foodplanner.View.Menu.Fragments.Auth;
 
 import android.content.Intent;
 import android.os.Bundle;

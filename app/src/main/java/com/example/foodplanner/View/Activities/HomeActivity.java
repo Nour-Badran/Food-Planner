@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -23,6 +24,7 @@ import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 
 import com.example.foodplanner.Model.AuthModel.AuthModel;
+import com.example.foodplanner.Model.Network.NetworkUtil;
 import com.example.foodplanner.Model.Repository.Repository.DataRepository;
 import com.example.foodplanner.Model.Network.NetworkChangeReceiver;
 import com.example.foodplanner.Model.POJO.CategoryResponse;
@@ -109,7 +111,14 @@ public class HomeActivity extends AppCompatActivity implements MealView, AuthVie
                     }
                     else if(id ==R.id.nameSearchFragment)
                     {
-                        navController.navigate(R.id.nameSearchFragment);
+                        if(NetworkUtil.isNetworkConnected(getBaseContext()))
+                        {
+                            navController.navigate(R.id.nameSearchFragment);
+                        }
+                        else
+                        {
+                            Toast.makeText(HomeActivity.this, "Please connect to the internet", Toast.LENGTH_SHORT).show();
+                        }
                     }
                     else if(id ==R.id.countrySearchFragment)
                     {
@@ -121,7 +130,14 @@ public class HomeActivity extends AppCompatActivity implements MealView, AuthVie
                     }
                     else if(id ==R.id.ingredientSearchFragment)
                     {
-                        navController.navigate(R.id.ingredientSearchFragment);
+                        if(NetworkUtil.isNetworkConnected(getBaseContext()))
+                        {
+                            navController.navigate(R.id.ingredientSearchFragment);
+                        }
+                        else
+                        {
+                            Toast.makeText(HomeActivity.this, "Please connect to the internet", Toast.LENGTH_SHORT).show();
+                        }
                     }
                     else if(id ==R.id.mealPlannerFragment)
                     {
@@ -146,7 +162,14 @@ public class HomeActivity extends AppCompatActivity implements MealView, AuthVie
                     }
                     else if(id ==R.id.signout)
                     {
-                        handleSignOut();
+                        if(NetworkUtil.isNetworkConnected(getBaseContext()) || !loggedIn)
+                        {
+                            handleSignOut();
+                        }
+                        else
+                        {
+                            Toast.makeText(HomeActivity.this, "Please connect to the internet", Toast.LENGTH_SHORT).show();
+                        }
                     }
                     else if(id ==R.id.exit)
                     {

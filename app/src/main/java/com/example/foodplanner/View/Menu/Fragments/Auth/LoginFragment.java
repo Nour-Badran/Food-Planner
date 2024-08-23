@@ -1,4 +1,4 @@
-package com.example.foodplanner.View.Auth;
+package com.example.foodplanner.View.Menu.Fragments.Auth;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -120,7 +120,16 @@ public class LoginFragment extends Fragment implements AuthView, MealView {
         guestButton = view.findViewById(R.id.guestLoginButton);
 
         ImageView googleSignIn = view.findViewById(R.id.google);
-        googleSignIn.setOnClickListener(v -> googleSignIn());
+        googleSignIn.setOnClickListener(v -> {
+            if(NetworkUtil.isNetworkConnected(getContext()))
+            {
+                googleSignIn();
+            }
+            else
+            {
+                Toast.makeText(getContext(), "Please connect to the internet", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         guestButton.setOnClickListener(v -> {
             showLoading();
@@ -137,6 +146,10 @@ public class LoginFragment extends Fragment implements AuthView, MealView {
                 String emaill = email.getText().toString().trim();
                 String pass = password.getText().toString().trim();
                 presenter.login(emaill, pass);
+            }
+            else
+            {
+                Toast.makeText(getContext(), "Please connect to the internet", Toast.LENGTH_SHORT).show();
             }
         });
     }

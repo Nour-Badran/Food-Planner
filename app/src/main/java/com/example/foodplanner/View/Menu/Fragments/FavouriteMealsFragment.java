@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.foodplanner.Model.AuthModel.AuthModel;
 import com.example.foodplanner.Model.POJO.CategoryResponse;
 import com.example.foodplanner.Model.POJO.IngredientResponse;
 import com.example.foodplanner.Model.Repository.MealDB.MealEntity;
@@ -25,20 +26,22 @@ import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealApi;
 import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealRemoteDataSource;
 import com.example.foodplanner.Model.Repository.MealRemoteDataSource.RetrofitClient;
 import com.example.foodplanner.Model.Repository.Repository.MealRepository;
+import com.example.foodplanner.Presenter.AuthPresenter;
 import com.example.foodplanner.Presenter.MealPresenterImpl;
 import com.example.foodplanner.R;
 import com.example.foodplanner.View.Menu.Adapters.MealAdapter;
+import com.example.foodplanner.View.Menu.Interfaces.AuthView;
 import com.example.foodplanner.View.Menu.Interfaces.MealView;
 
 import java.util.List;
 
-public class FavouriteMealsFragment extends Fragment implements MealView {
+public class FavouriteMealsFragment extends Fragment implements MealView, AuthView {
 
-    MealPresenterImpl presenter;
-
+    private MealPresenterImpl presenter;
     private RecyclerView recyclerView;
     private MealAdapter adapter;
     private SearchView searchViewMeal;
+    private AuthPresenter authPresenter;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +50,6 @@ public class FavouriteMealsFragment extends Fragment implements MealView {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_favourites, container, false);
     }
 
@@ -61,7 +63,8 @@ public class FavouriteMealsFragment extends Fragment implements MealView {
         presenter = new MealPresenterImpl(this, new MealRepository(new MealLocalDataSourceImpl(FavoriteMealDatabase.getInstance(requireContext())),
                 new MealRemoteDataSource(RetrofitClient.getClient().create(MealApi.class))));
 
-        adapter = new MealAdapter(presenter,requireContext());
+        authPresenter = new AuthPresenter(this, new AuthModel(getContext()));
+        adapter = new MealAdapter(presenter,requireContext(),authPresenter);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         LiveData<List<MealEntity>> mealList = presenter.getFavMeals();
@@ -145,6 +148,41 @@ public class FavouriteMealsFragment extends Fragment implements MealView {
 
     @Override
     public void getMealsByCategory(String categoryName) {
+
+    }
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void hideLoading() {
+
+    }
+
+    @Override
+    public void showToast(String message) {
+
+    }
+
+    @Override
+    public void navigateToHome(String email) {
+
+    }
+
+    @Override
+    public void navigateToSignUp() {
+
+    }
+
+    @Override
+    public void setEmailError(String error) {
+
+    }
+
+    @Override
+    public void setPasswordError(String error) {
 
     }
 }

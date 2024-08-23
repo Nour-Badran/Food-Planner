@@ -245,9 +245,9 @@ public class MealDetailsFragment extends Fragment implements MealView, AuthView 
                         stepNumber++;
                     }
                 }
-
+                stepNumber--;
                 mealSteps.setText(stepsText.toString());
-                steps.setText("Steps: " + stepNumber);
+                steps.append(": " + stepNumber);
             }
 
 
@@ -353,7 +353,7 @@ public class MealDetailsFragment extends Fragment implements MealView, AuthView 
                 }
             }
             adapter.setIngredients(ingredientImageUrls);
-            mealIngredients.setText("Ingredients: " + ingredientImageUrls.size());
+            mealIngredients.append(" " + ingredientImageUrls.size());
         }
 
         // Load video
