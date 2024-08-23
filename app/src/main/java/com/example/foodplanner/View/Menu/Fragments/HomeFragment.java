@@ -2,8 +2,6 @@ package com.example.foodplanner.View.Menu.Fragments;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 
@@ -28,6 +26,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.foodplanner.Model.AuthModel.AuthModel;
 import com.example.foodplanner.Model.Network.NetworkUtil;
 import com.example.foodplanner.Model.POJO.CategoryResponse;
 import com.example.foodplanner.Model.POJO.IngredientResponse;
@@ -38,9 +37,11 @@ import com.example.foodplanner.Model.Repository.MealDB.MealEntity;
 import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealRemoteDataSource;
 import com.example.foodplanner.Model.Repository.MealRemoteDataSource.RetrofitClient;
 import com.example.foodplanner.Model.Repository.Repository.MealRepository;
+import com.example.foodplanner.Presenter.AuthPresenter;
 import com.example.foodplanner.Presenter.MealPresenter;
 import com.example.foodplanner.Presenter.MealPresenterImpl;
 import com.example.foodplanner.R;
+import com.example.foodplanner.View.Menu.Interfaces.AuthView;
 import com.example.foodplanner.View.LoginBottomSheetFragment;
 import com.example.foodplanner.View.Menu.Adapters.CategoryAdapter;
 import com.example.foodplanner.View.Menu.Adapters.IngredientAdapter;
@@ -55,7 +56,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class HomeFragment extends Fragment implements MealView {
+public class HomeFragment extends Fragment implements MealView, AuthView {
 
     private MealPresenter presenter;
     ImageView mealImage;
@@ -67,25 +68,23 @@ public class HomeFragment extends Fragment implements MealView {
     List<MealEntity> mealsList;
     int currentIndex = -1;
     private FloatingActionButton fab;
-//    private LinearLayout fabMenuContainer;
-//    private boolean isFabMenuOpen = false;
     private int currentFabColor;
     ChipGroup chipGroup;
     RecyclerView recyclerView;
     MealAdapter mealAdapter;
     CategoryAdapter categoryAdapter;
-
     IngredientAdapter ingredientAdapter;
-    private static final String PREFS_NAME = "FoodPlannerPrefs";
-    private static final String KEY_LOGGED_IN = "loggedIn";
+    AuthPresenter authPresenter;
+    boolean loggedIn;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mealsList = new ArrayList<>();
+        authPresenter = new AuthPresenter(this, new AuthModel(getContext()));
+        loggedIn = authPresenter.isLoggedIn();
         requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                // Replace with the action to navigate to another fragment
                 requireActivity().finish();
             }
         });
@@ -112,9 +111,9 @@ public class HomeFragment extends Fragment implements MealView {
                         recyclerView.setAdapter(categoryAdapter);
                         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
                         recyclerView.setVisibility(View.VISIBLE);
-                        recyclerView.setTranslationY(-75); // Start the RecyclerView off-screen (above)
+                        recyclerView.setTranslationY(-75);
                         recyclerView.animate()
-                                .translationY(0) // Slide the RecyclerView down into view
+                                .translationY(0)
                                 .setDuration(300)
                                 .setInterpolator(new AccelerateDecelerateInterpolator())
                                 .setListener(null);
@@ -122,7 +121,7 @@ public class HomeFragment extends Fragment implements MealView {
                     } else if (chip.getTag().equals("Open")) {
                         chip.setTag(null);
                         recyclerView.animate()
-                                .translationY(-75) // Slide the RecyclerView up off-screen
+                                .translationY(-75)
                                 .setDuration(300)
                                 .setInterpolator(new AccelerateDecelerateInterpolator())
                                 .setListener(new Animator.AnimatorListener() {
@@ -144,8 +143,6 @@ public class HomeFragment extends Fragment implements MealView {
                     break;
             }
         });
-
-
 
         chipGroup.addView(chip);
     }
@@ -176,7 +173,6 @@ public class HomeFragment extends Fragment implements MealView {
                     color = ContextCompat.getColor(getContext(), R.color.areaBackgroundColor);
                 }
                 animateFabColor(color);
-                //fab.setBackgroundTintList(ColorStateList.valueOf(color));
             });
         });
     }
@@ -188,9 +184,6 @@ public class HomeFragment extends Fragment implements MealView {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        if (!NetworkUtil.isNetworkConnected(getContext())) {
-//            Toast.makeText(getContext(), "No network connection. Please check your internet settings.", Toast.LENGTH_LONG).show();
-//        }
         mealImage = view.findViewById(R.id.mealImage);
         mealName = view.findViewById(R.id.mealName);
         chipGroup = view.findViewById(R.id.chipGroup);
@@ -204,41 +197,24 @@ public class HomeFragment extends Fragment implements MealView {
 
         presenter = new MealPresenterImpl(this, new MealRepository(new MealLocalDataSourceImpl(FavoriteMealDatabase.getInstance(requireContext())),
                 new MealRemoteDataSource(RetrofitClient.getClient().create(MealApi.class))));
-//        presenter.deleteAllThursdayMeals();
-//        presenter.deleteAllFridayMeals();
-//        presenter.deleteAllSaturdayMeals();
-//        presenter.deleteAllSundayMeals();
-//        presenter.deleteAllMondayMeals();
-//        presenter.deleteAllTuesdayMeals();;
-//        presenter.deleteAllWednesdayMeals();
         presenter.loadRandomMeal();
 
         categoryAdapter = new CategoryAdapter();
         categoryAdapter.setOnCategoryClickListener(category -> {
-            // Navigate to MealsFragment
             if (getActivity() != null) {
-                //Toast.makeText(getActivity(), category.getName(), Toast.LENGTH_SHORT).show();
                 Bundle bundle = new Bundle();
                 bundle.putString("category_name", category.getName());
                 Navigation.findNavController(view).navigate(R.id.action_randomMeal_to_mealsFragment,bundle);
             }
         });
         addChipToGroup("Categories");
-//        addChipToGroup("Meals");
-//        addChipToGroup("Ingredients");
-        currentFabColor = ContextCompat.getColor(getContext(), R.color.gray);
 
+        currentFabColor = ContextCompat.getColor(getContext(), R.color.gray);
         animateFabColor(ContextCompat.getColor(getContext(), R.color.gray));
 
-        SharedPreferences prefs = getActivity().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        boolean loggedIn = prefs.getBoolean(KEY_LOGGED_IN, false);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                int newColor = (currentFabColor == ContextCompat.getColor(getContext(), R.color.gray))
-//                        ? ContextCompat.getColor(getContext(), R.color.areaBackgroundColor)
-//                        : ContextCompat.getColor(getContext(), R.color.gray);
-//                animateFabColor(newColor);
                 if(loggedIn)
                 {
                     if(NetworkUtil.isNetworkConnected(getContext()) && !mealsList.isEmpty())
@@ -271,49 +247,6 @@ public class HomeFragment extends Fragment implements MealView {
                 }
             }
         });
-//        fabMenuContainer = view.findViewById(R.id.fab_menu_container);
-
-//        fab.setOnClickListener(v -> {
-//            if (isFabMenuOpen) {
-//                closeFabMenu();
-//                fab.setImageResource(R.drawable.bookmark_24dp_e8eaed_fill0_wght400_grad0_opsz24);
-//                animateFabColor(ContextCompat.getColor(getContext(), R.color.gray));
-//            } else {
-//                openFabMenu();
-//                fab.setImageResource(R.drawable.close_24dp_e8eaed_fill0_wght400_grad0_opsz24);
-//                animateFabColor(ContextCompat.getColor(getContext(), R.color.blue_primary)); // Example color for opened state
-//            }
-//            isFabMenuOpen = !isFabMenuOpen;
-//        });
-
-        // Handle menu FAB clicks
-//        view.findViewById(R.id.fab_option1).setOnClickListener(v -> {
-//            Toast.makeText(getActivity(), "First", Toast.LENGTH_SHORT).show();
-//            if (isFabMenuOpen) {
-//                closeFabMenu();
-//                fab.setImageResource(R.drawable.bookmark_24dp_e8eaed_fill0_wght400_grad0_opsz24);
-//                animateFabColor(ContextCompat.getColor(getContext(), R.color.gray));
-//            } else {
-//                openFabMenu();
-//                fab.setImageResource(R.drawable.close_24dp_e8eaed_fill0_wght400_grad0_opsz24);
-//                animateFabColor(ContextCompat.getColor(getContext(), R.color.blue_primary)); // Example color for opened state
-//            }
-//            isFabMenuOpen = !isFabMenuOpen;
-//        });
-
-//        view.findViewById(R.id.fab_option2).setOnClickListener(v -> {
-//            Toast.makeText(getActivity(), "Second", Toast.LENGTH_SHORT).show();
-//            if (isFabMenuOpen) {
-//                closeFabMenu();
-//                fab.setImageResource(R.drawable.bookmark_24dp_e8eaed_fill0_wght400_grad0_opsz24);
-//                animateFabColor(ContextCompat.getColor(getContext(), R.color.gray));
-//            } else {
-//                openFabMenu();
-//                fab.setImageResource(R.drawable.close_24dp_e8eaed_fill0_wght400_grad0_opsz24);
-//                animateFabColor(ContextCompat.getColor(getContext(), R.color.blue_primary)); // Example color for opened state
-//            }
-//            isFabMenuOpen = !isFabMenuOpen;
-//        });
 
         next.setOnClickListener(v -> {
             if(NetworkUtil.isNetworkConnected(getContext()) && !mealsList.isEmpty() && mealImage!=null)
@@ -362,21 +295,13 @@ public class HomeFragment extends Fragment implements MealView {
                 mealsList.clear();
                 NavController navController = Navigation.findNavController(view);
 
-                // Create FragmentNavigator.Extras
                 FragmentNavigator.Extras extras = new FragmentNavigator.Extras.Builder()
                         .addSharedElement(mealImage, "shared_image_transition")
                         .build();
 
-                // Navigate with extras
                 navController.navigate(R.id.action_randomMeal_to_mealDetailsFragment, bundle, null, extras);
             }
         });
-    }
-    private FragmentNavigator.Extras getTransitionOptions() {
-        ImageView sharedImage = requireView().findViewById(R.id.mealImage);
-        return new FragmentNavigator.Extras.Builder()
-                .addSharedElement(sharedImage, "shared_image_transition")
-                .build();
     }
     private void animateFabColor(int newColor) {
         int startColor = currentFabColor;
@@ -402,18 +327,16 @@ public class HomeFragment extends Fragment implements MealView {
                 .placeholder(R.drawable.img_11).into(mealImage);
     }
 
-    public void showStoredMeal(MealEntity meal)
-    {
+    public void showStoredMeal(MealEntity meal) {
         mealName.setText("Meal Name: " + meal.getStrMeal());
         mealCategory.setText("Category: " + meal.getStrCategory());
         mealArea.setText("Country: " + meal.getStrArea());
         Glide.with(this).load(meal.getStrMealThumb()).apply(new RequestOptions())
                 .placeholder(R.drawable.img_11).into(mealImage);
     }
-    @Override
-    public void showMealDetails(MealEntity meal) {
 
-    }
+    @Override
+    public void showMealDetails(MealEntity meal) {}
 
     @Override
     public void showMessage(String message) {
@@ -433,13 +356,10 @@ public class HomeFragment extends Fragment implements MealView {
     @Override
     public void showMeals(List<MealEntity> meals) {
         mealAdapter.setMeals(meals);
-
     }
 
     @Override
-    public void addMeal(MealEntity meal) {
-
-    }
+    public void addMeal(MealEntity meal) {}
 
     @Override
     public void showIngredients(List<IngredientResponse.Ingredient> ingredients) {
@@ -447,34 +367,8 @@ public class HomeFragment extends Fragment implements MealView {
     }
 
     @Override
-    public void getMealsByCategory(String categoryName) {
+    public void getMealsByCategory(String categoryName) {}
 
-    }
-
-    private void animateMealChange() {
-        mealImage.animate()
-                .alpha(0f)
-                .setDuration(200)
-                .setListener(new Animator.AnimatorListener() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        showStoredMeal(mealsList.get(currentIndex)); // Update the content
-                        mealImage.animate()
-                                .alpha(1f)
-                                .setDuration(200)
-                                .setListener(null);
-                    }
-
-                    @Override
-                    public void onAnimationStart(Animator animation) {}
-
-                    @Override
-                    public void onAnimationCancel(Animator animation) {}
-
-                    @Override
-                    public void onAnimationRepeat(Animator animation) {}
-                });
-    }
     private void animateFabSlide(final boolean isNext) {
         float translationX = isNext ? fab.getWidth() : -fab.getWidth();
         fab.animate()
@@ -596,4 +490,24 @@ public class HomeFragment extends Fragment implements MealView {
                 });
     }
 
+    @Override
+    public void showLoading() {}
+
+    @Override
+    public void hideLoading() {}
+
+    @Override
+    public void showToast(String message) {}
+
+    @Override
+    public void navigateToHome(String email) {}
+
+    @Override
+    public void navigateToSignUp() {}
+
+    @Override
+    public void setEmailError(String error) {}
+
+    @Override
+    public void setPasswordError(String error) {}
 }

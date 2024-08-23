@@ -20,7 +20,6 @@ import android.widget.TextView;
 
 import com.example.foodplanner.Model.POJO.CategoryResponse;
 import com.example.foodplanner.Model.POJO.IngredientResponse;
-import com.example.foodplanner.Model.Repository.MealDB.MealDao;
 import com.example.foodplanner.Model.Repository.MealDB.MealEntity;
 import com.example.foodplanner.Model.Repository.DB.FavoriteMealDatabase;
 import com.example.foodplanner.Model.Repository.MealDB.MealLocalDataSourceImpl;
@@ -306,13 +305,14 @@ public class MealPlannerFragment extends Fragment implements MealView, OnAddClic
         Button btnRandomMeal = dialogView.findViewById(R.id.btn_random_meal);
         Button btnChooseMeal = dialogView.findViewById(R.id.btn_choose_meal);
         Button btnChooseFromFavs = dialogView.findViewById(R.id.btn_favourite_meal);
-        MealDao mealDao = FavoriteMealDatabase.getInstance(getContext()).favoriteMealDao();
-        mealDao.getAllMeals().observe(getActivity(), meals -> {
+
+        presenter.getFavMeals().observe(getActivity(), meals -> {
             if (meals != null) {
                 // Convert LiveData<List<MealEntity>> to List<MealEntity>
                 mealList.set(new ArrayList<>(meals));
             }
         });
+
         btnRandomMeal.setOnClickListener(v -> {
             presenter.addRandomMealForDay(pos);
             dialog.dismiss();

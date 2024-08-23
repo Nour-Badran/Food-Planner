@@ -61,7 +61,6 @@ public class CategorySearchFragment extends Fragment implements MealView {
         adapter = new CategoryAdapter();
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-// Assuming you have a DAO for WeeklyPlan
 
         presenter = new MealPresenterImpl(this, new MealRepository(new MealLocalDataSourceImpl(FavoriteMealDatabase.getInstance(requireContext())),
                 new MealRemoteDataSource(RetrofitClient.getClient().create(MealApi.class))));

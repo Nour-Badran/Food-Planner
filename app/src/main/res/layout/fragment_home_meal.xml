@@ -89,7 +89,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="casual"
                 android:padding="8dp"
-                android:text="Meal Name"
+                android:text="@string/meal_name"
                 android:textColor="@color/textColorDarkGray"
                 android:textSize="16sp"
                 android:textStyle="bold" />

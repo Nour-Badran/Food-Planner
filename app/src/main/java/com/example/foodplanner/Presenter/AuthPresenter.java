@@ -1,8 +1,9 @@
 package com.example.foodplanner.Presenter;
 
 import com.example.foodplanner.Model.AuthModel.AuthModel;
-import com.example.foodplanner.View.Auth.AuthView;
+import com.example.foodplanner.View.Menu.Interfaces.AuthView;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class AuthPresenter {
     private AuthView view;
@@ -72,9 +73,30 @@ public class AuthPresenter {
         });
     }
 
-    /*public void checkIfLoggedIn() {
-        if (model.isLoggedIn()) {
-            view.navigateToHome();
-        }
-    }*/
+    public void saveLoginState(String email) {
+        model.saveLoginState(email);
+    }
+
+    public void clearLoginState() {
+        model.clearLoginState();
+    }
+
+    public String getCurrentUserId() {
+        return model.getCurrentUserId();
+    }
+
+    public boolean isLoggedIn() {
+        return model.isLoggedIn();
+    }
+
+    public String getEmail() {
+        return model.getEmail();
+    }
+
+    public void signOut() {
+        clearLoginState();
+        view.showToast("Signed Out");
+        FirebaseAuth.getInstance().signOut();
+        view.navigateToSignUp();
+    }
 }

@@ -20,7 +20,6 @@ import com.example.foodplanner.Model.POJO.CategoryResponse;
 import com.example.foodplanner.Model.POJO.IngredientResponse;
 import com.example.foodplanner.Model.Repository.MealDB.MealEntity;
 import com.example.foodplanner.Model.Repository.DB.FavoriteMealDatabase;
-import com.example.foodplanner.Model.Repository.MealDB.MealDao;
 import com.example.foodplanner.Model.Repository.MealDB.MealLocalDataSourceImpl;
 import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealApi;
 import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealRemoteDataSource;
@@ -65,8 +64,7 @@ public class FavouriteMealsFragment extends Fragment implements MealView {
         adapter = new MealAdapter(presenter,requireContext());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-        MealDao mealDao = FavoriteMealDatabase.getInstance(getContext()).favoriteMealDao();
-        LiveData<List<MealEntity>> mealList = mealDao.getAllMeals();
+        LiveData<List<MealEntity>> mealList = presenter.getFavMeals();
         mealList.observe(getViewLifecycleOwner(), mealEntities -> {
             adapter.setMeals(mealEntities);
         });
@@ -98,8 +96,7 @@ public class FavouriteMealsFragment extends Fragment implements MealView {
     @Override
     public void onResume() {
         super.onResume();
-        MealDao mealDao = FavoriteMealDatabase.getInstance(getContext()).favoriteMealDao();
-        LiveData<List<MealEntity>> mealList = mealDao.getAllMeals();
+        LiveData<List<MealEntity>> mealList = presenter.getFavMeals();
         mealList.observe(getViewLifecycleOwner(), mealEntities -> {
             adapter.setMeals(mealEntities);
         });

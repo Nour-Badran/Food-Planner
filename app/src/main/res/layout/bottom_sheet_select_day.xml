@@ -18,42 +18,42 @@
         android:id="@+id/btnMonday"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Monday" />
+        android:text="@string/monday" />
 
     <Button
         android:id="@+id/btnTuesday"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Tuesday" />
+        android:text="@string/tuesday" />
 
     <Button
         android:id="@+id/btnWednesday"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Wednesday" />
+        android:text="@string/wednesday" />
 
     <Button
         android:id="@+id/btnThursday"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Thursday" />
+        android:text="@string/thursday" />
 
     <Button
         android:id="@+id/btnFriday"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Friday" />
+        android:text="@string/friday" />
 
     <Button
         android:id="@+id/btnSaturday"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Saturday" />
+        android:text="@string/saturday" />
 
     <Button
         android:id="@+id/btnSunday"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Sunday" />
+        android:text="@string/sunday" />
 
 </LinearLayout>

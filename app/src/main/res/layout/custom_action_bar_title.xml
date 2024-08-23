@@ -6,7 +6,7 @@
     android:fontFamily="casual"
     android:gravity="center"
     android:padding="8dp"
-    android:text="TheMealDB"
+    android:text="@string/themealdb"
     android:textColor="@android:color/white"
-    android:textSize="24dp"
+    android:textSize="24sp"
     android:textStyle="bold" />

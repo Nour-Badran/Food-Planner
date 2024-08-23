@@ -1,4 +1,4 @@
-package com.example.foodplanner.View.Auth;
+package com.example.foodplanner.View.Activities;
 
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;

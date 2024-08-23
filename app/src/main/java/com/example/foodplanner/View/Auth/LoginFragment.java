@@ -41,10 +41,12 @@ import com.example.foodplanner.Model.Repository.Repository.DataRepository;
 import com.example.foodplanner.Model.Repository.Repository.MealRepository;
 import com.example.foodplanner.Model.Repository.Repository.OnMealsLoadedListener;
 import com.example.foodplanner.Presenter.AuthPresenter;
+import com.example.foodplanner.Presenter.DataPresenter;
 import com.example.foodplanner.Presenter.MealPresenter;
 import com.example.foodplanner.Presenter.MealPresenterImpl;
 import com.example.foodplanner.R;
 import com.example.foodplanner.View.Activities.HomeActivity;
+import com.example.foodplanner.View.Menu.Interfaces.AuthView;
 import com.example.foodplanner.View.Menu.Interfaces.MealView;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -63,7 +65,7 @@ public class LoginFragment extends Fragment implements AuthView, MealView {
     private GoogleSignInClient mGoogleSignInClient;
     private AuthPresenter presenter;
     private MealPresenter mealPresenter;
-    DataRepository dataRepository;
+    DataPresenter dataPresenter;
 
     private final ActivityResultLauncher<Intent> googleSignInLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
@@ -82,7 +84,7 @@ public class LoginFragment extends Fragment implements AuthView, MealView {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        dataRepository = new DataRepository();
+        dataPresenter = new DataPresenter(new DataRepository());
         presenter = new AuthPresenter(this, new AuthModel(requireContext()));
         mealPresenter = new MealPresenterImpl(this, new MealRepository(new MealLocalDataSourceImpl(FavoriteMealDatabase.getInstance(getContext())),
                 new MealRemoteDataSource(RetrofitClient.getClient().create(MealApi.class))));
@@ -123,10 +125,10 @@ public class LoginFragment extends Fragment implements AuthView, MealView {
         guestButton.setOnClickListener(v -> {
             showLoading();
             loadMealsFromfirebase("Guest");
+            showToast("Welcome Guest");
             startActivity(new Intent(getActivity(), HomeActivity.class));
             getActivity().finish();
             hideLoading();
-            showToast("Welcome Guest");
         });
 
         logIn.setOnClickListener(v -> {
@@ -147,7 +149,7 @@ public class LoginFragment extends Fragment implements AuthView, MealView {
     }
     public void loadMealsFromfirebase(String email)
     {
-        dataRepository.loadFromFirebase(email, "Favourites", new OnMealsLoadedListener() {
+        dataPresenter.loadFromFirebase(email, "Favourites", new OnMealsLoadedListener() {
             @Override
             public void onMealsLoaded(List<MealEntity> meals) {
                 if (meals != null && !meals.isEmpty()) {
@@ -159,7 +161,7 @@ public class LoginFragment extends Fragment implements AuthView, MealView {
                 }
             }
         });
-        dataRepository.loadFromFirebase(email, "Monday", new OnMealsLoadedListener() {
+        dataPresenter.loadFromFirebase(email, "Monday", new OnMealsLoadedListener() {
             @Override
             public void onMealsLoaded(List<MealEntity> meals) {
                 if (meals != null && !meals.isEmpty()) {
@@ -174,7 +176,7 @@ public class LoginFragment extends Fragment implements AuthView, MealView {
                 }
             }
         });
-        dataRepository.loadFromFirebase(email, "Tuesday", new OnMealsLoadedListener() {
+        dataPresenter.loadFromFirebase(email, "Tuesday", new OnMealsLoadedListener() {
             @Override
             public void onMealsLoaded(List<MealEntity> meals) {
                 if (meals != null && !meals.isEmpty()) {
@@ -189,7 +191,7 @@ public class LoginFragment extends Fragment implements AuthView, MealView {
                 }
             }
         });
-        dataRepository.loadFromFirebase(email, "Wednesday", new OnMealsLoadedListener() {
+        dataPresenter.loadFromFirebase(email, "Wednesday", new OnMealsLoadedListener() {
             @Override
             public void onMealsLoaded(List<MealEntity> meals) {
                 if (meals != null && !meals.isEmpty()) {
@@ -204,7 +206,7 @@ public class LoginFragment extends Fragment implements AuthView, MealView {
                 }
             }
         });
-        dataRepository.loadFromFirebase(email, "Thursday", new OnMealsLoadedListener() {
+        dataPresenter.loadFromFirebase(email, "Thursday", new OnMealsLoadedListener() {
             @Override
             public void onMealsLoaded(List<MealEntity> meals) {
                 if (meals != null && !meals.isEmpty()) {
@@ -219,7 +221,7 @@ public class LoginFragment extends Fragment implements AuthView, MealView {
                 }
             }
         });
-        dataRepository.loadFromFirebase(email, "Friday", new OnMealsLoadedListener() {
+        dataPresenter.loadFromFirebase(email, "Friday", new OnMealsLoadedListener() {
             @Override
             public void onMealsLoaded(List<MealEntity> meals) {
                 if (meals != null && !meals.isEmpty()) {
@@ -234,7 +236,7 @@ public class LoginFragment extends Fragment implements AuthView, MealView {
                 }
             }
         });
-        dataRepository.loadFromFirebase(email, "Saturday", new OnMealsLoadedListener() {
+        dataPresenter.loadFromFirebase(email, "Saturday", new OnMealsLoadedListener() {
             @Override
             public void onMealsLoaded(List<MealEntity> meals) {
                 if (meals != null && !meals.isEmpty()) {
@@ -249,7 +251,7 @@ public class LoginFragment extends Fragment implements AuthView, MealView {
                 }
             }
         });
-        dataRepository.loadFromFirebase(email, "Sunday", new OnMealsLoadedListener() {
+        dataPresenter.loadFromFirebase(email, "Sunday", new OnMealsLoadedListener() {
             @Override
             public void onMealsLoaded(List<MealEntity> meals) {
                 if (meals != null && !meals.isEmpty()) {
@@ -285,6 +287,11 @@ public class LoginFragment extends Fragment implements AuthView, MealView {
         loadMealsFromfirebase(email);
         startActivity(new Intent(getActivity(), HomeActivity.class));
         getActivity().finish();
+    }
+
+    @Override
+    public void navigateToSignUp() {
+
     }
 
 

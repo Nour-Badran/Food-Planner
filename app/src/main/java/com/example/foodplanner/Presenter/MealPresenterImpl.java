@@ -152,17 +152,17 @@ public class MealPresenterImpl implements MealPresenter {
             }
         });
     }
-
     @Override
-    public void getFavMeals() {
+    public LiveData<List<MealEntity>> getFavMeals() {
         // Retrieve all meals and manually notify view
-        repository.getStoredMeals().observeForever(meals -> {
-            if (meals == null || meals.isEmpty()) {
-                view.showError("No favorite meals found");
-            } else {
-                view.showMeals(meals);
-            }
-        });
+//        repository.getStoredMeals().observeForever(meals -> {
+//            if (meals == null || meals.isEmpty()) {
+//                view.showError("No favorite meals found");
+//            } else {
+//                view.showMeals(meals);
+//            }
+//        });
+        return repository.getStoredMeals();
     }
 
     @Override

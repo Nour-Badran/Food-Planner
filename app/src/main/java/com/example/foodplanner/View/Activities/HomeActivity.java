@@ -2,10 +2,9 @@ package com.example.foodplanner.View.Activities;
 
 import static android.view.View.VISIBLE;
 
-import android.content.Context;
+
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -26,11 +25,9 @@ import androidx.navigation.Navigation;
 import com.example.foodplanner.Model.AuthModel.AuthModel;
 import com.example.foodplanner.Model.Repository.Repository.DataRepository;
 import com.example.foodplanner.Model.Network.NetworkChangeReceiver;
-import com.example.foodplanner.Model.Repository.Repository.OnMealsLoadedListener;
 import com.example.foodplanner.Model.POJO.CategoryResponse;
 import com.example.foodplanner.Model.POJO.IngredientResponse;
 import com.example.foodplanner.Model.Repository.DB.FavoriteMealDatabase;
-import com.example.foodplanner.Model.Repository.MealDB.MealDao;
 import com.example.foodplanner.Model.Repository.MealDB.MealEntity;
 import com.example.foodplanner.Model.Repository.MealDB.MealLocalDataSourceImpl;
 import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealApi;
@@ -44,98 +41,71 @@ import com.example.foodplanner.Model.Repository.PlanDB.Days.Thursday;
 import com.example.foodplanner.Model.Repository.PlanDB.Days.Tuesday;
 import com.example.foodplanner.Model.Repository.PlanDB.Days.Wednesday;
 import com.example.foodplanner.Model.Repository.Repository.MealRepository;
+import com.example.foodplanner.Presenter.AuthPresenter;
+import com.example.foodplanner.Presenter.DataPresenter;
 import com.example.foodplanner.Presenter.MealPresenterImpl;
 import com.example.foodplanner.R;
-import com.example.foodplanner.View.Auth.AuthActivity;
+import com.example.foodplanner.View.Menu.Interfaces.AuthView;
 import com.example.foodplanner.View.LoginBottomSheetFragment;
 import com.example.foodplanner.View.Menu.Interfaces.MealView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeActivity extends AppCompatActivity implements MealView {
+public class HomeActivity extends AppCompatActivity implements MealView, AuthView {
 
     DrawerLayout drawerLayout;
     TextView nameTextView;
     ProgressBar progressBar;
-    FloatingActionButton floatingActionButton;
-    DataRepository dataRepository;
-
-    private static final String PREFS_NAME = "FoodPlannerPrefs";
-    private static final String KEY_LOGGED_IN = "loggedIn";
-    SharedPreferences prefs;
+    AuthPresenter authPresenter;
     NavController navController;
-    NetworkChangeReceiver networkChangeReceiver = new NetworkChangeReceiver();
-    AuthModel authService;
+    NetworkChangeReceiver networkChangeReceiver;
     MealPresenterImpl presenter;
     String email;
+    boolean loggedIn;
+    NavigationView navigationView;
+    View headerView;
+    ActionBar actionBar;
+    DataPresenter dataPresenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
         // Register network receiver
+        intitilaizeNetworkReciever();
 
-        networkChangeReceiver = new NetworkChangeReceiver();
-        IntentFilter filter = new IntentFilter();
-        filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
-        registerReceiver(networkChangeReceiver, filter);
-
-        ////////////////////////////////////////
-        prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        email = prefs.getString("email", "Guest");
+        authPresenter = new AuthPresenter(this, new AuthModel(getBaseContext()));
+        email = authPresenter.getEmail();
+        loggedIn = authPresenter.isLoggedIn();
         presenter = new MealPresenterImpl(this, new MealRepository(new MealLocalDataSourceImpl(FavoriteMealDatabase.getInstance(this)),
                 new MealRemoteDataSource(RetrofitClient.getClient().create(MealApi.class))));
-        dataRepository = new DataRepository();
-        //////////////////////////
 
-//        if(!email.equals("Guest"))
-//        {
-//            loadMealsFromfirebase();
-//        }
+        dataPresenter = new DataPresenter(new DataRepository());
 
-        //dataRepository.loadMeals(email);
-
-        authService = new AuthModel(this);
-        prefs = getSharedPreferences("FoodPlannerPrefs", MODE_PRIVATE);
-        NavigationView navigationView = findViewById(R.id.navigation);
+        navigationView = findViewById(R.id.navigation);
         drawerLayout = findViewById(R.id.main);
 
-        View headerView = navigationView.getHeaderView(0);
+        headerView = navigationView.getHeaderView(0);
         nameTextView = headerView.findViewById(R.id.name_tv);
         progressBar = findViewById(R.id.progressBar2);
 
         nameTextView.setText(email);
 
-//        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                NavOptions navOptions = new NavOptions.Builder()
-//                        .setPopUpTo(R.id.nav_host_fragment2, true) // Clear back stack up to nav host
-//                        .setLaunchSingleTop(true) // Prevent re-adding if already at the top
-//                        .build();
-//                navController.navigate(R.id.favouritesFragment, null, navOptions);
-//            }
-//        });
-
-        ActionBar actionBar = getSupportActionBar();
+        actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setHomeAsUpIndicator(R.drawable.home_24dp_e8eaed_fill0_wght400_grad0_opsz24);
             actionBar.setDisplayShowHomeEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
             navController = Navigation.findNavController(this, R.id.nav_host_fragment2);
-            //NavigationUI.setupWithNavController(navigationView, navController);
-            // Set up navigation item selected listener
             navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                     int id = menuItem.getItemId();
 
                     if (id == R.id.randomMeal) {
-                        // Handle Home action
-                        navController.navigate(R.id.randomMeal); // Navigate to home fragment
+                        navController.navigate(R.id.randomMeal);
                     }
                     else if(id ==R.id.nameSearchFragment)
                     {
@@ -155,37 +125,23 @@ public class HomeActivity extends AppCompatActivity implements MealView {
                     }
                     else if(id ==R.id.mealPlannerFragment)
                     {
-                        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-                        boolean loggedIn = prefs.getBoolean(KEY_LOGGED_IN, false);
                         if(loggedIn) {
-                            NavOptions navOptions = new NavOptions.Builder()
-                                    .setPopUpTo(R.id.nav_host_fragment2, true)
-                                    .setLaunchSingleTop(true) // Prevent re-adding if already at the top
-                                    .build();
-                            navController.navigate(R.id.mealPlannerFragment,null, navOptions);
+                            navigateToMealPlannerFragment();
                         }
                         else
                         {
-                            LoginBottomSheetFragment bottomSheet = new LoginBottomSheetFragment();
-                            bottomSheet.show(getSupportFragmentManager(), "LoginBottomSheetFragment");
+                            showBottomSheet();
                         }
                     }
                     else if(id == R.id.favouritesFragment)
                     {
-                        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-                        boolean loggedIn = prefs.getBoolean(KEY_LOGGED_IN, false);
                         if(loggedIn)
                         {
-                            NavOptions navOptions = new NavOptions.Builder()
-                                    .setPopUpTo(R.id.nav_host_fragment2, true)
-                                    .setLaunchSingleTop(true) // Prevent re-adding if already at the top
-                                    .build();
-                            navController.navigate(R.id.favouritesFragment,null, navOptions);
+                            navigateToFavouritesFragment();
                         }
                         else
                         {
-                            LoginBottomSheetFragment bottomSheet = new LoginBottomSheetFragment();
-                            bottomSheet.show(getSupportFragmentManager(), "LoginBottomSheetFragment");
+                            showBottomSheet();
                         }
                     }
                     else if(id ==R.id.signout)
@@ -225,31 +181,23 @@ public class HomeActivity extends AppCompatActivity implements MealView {
         }
         return super.onOptionsItemSelected(item);
     }
+
     public void handleSignOut()
     {
-        SharedPreferences.Editor editor = prefs.edit();
-        if(!email.equals("Guest"))
+        progressBar.setVisibility(VISIBLE);
+        if(loggedIn)
         {
             saveToFirebase();
         }
-        progressBar.setVisibility(VISIBLE);
-        editor.remove("password");
-        editor.remove("email");
-        editor.remove("loggedIn");
-        editor.apply();
-        //FirebaseAuth.getInstance().signOut();
-        Intent intent = new Intent(HomeActivity.this, AuthActivity.class);
-        startActivity(intent);
-        finish();
-
+        authPresenter.signOut();
     }
+
     private void saveToFirebase() {
-        MealDao mealDao = FavoriteMealDatabase.getInstance(getBaseContext()).favoriteMealDao();
-        mealDao.getAllMeals().observe(HomeActivity.this, meals -> {
+        presenter.getFavMeals().observe(HomeActivity.this, meals -> {
             if (meals != null) {
                 // Convert LiveData<List<MealEntity>> to List<MealEntity>
                 List<MealEntity> mealList = new ArrayList<>(meals);
-                dataRepository.saveToFirebase(mealList, email,"Favourites");
+                dataPresenter.saveMealsToFirebase(mealList, email,"Favourites");
             }
         });
 
@@ -259,7 +207,7 @@ public class HomeActivity extends AppCompatActivity implements MealView {
                 for (Monday monday : mondays) {
                     mondayMeals.add(new MealEntity(monday.getMealId(), monday.getMealName(), monday.getStrMealThumb()));
                 }
-                dataRepository.saveToFirebase(mondayMeals,email,"Monday");
+                dataPresenter.saveMealsToFirebase(mondayMeals,email,"Monday");
             }
         });
 
@@ -269,7 +217,7 @@ public class HomeActivity extends AppCompatActivity implements MealView {
                 for (Tuesday tuesday : tuesdays) {
                     tuesdayMeals.add(new MealEntity(tuesday.getMealId(), tuesday.getMealName(), tuesday.getStrMealThumb()));
                 }
-                dataRepository.saveToFirebase(tuesdayMeals,email,"Tuesday");
+                dataPresenter.saveMealsToFirebase(tuesdayMeals,email,"Tuesday");
             }
         });
 
@@ -279,7 +227,7 @@ public class HomeActivity extends AppCompatActivity implements MealView {
                 for (Wednesday wednesday : wednesdays) {
                     wednesdayMeals.add(new MealEntity(wednesday.getMealId(), wednesday.getMealName(), wednesday.getStrMealThumb()));
                 }
-                dataRepository.saveToFirebase(wednesdayMeals,email,"Wednesday");
+                dataPresenter.saveMealsToFirebase(wednesdayMeals,email,"Wednesday");
             }
         });
 
@@ -289,7 +237,7 @@ public class HomeActivity extends AppCompatActivity implements MealView {
                 for (Thursday thursday : thursdays) {
                     thursdayMeals.add(new MealEntity(thursday.getMealId(), thursday.getMealName(), thursday.getStrMealThumb()));
                 }
-                dataRepository.saveToFirebase(thursdayMeals,email,"Thursday");
+                dataPresenter.saveMealsToFirebase(thursdayMeals,email,"Thursday");
             }
         });
 
@@ -299,7 +247,7 @@ public class HomeActivity extends AppCompatActivity implements MealView {
                 for (Friday friday : fridays) {
                     fridayMeals.add(new MealEntity(friday.getMealId(), friday.getMealName(), friday.getStrMealThumb()));
                 }
-                dataRepository.saveToFirebase(fridayMeals,email,"Friday");
+                dataPresenter.saveMealsToFirebase(fridayMeals,email,"Friday");
             }
         });
 
@@ -309,7 +257,7 @@ public class HomeActivity extends AppCompatActivity implements MealView {
                 for (Saturday saturday : saturdays) {
                     saturdayMeals.add(new MealEntity(saturday.getMealId(), saturday.getMealName(), saturday.getStrMealThumb()));
                 }
-                dataRepository.saveToFirebase(saturdayMeals,email,"Saturday");
+                dataPresenter.saveMealsToFirebase(saturdayMeals,email,"Saturday");
             }
         });
 
@@ -319,131 +267,40 @@ public class HomeActivity extends AppCompatActivity implements MealView {
                 for (Sunday sunday : sundays) {
                     sundayMeals.add(new MealEntity(sunday.getMealId(), sunday.getMealName(), sunday.getStrMealThumb()));
                 }
-                dataRepository.saveToFirebase(sundayMeals,email,"Sunday");
-            }
-        });
-    }
-    public void loadMealsFromfirebase()
-    {
-        dataRepository.loadFromFirebase(email, "Favourites", new OnMealsLoadedListener() {
-            @Override
-            public void onMealsLoaded(List<MealEntity> meals) {
-                if (meals != null && !meals.isEmpty()) {
-                    presenter.updateMeals(meals);
-                }
-                else
-                {
-                    presenter.updateMeals(new ArrayList<>());
-                }
-            }
-        });
-        dataRepository.loadFromFirebase(email, "Monday", new OnMealsLoadedListener() {
-            @Override
-            public void onMealsLoaded(List<MealEntity> meals) {
-                if (meals != null && !meals.isEmpty()) {
-                    List<Monday> mondayMeals = new ArrayList<>();
-                    for (MealEntity meal : meals) {
-                        Monday monday = new Monday(meal.getIdMeal(), meal.getStrMeal(), meal.getStrMealThumb());
-                        mondayMeals.add(monday);
-                    }
-                    presenter.updateMondayMeals(mondayMeals);
-                } else {
-                    presenter.updateMondayMeals(new ArrayList<>());
-                }
-            }
-        });
-        dataRepository.loadFromFirebase(email, "Tuesday", new OnMealsLoadedListener() {
-            @Override
-            public void onMealsLoaded(List<MealEntity> meals) {
-                if (meals != null && !meals.isEmpty()) {
-                    List<Tuesday> tuesdayMeals = new ArrayList<>();
-                    for (MealEntity meal : meals) {
-                        Tuesday tuesday = new Tuesday(meal.getIdMeal(), meal.getStrMeal(), meal.getStrMealThumb());
-                        tuesdayMeals.add(tuesday);
-                    }
-                    presenter.updateTuesdayMeals(tuesdayMeals);
-                } else {
-                    presenter.updateTuesdayMeals(new ArrayList<>());
-                }
-            }
-        });
-        dataRepository.loadFromFirebase(email, "Wednesday", new OnMealsLoadedListener() {
-            @Override
-            public void onMealsLoaded(List<MealEntity> meals) {
-                if (meals != null && !meals.isEmpty()) {
-                    List<Wednesday> wednesdayMeals = new ArrayList<>();
-                    for (MealEntity meal : meals) {
-                        Wednesday wednesday = new Wednesday(meal.getIdMeal(), meal.getStrMeal(), meal.getStrMealThumb());
-                        wednesdayMeals.add(wednesday);
-                    }
-                    presenter.updateWednesdayMeals(wednesdayMeals);
-                } else {
-                    presenter.updateWednesdayMeals(new ArrayList<>());
-                }
-            }
-        });
-        dataRepository.loadFromFirebase(email, "Thursday", new OnMealsLoadedListener() {
-            @Override
-            public void onMealsLoaded(List<MealEntity> meals) {
-                if (meals != null && !meals.isEmpty()) {
-                    List<Thursday> thursdayMeals = new ArrayList<>();
-                    for (MealEntity meal : meals) {
-                        Thursday thursday = new Thursday(meal.getIdMeal(), meal.getStrMeal(), meal.getStrMealThumb());
-                        thursdayMeals.add(thursday);
-                    }
-                    presenter.updateThursdayMeals(thursdayMeals);
-                } else {
-                    presenter.updateThursdayMeals(new ArrayList<>());
-                }
-            }
-        });
-        dataRepository.loadFromFirebase(email, "Friday", new OnMealsLoadedListener() {
-            @Override
-            public void onMealsLoaded(List<MealEntity> meals) {
-                if (meals != null && !meals.isEmpty()) {
-                    List<Friday> fridayMeals = new ArrayList<>();
-                    for (MealEntity meal : meals) {
-                        Friday friday = new Friday(meal.getIdMeal(), meal.getStrMeal(), meal.getStrMealThumb());
-                        fridayMeals.add(friday);
-                    }
-                    presenter.updateFridayMeals(fridayMeals);
-                } else {
-                    presenter.updateFridayMeals(new ArrayList<>());
-                }
-            }
-        });
-        dataRepository.loadFromFirebase(email, "Saturday", new OnMealsLoadedListener() {
-            @Override
-            public void onMealsLoaded(List<MealEntity> meals) {
-                if (meals != null && !meals.isEmpty()) {
-                    List<Saturday> saturdayMeals = new ArrayList<>();
-                    for (MealEntity meal : meals) {
-                        Saturday saturday = new Saturday(meal.getIdMeal(), meal.getStrMeal(), meal.getStrMealThumb());
-                        saturdayMeals.add(saturday);
-                    }
-                    presenter.updateSaturdayMeals(saturdayMeals);
-                } else {
-                    presenter.updateSaturdayMeals(new ArrayList<>());
-                }
-            }
-        });
-        dataRepository.loadFromFirebase(email, "Sunday", new OnMealsLoadedListener() {
-            @Override
-            public void onMealsLoaded(List<MealEntity> meals) {
-                if (meals != null && !meals.isEmpty()) {
-                    List<Sunday> sundayMeals = new ArrayList<>();
-                    for (MealEntity meal : meals) {
-                        Sunday sunday = new Sunday(meal.getIdMeal(), meal.getStrMeal(), meal.getStrMealThumb());
-                        sundayMeals.add(sunday);
-                    }
-                    presenter.updateSundayMeals(sundayMeals);
-                } else {
-                    presenter.updateSundayMeals(new ArrayList<>());
-                }
+                dataPresenter.saveMealsToFirebase(sundayMeals,email,"Sunday");
             }
         });
     }
 
+    private void intitilaizeNetworkReciever()
+    {
+        networkChangeReceiver = new NetworkChangeReceiver();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        registerReceiver(networkChangeReceiver, filter);
+    }
+    private void navigateToFavouritesFragment()
+    {
+        NavOptions navOptions = new NavOptions.Builder()
+                .setPopUpTo(R.id.nav_host_fragment2, true)
+                .setLaunchSingleTop(true) // Prevent re-adding if already at the top
+                .build();
+        navController.navigate(R.id.favouritesFragment,null, navOptions);
+    }
+    private void navigateToMealPlannerFragment()
+    {
+        NavOptions navOptions = new NavOptions.Builder()
+                .setPopUpTo(R.id.nav_host_fragment2, true)
+                .setLaunchSingleTop(true) // Prevent re-adding if already at the top
+                .build();
+        navController.navigate(R.id.mealPlannerFragment,null, navOptions);
+    }
+
+    private void showBottomSheet()
+    {
+        LoginBottomSheetFragment bottomSheet = new LoginBottomSheetFragment();
+        bottomSheet.show(getSupportFragmentManager(), "LoginBottomSheetFragment");
+    }
     @Override
     protected void onPause() {
         super.onPause();
@@ -501,6 +358,43 @@ public class HomeActivity extends AppCompatActivity implements MealView {
 
     @Override
     public void getMealsByCategory(String categoryName) {
+
+    }
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void hideLoading() {
+
+    }
+
+    @Override
+    public void showToast(String message) {
+
+    }
+
+    @Override
+    public void navigateToHome(String email) {
+
+    }
+
+    @Override
+    public void navigateToSignUp() {
+        Intent intent = new Intent(HomeActivity.this, AuthActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public void setEmailError(String error) {
+
+    }
+
+    @Override
+    public void setPasswordError(String error) {
 
     }
 }

@@ -26,7 +26,7 @@ public interface MealPresenter {
     void getMealByArea(String area);
     void getIngredients();
     void getIngredientsBySubstring(String substring);
-    void getFavMeals();
+    public LiveData<List<MealEntity>> getFavMeals();
     void insertMeal(MealEntity meal);
     void deleteMeal(MealEntity meal);
     public void updateMeals(List<MealEntity> newMeals);

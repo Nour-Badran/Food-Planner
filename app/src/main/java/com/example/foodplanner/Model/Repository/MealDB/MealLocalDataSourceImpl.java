@@ -33,7 +33,6 @@ public class MealLocalDataSourceImpl implements MealLocalDataSource {
     private final FridayDao fridayDao;
     private final SaturdayDao saturdayDao;
     private final SundayDao sundayDao;
-    private LiveData<List<MealEntity>> storedMeals;
     public MealLocalDataSourceImpl(FavoriteMealDatabase database) {
         this.mealDao = database.favoriteMealDao();
         this.mondayDao = database.mondayDao();
@@ -57,7 +56,7 @@ public class MealLocalDataSourceImpl implements MealLocalDataSource {
 
     @Override
     public LiveData<List<MealEntity>> getStoredMeals() {
-        return storedMeals;
+        return mealDao.getAllMeals();
     }
 
     @Override

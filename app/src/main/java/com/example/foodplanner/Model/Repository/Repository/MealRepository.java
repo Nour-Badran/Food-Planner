@@ -31,7 +31,7 @@ public class MealRepository implements MealRepositoryInterface {
     public void updateMeals(List<MealEntity> newMeals) {
         localDataSource.updateMeals(newMeals);
     }
-        @Override
+    @Override
     public LiveData<List<MealEntity>> getStoredMeals()
     {
         return localDataSource.getStoredMeals();

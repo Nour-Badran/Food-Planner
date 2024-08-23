@@ -1,7 +1,5 @@
 package com.example.foodplanner.View.Menu.Fragments;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -19,14 +17,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
-import android.widget.FrameLayout;
-import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide; // Add this dependency for loading images
 import com.bumptech.glide.request.RequestOptions;
+import com.example.foodplanner.Model.AuthModel.AuthModel;
 import com.example.foodplanner.Model.POJO.CategoryResponse;
 import com.example.foodplanner.Model.POJO.IngredientResponse;
 import com.example.foodplanner.Model.Repository.MealDB.MealEntity;
@@ -36,8 +33,10 @@ import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealApi;
 import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealRemoteDataSource;
 import com.example.foodplanner.Model.Repository.MealRemoteDataSource.RetrofitClient;
 import com.example.foodplanner.Model.Repository.Repository.MealRepository;
+import com.example.foodplanner.Presenter.AuthPresenter;
 import com.example.foodplanner.Presenter.MealPresenterImpl;
 import com.example.foodplanner.R;
+import com.example.foodplanner.View.Menu.Interfaces.AuthView;
 import com.example.foodplanner.View.LoginBottomSheetFragment;
 import com.example.foodplanner.View.Menu.Adapters.IngredientAdapter;
 import com.example.foodplanner.View.Menu.Interfaces.MealExistCallback;
@@ -49,21 +48,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MealDetailsFragment extends Fragment implements MealView {
+public class MealDetailsFragment extends Fragment implements MealView, AuthView {
     private String mealName;
     private MealPresenterImpl presenter;
     private TextView mealTitle, mealOrigin, mealIngredients, mealSteps, steps;
     private WebView webView;
-    private FrameLayout fullscreenContainer;
     FloatingActionButton fab;
     MealEntity currentMeal;
-    private WebChromeClient.CustomViewCallback customViewCallback;
     private ImageView mealImage, countryImage;
-    private GridLayout ingredientImagesGrid;
     private RecyclerView recyclerView;
+    AuthPresenter authPresenter;
     IngredientAdapter adapter;
-    private static final String PREFS_NAME = "FoodPlannerPrefs";
-    private static final String KEY_LOGGED_IN = "loggedIn";
+    boolean loggedIn;
     List<IngredientResponse.Ingredient> ingredientImageUrls;
 
     public static final Map<String, Integer> COUNTRY_DRAWABLES = new HashMap<>();
@@ -104,6 +100,8 @@ public class MealDetailsFragment extends Fragment implements MealView {
         if (getArguments() != null) {
             mealName = getArguments().getString("meal_name");
         }
+        authPresenter = new AuthPresenter(this, new AuthModel(getContext()));
+        loggedIn = authPresenter.isLoggedIn();
 
         ingredientImageUrls = new ArrayList<>();
 
@@ -142,16 +140,9 @@ public class MealDetailsFragment extends Fragment implements MealView {
 
         presenter.searchMeals(mealName);
 
-        SharedPreferences prefs = getActivity().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        boolean loggedIn = prefs.getBoolean(KEY_LOGGED_IN, false);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Toast.makeText(getContext(), "Added to favourites!", Toast.LENGTH_SHORT).show();
-//                int newColor = (currentFabColor == ContextCompat.getColor(getContext(), R.color.gray))
-//                        ? ContextCompat.getColor(getContext(), R.color.areaBackgroundColor)
-//                        : ContextCompat.getColor(getContext(), R.color.gray);
-//                animateFabColor(newColor);
                 if(loggedIn)
                 {
                     if(currentMeal!=null)
@@ -242,17 +233,23 @@ public class MealDetailsFragment extends Fragment implements MealView {
                 String[] stepsArray = instructions.split("\r\n|\n");
                 StringBuilder stepsText = new StringBuilder();
                 int stepNumber = 1;
-                for (String step : stepsArray) {
-                    // Check if the step is not empty
-                    if (!step.trim().isEmpty()) {
-                        stepsText.append("Step ").append(stepNumber).append(": ").append(step.trim()).append("\n\n");
+                int totalSteps = stepsArray.length;
+
+                for (int i = 0; i < totalSteps; i++) {
+                    String step = stepsArray[i].trim();
+                    if (!step.isEmpty()) {
+                        stepsText.append("Step ").append(stepNumber).append(": ").append(step);
+                        if (i < totalSteps - 1) {
+                            stepsText.append("\n----------------------------------------------------------\n");
+                        }
                         stepNumber++;
                     }
                 }
+
                 mealSteps.setText(stepsText.toString());
-                stepNumber--;
                 steps.setText("Steps: " + stepNumber);
             }
+
 
             Glide.with(this).load(meal.getStrMealThumb()).apply(new RequestOptions())
                     .placeholder(R.drawable.img_11).into(mealImage);
@@ -357,9 +354,6 @@ public class MealDetailsFragment extends Fragment implements MealView {
             }
             adapter.setIngredients(ingredientImageUrls);
             mealIngredients.setText("Ingredients: " + ingredientImageUrls.size());
-
-
-            //mealIngredients.setText(ingredientsText.toString());
         }
 
         // Load video
@@ -460,5 +454,40 @@ public class MealDetailsFragment extends Fragment implements MealView {
         if (drawableRes != null) {
             countryImage.setImageResource(drawableRes);
         }
+    }
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void hideLoading() {
+
+    }
+
+    @Override
+    public void showToast(String message) {
+
+    }
+
+    @Override
+    public void navigateToHome(String email) {
+
+    }
+
+    @Override
+    public void navigateToSignUp() {
+
+    }
+
+    @Override
+    public void setEmailError(String error) {
+
+    }
+
+    @Override
+    public void setPasswordError(String error) {
+
     }
 }
