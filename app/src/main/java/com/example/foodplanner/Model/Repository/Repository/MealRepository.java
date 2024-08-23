@@ -41,66 +41,55 @@ public class MealRepository implements MealRepositoryInterface {
         localDataSource.insertMeal(meal);
     }
 
-    // Delete a meal from the local database
     @Override
     public void deleteMeal(String mealId) {
         localDataSource.deleteMeal(mealId);
     }
-    // Load a random meal from the remote source
     @Override
     public void loadRandomMeal(MealCallback<MealEntity> callback) {
         remoteDataSource.loadRandomMeal(callback);
     }
 
-    // Get all meals from the remote source
     @Override
     public void getAllMealsFromRemote(MealCallback<List<MealEntity>> callback) {
         remoteDataSource.getAllMeals(callback);
     }
 
-    // Get meals by area from the remote source
     @Override
     public void getMealByArea(String area, MealCallback<List<MealEntity>> callback) {
         remoteDataSource.getMealByArea(area, callback);
     }
 
-    // Search meals by name from the remote source
     @Override
     public void searchMeals(String mealName, MealCallback<List<MealEntity>> callback) {
         remoteDataSource.searchMeals(mealName, callback);
     }
 
-    // Get ingredients from the remote source
     @Override
     public void getIngredients(MealCallback<List<IngredientResponse.Ingredient>> callback) {
         remoteDataSource.getIngredients(callback);
     }
 
-    // Get ingredients by substring from the remote source
     @Override
     public void getIngredientsBySubstring(String substring, MealCallback<List<IngredientResponse.Ingredient>> callback) {
         remoteDataSource.getIngredientsBySubstring(substring, callback);
     }
 
-    // Get meals by category from the remote source
     @Override
     public void getMealsByCategory(String categoryName, MealCallback<List<MealEntity>> callback) {
         remoteDataSource.getMealsByCategory(categoryName, callback);
     }
 
-    // Get meals by ingredient from the remote source
     @Override
     public void getMealsByIngredient(String ingredient, MealCallback<List<MealEntity>> callback) {
         remoteDataSource.getMealsByIngredient(ingredient, callback);
     }
 
-    // Get random meals from the remote source
     @Override
     public void getRandomMeals(MealCallback<List<MealEntity>> callback) {
         remoteDataSource.getRandomMeals(callback);
     }
 
-    // Get categories from the remote source
     @Override
     public void getCategories(MealCallback<List<CategoryResponse.Category>> callback) {
         remoteDataSource.getCategories(callback);

@@ -141,15 +141,11 @@ public class SearchMealsFragment extends Fragment implements MealView, AuthView 
     @Override
     public void showMessage(String message) {
         if (getActivity() != null) {
-            getActivity().runOnUiThread(() ->
-                    Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show()
-            );
+            getActivity().runOnUiThread(() -> Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show());
         }
     }
     @Override
     public void showError(String message) {
-//        textViewError.setText(message);
-//        textViewError.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.GONE);
     }
 
@@ -161,8 +157,7 @@ public class SearchMealsFragment extends Fragment implements MealView, AuthView 
     @Override
     public void showMeals(List<MealEntity> meals) {
         adapter.setMeals(meals);
-        recyclerView.setVisibility(View.VISIBLE); // Show RecyclerView
-//        textViewError.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
     }
 
     @Override

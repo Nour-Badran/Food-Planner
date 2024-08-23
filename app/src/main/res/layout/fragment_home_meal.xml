@@ -15,10 +15,6 @@
         android:paddingEnd="16dp"
         android:paddingBottom="16dp">
 
-        <!-- ImageView with rounded corners and a drop shadow -->
-
-        <!-- Title TextView wrapped in a MaterialCardView -->
-
         <ImageView
             android:id="@+id/google"
             android:layout_width="wrap_content"
@@ -184,40 +180,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/mealImage"
             app:rippleColor="@color/white" />
-
-        <!-- FAB Menu container -->
-        <!--
-        <LinearLayout
-            android:id="@+id/fab_menu_container"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="12dp"
-            android:orientation="vertical"
-            android:visibility="visible"
-            app:layout_constraintBottom_toTopOf="@+id/fab"
-            app:layout_constraintEnd_toEndOf="parent">
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_option1"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginBottom="8dp"
-                android:contentDescription="Option 1"
-                android:src="@drawable/search_24dp_e8eaed_fill0_wght400_grad0_opsz24"
-                app:backgroundTint="@color/gray"
-                app:rippleColor="@color/red" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_option2"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginBottom="8dp"
-                android:contentDescription="Option 2"
-                android:src="@drawable/mail_24dp_e8eaed_fill0_wght400_grad0_opsz24"
-                app:backgroundTint="@color/gray"
-                app:rippleColor="@color/colorPrimary" />
-        </LinearLayout>
--->
 
         <ImageView
             android:id="@+id/back"

@@ -65,7 +65,6 @@ public class MealsFragment extends Fragment implements MealView, AuthView {
             requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
                 @Override
                 public void handleOnBackPressed() {
-                    // Replace with the action to navigate to another fragment
                     Navigation.findNavController(requireView()).navigate(R.id.action_mealsFragment_to_categorySearchFragment);
                 }
             });
@@ -75,7 +74,6 @@ public class MealsFragment extends Fragment implements MealView, AuthView {
             requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
                 @Override
                 public void handleOnBackPressed() {
-                    // Replace with the action to navigate to another fragment
                     Navigation.findNavController(requireView()).navigate(R.id.action_mealsFragment_to_countrySearchFragment);
                 }
             });
@@ -85,7 +83,6 @@ public class MealsFragment extends Fragment implements MealView, AuthView {
             requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
                 @Override
                 public void handleOnBackPressed() {
-                    // Replace with the action to navigate to another fragment
                     Navigation.findNavController(requireView()).navigate(R.id.action_mealsFragment_to_ingredientSearchFragment);
                 }
             });
@@ -95,7 +92,6 @@ public class MealsFragment extends Fragment implements MealView, AuthView {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_meals_by_type, container, false);
     }
 
@@ -156,7 +152,6 @@ public class MealsFragment extends Fragment implements MealView, AuthView {
 
         adapter.setOnMealClickListener(meal -> {
             if (getActivity() != null) {
-                //Toast.makeText(getActivity(), meal.getStrMeal(), Toast.LENGTH_SHORT).show();
                 Bundle bundle = new Bundle();
                 bundle.putString("meal_name", meal.getStrMeal());
                 Navigation.findNavController(view).navigate(R.id.action_mealsFragment_to_mealDetailsFragment,bundle);

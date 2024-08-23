@@ -362,9 +362,7 @@ public class MealDetailsFragment extends Fragment implements MealView, AuthView 
         if (videoUrl != null && !videoUrl.isEmpty()) {
             String embedUrl = "https://www.youtube.com/embed/" + extractVideoId(videoUrl);
             webView.getSettings().setJavaScriptEnabled(true);
-            // DA ZORAR EL FULL SCREEN USELESS
             webView.setWebChromeClient(new WebChromeClient());
-            // W DA ZORAR EL FULL SCREEN BYFT7 EL FULL SCREEN F ACTIVITY GDEDA BAS LAMA BARG3 EL DATA BT3TY BTRO7
             /*
             webView.setWebChromeClient(new WebChromeClient() {
                 @Override
