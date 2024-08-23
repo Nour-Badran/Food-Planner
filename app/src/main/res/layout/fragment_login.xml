@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/img_9"
-    tools:context=".View.Auth.LoginFragment">
+    tools:context=".View.Menu.Fragments.Auth.LoginFragment">
 
     <!-- CardView Container -->
     <androidx.cardview.widget.CardView
@@ -50,7 +50,7 @@
                 android:drawableStart="@drawable/mail_24dp_e8eaed_fill0_wght400_grad0_opsz24"
                 android:drawablePadding="8dp"
                 android:fontFamily="casual"
-                android:hint="Email"
+                android:hint="@string/email"
                 android:inputType="text"
                 android:padding="16dp"
                 android:textColor="@color/black"
@@ -71,7 +71,7 @@
                 android:drawableStart="@drawable/lock_24dp_e8eaed_fill0_wght400_grad0_opsz24"
                 android:drawablePadding="8dp"
                 android:fontFamily="casual"
-                android:hint="Password"
+                android:hint="@string/password"
                 android:inputType="textPassword"
                 android:padding="16dp"
                 android:textColor="@color/black"
@@ -91,7 +91,7 @@
                 android:layout_marginEnd="4dp"
                 android:drawableRight="@drawable/login_24dp_e8eaed_fill0_wght400_grad0_opsz24"
                 android:fontFamily="casual"
-                android:text="Login"
+                android:text="@string/login"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toStartOf="@+id/google"
                 app:layout_constraintStart_toStartOf="parent"
@@ -106,7 +106,7 @@
                 android:layout_marginTop="8dp"
                 android:drawableRight="@drawable/arrow_forward_ios_24dp_e8eaed_fill0_wght400_grad0_opsz24"
                 android:fontFamily="casual"
-                android:text="Continue as guest"
+                android:text="@string/continue_as_guest"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/loginButton" />

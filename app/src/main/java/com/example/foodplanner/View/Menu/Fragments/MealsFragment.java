@@ -1,7 +1,5 @@
 package com.example.foodplanner.View.Menu.Fragments;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
@@ -18,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.foodplanner.Model.AuthModel.AuthModel;
 import com.example.foodplanner.Model.POJO.CategoryResponse;
 import com.example.foodplanner.Model.POJO.IngredientResponse;
 import com.example.foodplanner.Model.Repository.DB.FavoriteMealDatabase;
@@ -27,28 +26,31 @@ import com.example.foodplanner.Model.Repository.MealDB.MealEntity;
 import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealRemoteDataSource;
 import com.example.foodplanner.Model.Repository.MealRemoteDataSource.RetrofitClient;
 import com.example.foodplanner.Model.Repository.Repository.MealRepository;
+import com.example.foodplanner.Presenter.AuthPresenter;
 import com.example.foodplanner.Presenter.MealPresenterImpl;
 import com.example.foodplanner.R;
 import com.example.foodplanner.View.LoginBottomSheetFragment;
 import com.example.foodplanner.View.Menu.Adapters.MealAdapter;
+import com.example.foodplanner.View.Menu.Interfaces.AuthView;
 import com.example.foodplanner.View.Menu.Interfaces.MealView;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 import androidx.appcompat.widget.SearchView;
 
 
-public class MealsFragment extends Fragment implements MealView {
+public class MealsFragment extends Fragment implements MealView, AuthView {
 
     String categoryName;
     String countryName;
     String ingredientName;
     MealPresenterImpl presenter;
+    private AuthPresenter authPresenter;
     private RecyclerView recyclerView;
     private MealAdapter adapter;
     TextView txtCategoryName;
     private SearchView searchViewMeal;
-    private static final String PREFS_NAME = "FoodPlannerPrefs";
-    private static final String KEY_LOGGED_IN = "loggedIn";
+    boolean loggedIn;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,11 +118,12 @@ public class MealsFragment extends Fragment implements MealView {
         {
             txtCategoryName.setText(ingredientName + " Meals");
         }
-
+        authPresenter = new AuthPresenter(this, new AuthModel(getContext()));
+        loggedIn = authPresenter.isLoggedIn();
         presenter = new MealPresenterImpl(this, new MealRepository(new MealLocalDataSourceImpl(FavoriteMealDatabase.getInstance(requireContext())),
                 new MealRemoteDataSource(RetrofitClient.getClient().create(MealApi.class))));
 
-        adapter = new MealAdapter(presenter,requireContext());
+        adapter = new MealAdapter(presenter,requireContext(),authPresenter);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
 
@@ -160,8 +163,6 @@ public class MealsFragment extends Fragment implements MealView {
             }
         });
 
-        SharedPreferences prefs = getActivity().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        boolean loggedIn = prefs.getBoolean(KEY_LOGGED_IN, false);
 
         adapter.setOnFabClickListener(meal -> {
             if(loggedIn)
@@ -169,12 +170,12 @@ public class MealsFragment extends Fragment implements MealView {
                 presenter.isMealExists(meal.getIdMeal(), exists -> {
                     if (exists) {
                         getActivity().runOnUiThread(() ->
-                                Toast.makeText(getContext(), meal.getStrMeal() + " deleted from favorites", Toast.LENGTH_SHORT).show()
+                                Snackbar.make(view, meal.getStrMeal() + " deleted from favorites", Snackbar.LENGTH_SHORT).show()
                         );
                         presenter.deleteMeal(meal);
                     } else {
                         getActivity().runOnUiThread(() ->
-                                Toast.makeText(getContext(), meal.getStrMeal() + " added to favorites", Toast.LENGTH_SHORT).show()
+                                Snackbar.make(view, meal.getStrMeal() + " added to favorites", Snackbar.LENGTH_SHORT).show()
                         );
                         presenter.insertMeal(meal);
                     }
@@ -186,7 +187,6 @@ public class MealsFragment extends Fragment implements MealView {
                 bottomSheet.show(getActivity().getSupportFragmentManager(), "LoginBottomSheetFragment");
             }
         });
-        //presenter.getCategories();
     }
 
     @Override
@@ -229,6 +229,41 @@ public class MealsFragment extends Fragment implements MealView {
 
     @Override
     public void getMealsByCategory(String categoryName) {
+
+    }
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void hideLoading() {
+
+    }
+
+    @Override
+    public void showToast(String message) {
+
+    }
+
+    @Override
+    public void navigateToHome(String email) {
+
+    }
+
+    @Override
+    public void navigateToSignUp() {
+
+    }
+
+    @Override
+    public void setEmailError(String error) {
+
+    }
+
+    @Override
+    public void setPasswordError(String error) {
 
     }
 }

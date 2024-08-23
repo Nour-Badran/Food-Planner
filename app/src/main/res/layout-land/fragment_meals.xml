@@ -5,18 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/img_5"
-    tools:context=".View.Menu.Fragments.IngredientSearchFragment">
+    tools:context=".View.Menu.Fragments.SearchMealsFragment">
 
     <androidx.appcompat.widget.SearchView
-        android:id="@+id/searchViewIngredient"
+        android:id="@+id/searchViewMeal"
         style="@style/CustomSearchViewStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/rounded_search_view_background"
         android:iconifiedByDefault="false"
         android:padding="8dp"
-        android:queryHint="Enter meal name"
+        android:queryHint="Search meals"
         app:iconifiedByDefault="false"
         app:layout_constraintBottom_toTopOf="@+id/recyclerViewMeals"
         app:layout_constraintEnd_toEndOf="parent"
@@ -28,13 +28,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="73dp"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="73dp"
         android:background="@drawable/rounded_edit_text"
         android:fontFamily="casual"
         android:gravity="center"
         android:padding="8dp"
-        android:text="@string/Ingredients"
+        android:text="@string/Meals"
         android:textColor="@color/black"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -51,6 +51,6 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchViewIngredient" />
+        app:layout_constraintTop_toBottomOf="@+id/searchViewMeal" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

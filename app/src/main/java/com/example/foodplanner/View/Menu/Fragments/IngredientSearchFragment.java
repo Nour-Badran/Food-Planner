@@ -39,15 +39,12 @@ public class IngredientSearchFragment extends Fragment implements MealView {
     private RecyclerView recyclerView;
     private IngredientAdapter adapter;
     private SearchView searchViewIngredient;
-    //private TextView textViewError;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                // Replace with the action to navigate to another fragment
                 Navigation.findNavController(requireView()).navigate(R.id.action_ingredientSearchFragment_to_randomMeal);
             }
         });
@@ -56,7 +53,6 @@ public class IngredientSearchFragment extends Fragment implements MealView {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_ingredient_search, container, false);
     }
 
@@ -65,7 +61,6 @@ public class IngredientSearchFragment extends Fragment implements MealView {
         super.onViewCreated(view, savedInstanceState);
         searchViewIngredient = view.findViewById(R.id.searchViewIngredient);
         searchViewIngredient.setIconifiedByDefault(false); // Ensure SearchView is always expanded
-        //textViewError = view.findViewById(R.id.textViewError);
         recyclerView = view.findViewById(R.id.recyclerViewMeals);
         adapter = new IngredientAdapter();
         recyclerView.setAdapter(adapter);
@@ -87,10 +82,7 @@ public class IngredientSearchFragment extends Fragment implements MealView {
             public boolean onQueryTextChange(String newText) {
                 if (newText.trim().isEmpty()) {
                     recyclerView.setVisibility(View.GONE);
-//                    textViewError.setVisibility(View.VISIBLE);
-//                    textViewError.setText("No ingredients found");
                 } else {
-//                    textViewError.setVisibility(View.GONE);
                     recyclerView.setVisibility(View.VISIBLE);
                     presenter.getIngredientsBySubstring(newText.trim());
                 }
@@ -99,7 +91,6 @@ public class IngredientSearchFragment extends Fragment implements MealView {
         });
 
         adapter.setOnIngredientClickListener(ingredient -> {
-            // Navigate to MealsFragment
             if (getActivity() != null) {
                 Bundle bundle = new Bundle();
                 bundle.putString("ingredient_name", ingredient.getName());
@@ -109,49 +100,33 @@ public class IngredientSearchFragment extends Fragment implements MealView {
     }
 
     @Override
-    public void showMeal(MealEntity meal) {
-        // Handle meal display
-    }
+    public void showMeal(MealEntity meal) {}
 
     @Override
-    public void showMealDetails(MealEntity meal) {
-        // Handle meal details display
-    }
+    public void showMealDetails(MealEntity meal) {}
     @Override
     public void showMessage(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
     @Override
     public void showError(String message) {
-//        textViewError.setText(message);
-//        textViewError.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.GONE);
     }
 
     @Override
-    public void showCategories(List<CategoryResponse.Category> categories) {
-        // Handle category display
-    }
+    public void showCategories(List<CategoryResponse.Category> categories) {}
 
     @Override
-    public void showMeals(List<MealEntity> meals) {
-        // Handle meals display
-    }
+    public void showMeals(List<MealEntity> meals) {}
 
     @Override
-    public void addMeal(MealEntity meal) {
-
-    }
+    public void addMeal(MealEntity meal) {}
 
     @Override
     public void showIngredients(List<IngredientResponse.Ingredient> ingredients) {
         adapter.setIngredients(ingredients);
-        recyclerView.setVisibility(View.VISIBLE);
-//        textViewError.setVisibility(View.GONE);
-    }
+        recyclerView.setVisibility(View.VISIBLE);}
 
     @Override
-    public void getMealsByCategory(String categoryName) {
-        // Handle meals by category
-    }
+    public void getMealsByCategory(String categoryName) {}
 }

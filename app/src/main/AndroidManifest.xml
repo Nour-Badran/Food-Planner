@@ -28,7 +28,7 @@
             android:name=".View.Activities.HomeActivity"
             android:exported="false" />
         <activity
-            android:name=".View.Auth.AuthActivity"
+            android:name=".View.Activities.AuthActivity"
             android:exported="false" />
         <activity
             android:name=".View.Activities.SplashActivity"

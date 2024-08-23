@@ -79,8 +79,24 @@
     <string name="weekly_plan">Weekly Plan</string>
     <string name="get_random_meal">Get Random Meal</string>
     <string name="choose_from_meals">Choose from Meals</string>
-    <string name="choose_from_favourites">Choose from favourites</string>
+    <string name="choose_from_favourites">Choose from Favourites</string>
     <string name="set_reminder_time">Set reminder time:</string>
     <string name="select_a_day_to_add_this_meal">Select a day to add this meal</string>
+    <string name="welcome_back">Welcome Back</string>
+    <string name="add_to_calendar">Add to Calendar</string>
+    <string name="meal_plan_for_the_week">Meal Plan for the Week</string>
+    <string name="ready_to_start_planning_for_this_week">Ready to start planning for this week?</string>
+    <string name="start_plan">Start Plan</string>
+    <string name="create_my_own_plan">Create My Own Plan</string>
+    <string name="login">Login</string>
+    <string name="favourite_meals">Favourite Meals</string>
+    <string name="themealdb">TheMealDB</string>
+    <string name="monday">Monday</string>
+    <string name="tuesday">Tuesday</string>
+    <string name="wednesday">Wednesday</string>
+    <string name="thursday">Thursday</string>
+    <string name="friday">Friday</string>
+    <string name="saturday">Saturday</string>
+    <string name="sunday">Sunday</string>
 
 </resources>

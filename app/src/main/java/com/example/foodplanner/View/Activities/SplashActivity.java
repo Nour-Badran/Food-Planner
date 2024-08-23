@@ -1,30 +1,26 @@
 package com.example.foodplanner.View.Activities;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.example.foodplanner.Model.AuthModel.AuthModel;
+import com.example.foodplanner.Presenter.AuthPresenter;
 import com.example.foodplanner.R;
-import com.example.foodplanner.View.Auth.AuthActivity;
+import com.example.foodplanner.View.Menu.Interfaces.AuthView;
 
-public class SplashActivity extends AppCompatActivity {
-    private static final String PREFS_NAME = "FoodPlannerPrefs";
-    private static final String KEY_LOGGED_IN = "loggedIn";
-    TextView welcomeText;
+public class SplashActivity extends AppCompatActivity implements AuthView {
+    AuthPresenter authPresenter;
+    boolean loggedIn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        welcomeText = findViewById(R.id.welcomeText);
-        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        boolean loggedIn = prefs.getBoolean(KEY_LOGGED_IN, false);
-        //welcomeText.setText("Welcome back " + prefs.getString("email","guest"));
+        authPresenter = new AuthPresenter(this, new AuthModel(getBaseContext()));
+        loggedIn = authPresenter.isLoggedIn();
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
@@ -40,6 +36,40 @@ public class SplashActivity extends AppCompatActivity {
                 startActivity(new Intent(SplashActivity.this, AuthActivity.class));
             }
             finish();
-        }, 4000);
+        }, 3000);
+    }
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void hideLoading() {
+
+    }
+
+    @Override
+    public void showToast(String message) {
+    }
+
+    @Override
+    public void navigateToHome(String email) {
+
+    }
+
+    @Override
+    public void navigateToSignUp() {
+
+    }
+
+    @Override
+    public void setEmailError(String error) {
+
+    }
+
+    @Override
+    public void setPasswordError(String error) {
+
     }
 }

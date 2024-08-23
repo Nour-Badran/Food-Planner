@@ -1,7 +1,6 @@
 package com.example.foodplanner.View.Menu.Adapters;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -24,12 +24,15 @@ import com.example.foodplanner.Model.Repository.PlanDB.Days.Sunday;
 import com.example.foodplanner.Model.Repository.PlanDB.Days.Thursday;
 import com.example.foodplanner.Model.Repository.PlanDB.Days.Tuesday;
 import com.example.foodplanner.Model.Repository.PlanDB.Days.Wednesday;
+import com.example.foodplanner.Presenter.AuthPresenter;
 import com.example.foodplanner.Presenter.MealPresenterImpl;
 import com.example.foodplanner.R;
+import com.example.foodplanner.View.LoginBottomSheetFragment;
 import com.example.foodplanner.View.Menu.Interfaces.OnFabClickListener;
 import com.example.foodplanner.View.Menu.Interfaces.OnMealClickListener;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,13 +43,13 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
     private OnFabClickListener onFabClickListener;
     private List<MealEntity> filteredMeals = new ArrayList<>();
     private MealPresenterImpl presenter;
-    private static final String PREFS_NAME = "FoodPlannerPrefs";
-    private static final String KEY_LOGGED_IN = "loggedIn";
-
+    private AuthPresenter authPresenter;
+    boolean loggedIn;
     private Context context;
-    public MealAdapter(MealPresenterImpl presenter,Context context) {
+    public MealAdapter(MealPresenterImpl presenter,Context context,AuthPresenter authPresenter) {
         this.presenter = presenter;
         this.context = context;
+        this.authPresenter = authPresenter;
     }
     @NonNull
     @Override
@@ -74,50 +77,68 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
             holder.fab.setBackgroundTintList(ColorStateList.valueOf(color));
         });
 
+        loggedIn = authPresenter.isLoggedIn();
+
         holder.fabAdd.setOnClickListener(v -> {
-            BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(v.getContext());
-            View bottomSheetView = LayoutInflater.from(v.getContext()).inflate(
-                    R.layout.bottom_sheet_select_day,
-                    (ViewGroup) v.getParent(), false);
+            if(loggedIn)
+            {
+                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(v.getContext());
+                View bottomSheetView = LayoutInflater.from(v.getContext()).inflate(
+                        R.layout.bottom_sheet_select_day,
+                        (ViewGroup) v.getParent(), false);
 
-            bottomSheetDialog.setContentView(bottomSheetView);
-            bottomSheetDialog.show();
+                bottomSheetDialog.setContentView(bottomSheetView);
+                bottomSheetDialog.show();
 
-            bottomSheetView.findViewById(R.id.btnMonday).setOnClickListener(view -> {
-                presenter.insertMondayMeal(new Monday(meal.getIdMeal(),meal.getStrMeal(),meal.getStrMealThumb()));
-                bottomSheetDialog.dismiss();
-            });
+                bottomSheetView.findViewById(R.id.btnMonday).setOnClickListener(view -> {
+                    presenter.insertMondayMeal(new Monday(meal.getIdMeal(),meal.getStrMeal(),meal.getStrMealThumb()));
+                    bottomSheetDialog.dismiss();
+                    Snackbar.make(v, "Meal added to Monday!", Snackbar.LENGTH_SHORT).show();
+                });
 
-            bottomSheetView.findViewById(R.id.btnTuesday).setOnClickListener(view -> {
-                presenter.insertTuesdayMeal(new Tuesday(meal.getIdMeal(),meal.getStrMeal(),meal.getStrMealThumb()));
-                bottomSheetDialog.dismiss();
-            });
+                bottomSheetView.findViewById(R.id.btnTuesday).setOnClickListener(view -> {
+                    presenter.insertTuesdayMeal(new Tuesday(meal.getIdMeal(),meal.getStrMeal(),meal.getStrMealThumb()));
+                    bottomSheetDialog.dismiss();
+                    Snackbar.make(v, "Meal added to Tuesday!", Snackbar.LENGTH_SHORT).show();
+                });
 
-            bottomSheetView.findViewById(R.id.btnWednesday).setOnClickListener(view -> {
-                presenter.insertWednesdayMeal(new Wednesday(meal.getIdMeal(),meal.getStrMeal(),meal.getStrMealThumb()));
-                bottomSheetDialog.dismiss();
-            });
+                bottomSheetView.findViewById(R.id.btnWednesday).setOnClickListener(view -> {
+                    presenter.insertWednesdayMeal(new Wednesday(meal.getIdMeal(),meal.getStrMeal(),meal.getStrMealThumb()));
+                    bottomSheetDialog.dismiss();
+                    Snackbar.make(v, "Meal added to Wednesday!", Snackbar.LENGTH_SHORT).show();
+                });
 
-            bottomSheetView.findViewById(R.id.btnThursday).setOnClickListener(view -> {
-                presenter.insertThursdayMeal(new Thursday(meal.getIdMeal(),meal.getStrMeal(),meal.getStrMealThumb()));
-                bottomSheetDialog.dismiss();
-            });
+                bottomSheetView.findViewById(R.id.btnThursday).setOnClickListener(view -> {
+                    presenter.insertThursdayMeal(new Thursday(meal.getIdMeal(),meal.getStrMeal(),meal.getStrMealThumb()));
+                    bottomSheetDialog.dismiss();
+                    Snackbar.make(v, "Meal added to Thursday!", Snackbar.LENGTH_SHORT).show();
+                });
 
-            bottomSheetView.findViewById(R.id.btnFriday).setOnClickListener(view -> {
-                presenter.insertFridayMeal(new Friday(meal.getIdMeal(),meal.getStrMeal(),meal.getStrMealThumb()));
-                bottomSheetDialog.dismiss();
-            });
+                bottomSheetView.findViewById(R.id.btnFriday).setOnClickListener(view -> {
+                    presenter.insertFridayMeal(new Friday(meal.getIdMeal(),meal.getStrMeal(),meal.getStrMealThumb()));
+                    bottomSheetDialog.dismiss();
+                    Snackbar.make(v, "Meal added to Friday!", Snackbar.LENGTH_SHORT).show();
+                });
 
-            bottomSheetView.findViewById(R.id.btnSaturday).setOnClickListener(view -> {
-                presenter.insertSaturdayMeal(new Saturday(meal.getIdMeal(),meal.getStrMeal(),meal.getStrMealThumb()));
-                bottomSheetDialog.dismiss();
-            });
+                bottomSheetView.findViewById(R.id.btnSaturday).setOnClickListener(view -> {
+                    presenter.insertSaturdayMeal(new Saturday(meal.getIdMeal(),meal.getStrMeal(),meal.getStrMealThumb()));
+                    bottomSheetDialog.dismiss();
+                    Snackbar.make(v, "Meal added to Saturday!", Snackbar.LENGTH_SHORT).show();
+                });
 
-            bottomSheetView.findViewById(R.id.btnSunday).setOnClickListener(view -> {
-                presenter.insertSundayMeal(new Sunday(
-                        meal.getIdMeal(),meal.getStrMeal(),meal.getStrMealThumb()));
-                bottomSheetDialog.dismiss();
-            });
+                bottomSheetView.findViewById(R.id.btnSunday).setOnClickListener(view -> {
+                    presenter.insertSundayMeal(new Sunday(
+                            meal.getIdMeal(),meal.getStrMeal(),meal.getStrMealThumb()));
+                    bottomSheetDialog.dismiss();
+                    Snackbar.make(v, "Meal added to Sunday!", Snackbar.LENGTH_SHORT).show();
+                });
+            }
+            else {
+                if (context instanceof FragmentActivity) {
+                    LoginBottomSheetFragment bottomSheet = new LoginBottomSheetFragment();
+                    bottomSheet.show(((FragmentActivity) context).getSupportFragmentManager(), "LoginBottomSheetFragment");
+                }
+            }
         });
 
         holder.itemView.setOnClickListener(v -> {
@@ -125,9 +146,6 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
                 onMealClickListener.onMealClick(meal);
             }
         });
-
-        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        boolean loggedIn = prefs.getBoolean(KEY_LOGGED_IN, false);
 
         holder.fab.setOnClickListener(v -> {
             if (onFabClickListener != null) {
@@ -154,7 +172,7 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
 
     @Override
     public int getItemCount() {
-        return filteredMeals.size(); // Use filteredMeals instead of meals
+        return filteredMeals.size(); // filteredMeals instead of meals
     }
 
     public void setMeals(List<MealEntity> meals) {

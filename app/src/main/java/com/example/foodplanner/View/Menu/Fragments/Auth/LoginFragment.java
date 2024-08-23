@@ -1,4 +1,4 @@
-package com.example.foodplanner.View.Auth;
+package com.example.foodplanner.View.Menu.Fragments.Auth;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -41,10 +41,12 @@ import com.example.foodplanner.Model.Repository.Repository.DataRepository;
 import com.example.foodplanner.Model.Repository.Repository.MealRepository;
 import com.example.foodplanner.Model.Repository.Repository.OnMealsLoadedListener;
 import com.example.foodplanner.Presenter.AuthPresenter;
+import com.example.foodplanner.Presenter.DataPresenter;
 import com.example.foodplanner.Presenter.MealPresenter;
 import com.example.foodplanner.Presenter.MealPresenterImpl;
 import com.example.foodplanner.R;
 import com.example.foodplanner.View.Activities.HomeActivity;
+import com.example.foodplanner.View.Menu.Interfaces.AuthView;
 import com.example.foodplanner.View.Menu.Interfaces.MealView;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -55,15 +57,15 @@ import com.google.android.gms.common.api.ApiException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Signup_Fragment extends Fragment implements AuthView, MealView {
+public class LoginFragment extends Fragment implements AuthView, MealView {
 
-    private Button guestButton, signUp, goToLogin;
-    private EditText username, email, password, confirmPassword;
+    private Button logIn, guestButton;
+    private EditText email, password;
     private ProgressBar progressBar;
     private GoogleSignInClient mGoogleSignInClient;
     private AuthPresenter presenter;
     private MealPresenter mealPresenter;
-    DataRepository dataRepository;
+    DataPresenter dataPresenter;
 
     private final ActivityResultLauncher<Intent> googleSignInLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
@@ -82,22 +84,21 @@ public class Signup_Fragment extends Fragment implements AuthView, MealView {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        dataRepository = new DataRepository();
-
+        dataPresenter = new DataPresenter(new DataRepository());
         presenter = new AuthPresenter(this, new AuthModel(requireContext()));
-
+        mealPresenter = new MealPresenterImpl(this, new MealRepository(new MealLocalDataSourceImpl(FavoriteMealDatabase.getInstance(getContext())),
+                new MealRemoteDataSource(RetrofitClient.getClient().create(MealApi.class))));
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
-        mealPresenter = new MealPresenterImpl(this, new MealRepository(new MealLocalDataSourceImpl(FavoriteMealDatabase.getInstance(getContext())),
-                new MealRemoteDataSource(RetrofitClient.getClient().create(MealApi.class))));
+
         mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso);
 
         requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                requireActivity().finish();
+                Navigation.findNavController(requireView()).navigate(R.id.action_loginFragment_to_signup_fragment);
             }
         });
     }
@@ -105,20 +106,18 @@ public class Signup_Fragment extends Fragment implements AuthView, MealView {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_signup_fragment, container, false);
+        return inflater.inflate(R.layout.fragment_login, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        username = view.findViewById(R.id.username);
-        signUp = view.findViewById(R.id.signUpButton);
-        email = view.findViewById(R.id.email);
+
+        logIn = view.findViewById(R.id.loginButton);
+        email = view.findViewById(R.id.username);
         password = view.findViewById(R.id.password);
-        confirmPassword = view.findViewById(R.id.confirmPassword);
         progressBar = view.findViewById(R.id.progressBar);
-        goToLogin = view.findViewById(R.id.loginButton);
-        guestButton = view.findViewById(R.id.guestButton);
+        guestButton = view.findViewById(R.id.guestLoginButton);
 
         ImageView googleSignIn = view.findViewById(R.id.google);
         googleSignIn.setOnClickListener(v -> {
@@ -135,23 +134,18 @@ public class Signup_Fragment extends Fragment implements AuthView, MealView {
         guestButton.setOnClickListener(v -> {
             showLoading();
             loadMealsFromfirebase("Guest");
-            Intent intent = new Intent(getActivity(), HomeActivity.class);
-            startActivity(intent);
+            showToast("Welcome Guest");
+            startActivity(new Intent(getActivity(), HomeActivity.class));
             getActivity().finish();
             hideLoading();
         });
-        goToLogin.setOnClickListener(v -> {
-            Navigation.findNavController(view).navigate(R.id.action_signup_fragment_to_loginFragment);
-        });
 
-        signUp.setOnClickListener(v -> {
+        logIn.setOnClickListener(v -> {
             if(NetworkUtil.isNetworkConnected(getContext()))
             {
-                String user = username.getText().toString().trim();
                 String emaill = email.getText().toString().trim();
                 String pass = password.getText().toString().trim();
-                String confirmPass = confirmPassword.getText().toString().trim();
-                presenter.signUp(user, emaill, pass, confirmPass);
+                presenter.login(emaill, pass);
             }
             else
             {
@@ -159,9 +153,16 @@ public class Signup_Fragment extends Fragment implements AuthView, MealView {
             }
         });
     }
+
+    private void googleSignIn() {
+        mGoogleSignInClient.signOut().addOnCompleteListener(task -> {
+            Intent intent = mGoogleSignInClient.getSignInIntent();
+            googleSignInLauncher.launch(intent);
+        });
+    }
     public void loadMealsFromfirebase(String email)
     {
-        dataRepository.loadFromFirebase(email, "Favourites", new OnMealsLoadedListener() {
+        dataPresenter.loadFromFirebase(email, "Favourites", new OnMealsLoadedListener() {
             @Override
             public void onMealsLoaded(List<MealEntity> meals) {
                 if (meals != null && !meals.isEmpty()) {
@@ -173,7 +174,7 @@ public class Signup_Fragment extends Fragment implements AuthView, MealView {
                 }
             }
         });
-        dataRepository.loadFromFirebase(email, "Monday", new OnMealsLoadedListener() {
+        dataPresenter.loadFromFirebase(email, "Monday", new OnMealsLoadedListener() {
             @Override
             public void onMealsLoaded(List<MealEntity> meals) {
                 if (meals != null && !meals.isEmpty()) {
@@ -188,7 +189,7 @@ public class Signup_Fragment extends Fragment implements AuthView, MealView {
                 }
             }
         });
-        dataRepository.loadFromFirebase(email, "Tuesday", new OnMealsLoadedListener() {
+        dataPresenter.loadFromFirebase(email, "Tuesday", new OnMealsLoadedListener() {
             @Override
             public void onMealsLoaded(List<MealEntity> meals) {
                 if (meals != null && !meals.isEmpty()) {
@@ -203,7 +204,7 @@ public class Signup_Fragment extends Fragment implements AuthView, MealView {
                 }
             }
         });
-        dataRepository.loadFromFirebase(email, "Wednesday", new OnMealsLoadedListener() {
+        dataPresenter.loadFromFirebase(email, "Wednesday", new OnMealsLoadedListener() {
             @Override
             public void onMealsLoaded(List<MealEntity> meals) {
                 if (meals != null && !meals.isEmpty()) {
@@ -218,7 +219,7 @@ public class Signup_Fragment extends Fragment implements AuthView, MealView {
                 }
             }
         });
-        dataRepository.loadFromFirebase(email, "Thursday", new OnMealsLoadedListener() {
+        dataPresenter.loadFromFirebase(email, "Thursday", new OnMealsLoadedListener() {
             @Override
             public void onMealsLoaded(List<MealEntity> meals) {
                 if (meals != null && !meals.isEmpty()) {
@@ -233,7 +234,7 @@ public class Signup_Fragment extends Fragment implements AuthView, MealView {
                 }
             }
         });
-        dataRepository.loadFromFirebase(email, "Friday", new OnMealsLoadedListener() {
+        dataPresenter.loadFromFirebase(email, "Friday", new OnMealsLoadedListener() {
             @Override
             public void onMealsLoaded(List<MealEntity> meals) {
                 if (meals != null && !meals.isEmpty()) {
@@ -248,7 +249,7 @@ public class Signup_Fragment extends Fragment implements AuthView, MealView {
                 }
             }
         });
-        dataRepository.loadFromFirebase(email, "Saturday", new OnMealsLoadedListener() {
+        dataPresenter.loadFromFirebase(email, "Saturday", new OnMealsLoadedListener() {
             @Override
             public void onMealsLoaded(List<MealEntity> meals) {
                 if (meals != null && !meals.isEmpty()) {
@@ -263,7 +264,7 @@ public class Signup_Fragment extends Fragment implements AuthView, MealView {
                 }
             }
         });
-        dataRepository.loadFromFirebase(email, "Sunday", new OnMealsLoadedListener() {
+        dataPresenter.loadFromFirebase(email, "Sunday", new OnMealsLoadedListener() {
             @Override
             public void onMealsLoaded(List<MealEntity> meals) {
                 if (meals != null && !meals.isEmpty()) {
@@ -279,13 +280,6 @@ public class Signup_Fragment extends Fragment implements AuthView, MealView {
             }
         });
     }
-    private void googleSignIn() {
-        mGoogleSignInClient.signOut().addOnCompleteListener(task -> {
-            Intent intent = mGoogleSignInClient.getSignInIntent();
-            googleSignInLauncher.launch(intent);
-        });
-    }
-
     @Override
     public void showLoading() {
         progressBar.setVisibility(View.VISIBLE);
@@ -309,6 +303,12 @@ public class Signup_Fragment extends Fragment implements AuthView, MealView {
     }
 
     @Override
+    public void navigateToSignUp() {
+
+    }
+
+
+    @Override
     public void setEmailError(String error) {
         email.setError(error);
     }
@@ -317,6 +317,7 @@ public class Signup_Fragment extends Fragment implements AuthView, MealView {
     public void setPasswordError(String error) {
         password.setError(error);
     }
+
 
     @Override
     public void showMeal(MealEntity meal) {
@@ -363,7 +364,3 @@ public class Signup_Fragment extends Fragment implements AuthView, MealView {
 
     }
 }
-
-
-
-

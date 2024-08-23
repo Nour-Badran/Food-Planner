@@ -61,14 +61,12 @@ public class CategorySearchFragment extends Fragment implements MealView {
         adapter = new CategoryAdapter();
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-// Assuming you have a DAO for WeeklyPlan
 
         presenter = new MealPresenterImpl(this, new MealRepository(new MealLocalDataSourceImpl(FavoriteMealDatabase.getInstance(requireContext())),
                 new MealRemoteDataSource(RetrofitClient.getClient().create(MealApi.class))));
         presenter.getCategories();
 
         adapter.setOnCategoryClickListener(category -> {
-            // Navigate to MealsFragment
             if (getActivity() != null) {
                 Bundle bundle = new Bundle();
                 bundle.putString("category_name", category.getName());
@@ -100,7 +98,6 @@ public class CategorySearchFragment extends Fragment implements MealView {
     @Override
     public void showCategories(List<CategoryResponse.Category> categories) {
         adapter.setCategories(categories);
-
     }
 
     @Override

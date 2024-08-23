@@ -17,7 +17,6 @@ import java.util.List;
 public interface MealPresenter {
     void loadRandomMeal();
     void searchMeals(String query);
-    void loadCountries();
     void getCategories();
     void getRandomMeals();
     void getMealsByCategory(String categoryName);
@@ -26,7 +25,7 @@ public interface MealPresenter {
     void getMealByArea(String area);
     void getIngredients();
     void getIngredientsBySubstring(String substring);
-    void getFavMeals();
+    public LiveData<List<MealEntity>> getFavMeals();
     void insertMeal(MealEntity meal);
     void deleteMeal(MealEntity meal);
     public void updateMeals(List<MealEntity> newMeals);

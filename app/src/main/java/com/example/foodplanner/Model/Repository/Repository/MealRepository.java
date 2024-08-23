@@ -31,7 +31,7 @@ public class MealRepository implements MealRepositoryInterface {
     public void updateMeals(List<MealEntity> newMeals) {
         localDataSource.updateMeals(newMeals);
     }
-        @Override
+    @Override
     public LiveData<List<MealEntity>> getStoredMeals()
     {
         return localDataSource.getStoredMeals();
@@ -47,10 +47,6 @@ public class MealRepository implements MealRepositoryInterface {
         localDataSource.deleteMeal(mealId);
     }
     // Load a random meal from the remote source
-    @Override
-    public void getMealDetailsById(String mealId, MealCallback<MealEntity> callback) {
-        remoteDataSource.getMealDetailsById(mealId, callback);
-    }
     @Override
     public void loadRandomMeal(MealCallback<MealEntity> callback) {
         remoteDataSource.loadRandomMeal(callback);

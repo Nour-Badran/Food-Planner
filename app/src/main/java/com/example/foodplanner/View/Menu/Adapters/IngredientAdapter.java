@@ -31,11 +31,14 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
     @Override
     public void onBindViewHolder(@NonNull IngredientViewHolder holder, int position) {
         IngredientResponse.Ingredient ingredient = ingredients.get(position);
+
         if(ingredient.getMeasure()!=null)
             holder.ingredientName.setText("(" + ingredient.getMeasure() + ") " + ingredient.getName());
         else
             holder.ingredientName.setText(ingredient.getName());
+
         String thumbnailUrl = "https://www.themealdb.com/images/ingredients/" + ingredient.getName().replace(" ", "%20") + ".png";
+
         Glide.with(holder.itemView.getContext())
                 .load(thumbnailUrl)
                 .apply(new RequestOptions())

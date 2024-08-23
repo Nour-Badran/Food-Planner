@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
-            android:layout_marginTop="90dp"
+            android:layout_marginTop="32dp"
             android:layout_marginEnd="50dp"
             android:layout_marginBottom="24dp"
             app:layout_constraintBottom_toTopOf="@+id/textView"
@@ -55,7 +55,7 @@
         <ImageView
             android:id="@+id/mealImage"
             android:layout_width="0dp"
-            android:layout_height="180dp"
+            android:layout_height="300dp"
             android:layout_marginTop="24dp"
             android:layout_marginBottom="8dp"
             android:background="@drawable/rounded_edit_text"

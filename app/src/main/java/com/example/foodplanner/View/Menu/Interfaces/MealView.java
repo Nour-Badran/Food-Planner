@@ -7,7 +7,6 @@ import com.example.foodplanner.Model.Repository.MealDB.MealEntity;
 import java.util.List;
 
 public interface MealView {
-//    void showMealsFromDatabase(List<MealEntity> mealsInDb);
     void showMeal(MealEntity meal);
     void showMealDetails(MealEntity meal);
     void showError(String message);

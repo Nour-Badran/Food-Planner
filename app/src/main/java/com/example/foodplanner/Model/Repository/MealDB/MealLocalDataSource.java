@@ -27,7 +27,6 @@ public interface MealLocalDataSource {
     void deleteMondayMeal(String mealId);
     LiveData<List<Monday>> getMondayMeals();
     void deleteAllMondayMeals();
-    void insertMondayMeals(List<Monday> meals);  // New method
     @Transaction
     void updateMondayMeals(List<Monday> newMeals);  // New method
 
@@ -36,7 +35,6 @@ public interface MealLocalDataSource {
     void deleteTuesdayMeal(String mealId);
     LiveData<List<Tuesday>> getTuesdayMeals();
     void deleteAllTuesdayMeals();
-    void insertTuesdayMeals(List<Tuesday> meals);  // New method
     @Transaction
     void updateTuesdayMeals(List<Tuesday> newMeals);  // New method
 
@@ -45,7 +43,6 @@ public interface MealLocalDataSource {
     void deleteWednesdayMeal(String mealId);
     LiveData<List<Wednesday>> getWednesdayMeals();
     void deleteAllWednesdayMeals();
-    void insertWednesdayMeals(List<Wednesday> meals);  // New method
     @Transaction
     void updateWednesdayMeals(List<Wednesday> newMeals);  // New method
 
@@ -54,7 +51,6 @@ public interface MealLocalDataSource {
     void deleteThursdayMeal(String mealId);
     LiveData<List<Thursday>> getThursdayMeals();
     void deleteAllThursdayMeals();
-    void insertThursdayMeals(List<Thursday> meals);  // New method
     @Transaction
     void updateThursdayMeals(List<Thursday> newMeals);  // New method
 
@@ -63,7 +59,6 @@ public interface MealLocalDataSource {
     void deleteFridayMeal(String mealId);
     LiveData<List<Friday>> getFridayMeals();
     void deleteAllFridayMeals();
-    void insertFridayMeals(List<Friday> meals);  // New method
     @Transaction
     void updateFridayMeals(List<Friday> newMeals);  // New method
 
@@ -72,7 +67,6 @@ public interface MealLocalDataSource {
     void deleteSaturdayMeal(String mealId);
     LiveData<List<Saturday>> getSaturdayMeals();
     void deleteAllSaturdayMeals();
-    void insertSaturdayMeals(List<Saturday> meals);  // New method
     @Transaction
     void updateSaturdayMeals(List<Saturday> newMeals);  // New method
 
@@ -81,7 +75,6 @@ public interface MealLocalDataSource {
     void deleteSundayMeal(String mealId);
     LiveData<List<Sunday>> getSundayMeals();
     void deleteAllSundayMeals();
-    void insertSundayMeals(List<Sunday> meals);  // New method
     @Transaction
     void updateSundayMeals(List<Sunday> newMeals);  // New method
 

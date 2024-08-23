@@ -21,8 +21,8 @@
     <color name="differentColorTransp">#80FF5700</color> <!-- Slightly transparent color -->
     <color name="red">#F44336</color>
     <color name="transparent">#00000000</color>
-        <color name="blue_primary">#2196F3</color>
-        <color name="blue_primary_variant">#1976D2</color>
+    <color name="blue_primary">#2196F3</color>
+    <color name="blue_primary_variant">#1976D2</color>
     <!-- Light Blue for card backgrounds -->
     <color name="cardBackgroundLight">#E3F2FD</color>
     <!-- Neutral Gray for card backgrounds -->
@@ -36,7 +36,7 @@
     <color name="rippleColor">#50FFFFFF</color> <!-- Semi-transparent white -->
 
     <color name="blue_secondary">#03A9F4</color>
-        <color name="blue_secondary_variant">#0288D1</color>
+    <color name="blue_secondary_variant">#0288D1</color>
     <color name="bluePrimaryTransparent10">#1A2196F3</color> <!-- 10% opacity -->
     <color name="bluePrimaryTransparent20">#332196F3</color> <!-- 20% opacity -->
     <color name="bluePrimaryTransparent30">#4D2196F3</color> <!-- 30% opacity -->

@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.foodplanner.R;
-import com.example.foodplanner.View.Auth.AuthActivity;
+import com.example.foodplanner.View.Activities.AuthActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 public class LoginBottomSheetFragment extends BottomSheetDialogFragment {
@@ -19,7 +19,6 @@ public class LoginBottomSheetFragment extends BottomSheetDialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -31,12 +30,11 @@ public class LoginBottomSheetFragment extends BottomSheetDialogFragment {
         btnLogin = view.findViewById(R.id.btnLogin);
 
         btnLogin.setOnClickListener(v -> {
-
             Intent intent = new Intent(getActivity(), AuthActivity.class);
             startActivity(intent);
             getActivity().finish();
         });
 
-        return view;    }
-
+        return view;
+    }
 }

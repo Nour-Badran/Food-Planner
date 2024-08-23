@@ -10,13 +10,11 @@ import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.provider.CalendarContract;
-import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
@@ -51,7 +49,6 @@ public class PlannedMealsAdapter extends RecyclerView.Adapter<PlannedMealsAdapte
     private OnFabClickListener onFabClickListener;
     private OnMealClickListener onMealClickListener;
 
-
     public PlannedMealsAdapter(Context context, List<MealEntity> meals, int dayIndex,MealPresenter presenter) {
         this.context = context;
         this.meals = meals;
@@ -74,7 +71,6 @@ public class PlannedMealsAdapter extends RecyclerView.Adapter<PlannedMealsAdapte
     @Override
     public void onBindViewHolder(@NonNull MealViewHolder holder, int position) {
         MealEntity meal = meals.get(position);
-        Log.d("MealsAdapter", "Binding meal: " + meal.getStrMeal());
         holder.tvMealName.setText(meal.getStrMeal());
 
         Glide.with(context)
@@ -82,6 +78,7 @@ public class PlannedMealsAdapter extends RecyclerView.Adapter<PlannedMealsAdapte
                 .apply(new RequestOptions())
                 .placeholder(R.drawable.img_11)
                 .into(holder.ivMealImage);
+
         int defaultColor = ContextCompat.getColor(holder.itemView.getContext(), R.color.gray);
         holder.fabFav.setBackgroundTintList(ColorStateList.valueOf(defaultColor));
 
@@ -131,19 +128,16 @@ public class PlannedMealsAdapter extends RecyclerView.Adapter<PlannedMealsAdapte
                     // Set the selected date
                     calendar.set(year, monthOfYear, dayOfMonth);
 
-                    // Show time picker dialog
                     TimePickerDialog timePickerDialog = new TimePickerDialog(context,
                             (timeView, hourOfDay, minute) -> {
-                                // Set the selected time
                                 calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                                 calendar.set(Calendar.MINUTE, minute);
 
-                                // Ask for reminder time
                                 showReminderTimePicker(meal, calendar);
                             },
                             calendar.get(Calendar.HOUR_OF_DAY),
                             calendar.get(Calendar.MINUTE),
-                            true); // 24-hour format
+                            true); //
                     timePickerDialog.show();
                 },
                 calendar.get(Calendar.YEAR),
@@ -156,11 +150,9 @@ public class PlannedMealsAdapter extends RecyclerView.Adapter<PlannedMealsAdapte
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Set Reminder");
 
-        // Inflate the custom layout for the dialog
         View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_set_reminder, null);
         builder.setView(dialogView);
 
-        // Initialize NumberPickers for hours, minutes, and seconds
         NumberPicker numberPickerHours = dialogView.findViewById(R.id.numberPickerHours);
         NumberPicker numberPickerMinutes = dialogView.findViewById(R.id.numberPickerMinutes);
         NumberPicker numberPickerSeconds = dialogView.findViewById(R.id.numberPickerSeconds);
@@ -198,22 +190,21 @@ public class PlannedMealsAdapter extends RecyclerView.Adapter<PlannedMealsAdapte
 
         ContentResolver cr = context.getContentResolver();
         ContentValues values = new ContentValues();
-        values.put(CalendarContract.Events.CALENDAR_ID, 1); // Assuming you are using the primary calendar
+        values.put(CalendarContract.Events.CALENDAR_ID, 1);
         values.put(CalendarContract.Events.TITLE, meal.getStrMeal());
         values.put(CalendarContract.Events.DESCRIPTION, "Meal Planning");
         values.put(CalendarContract.Events.EVENT_LOCATION, "Home");
         values.put(CalendarContract.Events.DTSTART, calendar.getTimeInMillis());
-        values.put(CalendarContract.Events.DTEND, calendar.getTimeInMillis() + 60 * 60 * 1000); // 1 hour later as placeholder
+        values.put(CalendarContract.Events.DTEND, calendar.getTimeInMillis() + 60 * 60 * 1000);
         values.put(CalendarContract.Events.EVENT_TIMEZONE, Calendar.getInstance().getTimeZone().getID());
 
         Uri uri = cr.insert(CalendarContract.Events.CONTENT_URI, values);
         if (uri != null) {
             long eventID = Long.parseLong(uri.getLastPathSegment());
 
-            // Set reminder
             ContentValues reminderValues = new ContentValues();
             reminderValues.put(CalendarContract.Reminders.EVENT_ID, eventID);
-            reminderValues.put(CalendarContract.Reminders.MINUTES, reminderSeconds / 60); // Convert seconds to minutes
+            reminderValues.put(CalendarContract.Reminders.MINUTES, reminderSeconds / 60);
             reminderValues.put(CalendarContract.Reminders.MINUTES, reminderSeconds / 60);
             reminderValues.put(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_ALERT);
 
@@ -225,25 +216,8 @@ public class PlannedMealsAdapter extends RecyclerView.Adapter<PlannedMealsAdapte
         }
     }
 
-
-    private void setReminder(long eventID, int reminderMinutes) {
-        ContentResolver cr = context.getContentResolver();
-        ContentValues values = new ContentValues();
-        values.put(CalendarContract.Reminders.MINUTES, reminderMinutes);
-        values.put(CalendarContract.Reminders.EVENT_ID, eventID);
-        values.put(CalendarContract.Reminders.MINUTES, reminderMinutes);
-        values.put(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_ALERT);
-
-        Uri uri = cr.insert(CalendarContract.Reminders.CONTENT_URI, values);
-        if (uri != null) {
-            Log.d("Calendar", "Reminder set for event ID: " + eventID + " with " + reminderMinutes + " minutes before.");
-        }
-    }
-
-
     @Override
     public int getItemCount() {
-        Log.d("MealsAdapter", "Binding meal: " + meals.size());
         return meals.size();
     }
 

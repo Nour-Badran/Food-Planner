@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.foodplanner.Model.AuthModel.AuthModel;
 import com.example.foodplanner.Model.POJO.CategoryResponse;
 import com.example.foodplanner.Model.POJO.IngredientResponse;
 import com.example.foodplanner.Model.Repository.DB.FavoriteMealDatabase;
@@ -29,31 +30,30 @@ import com.example.foodplanner.Model.Repository.MealDB.MealEntity;
 import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealRemoteDataSource;
 import com.example.foodplanner.Model.Repository.MealRemoteDataSource.RetrofitClient;
 import com.example.foodplanner.Model.Repository.Repository.MealRepository;
+import com.example.foodplanner.Presenter.AuthPresenter;
 import com.example.foodplanner.Presenter.MealPresenterImpl;
 import com.example.foodplanner.R;
 import com.example.foodplanner.View.LoginBottomSheetFragment;
 import com.example.foodplanner.View.Menu.Adapters.MealAdapter;
+import com.example.foodplanner.View.Menu.Interfaces.AuthView;
 import com.example.foodplanner.View.Menu.Interfaces.MealView;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
-public class SearchMealsFragment extends Fragment implements MealView {
+public class SearchMealsFragment extends Fragment implements MealView, AuthView {
 
     private RecyclerView recyclerView;
     private MealPresenterImpl presenter;
-    private EditText editTextMealName;
-    private TextView textViewError;
+    private AuthPresenter authPresenter;
     private MealAdapter adapter;
-    private static final String PREFS_NAME = "FoodPlannerPrefs";
-    private static final String KEY_LOGGED_IN = "loggedIn";
+    private boolean loggedIn;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                // Replace with the action to navigate to another fragment
                 Navigation.findNavController(requireView()).navigate(R.id.action_nameSearchFragment_to_randomMeal);
             }
         });
@@ -62,7 +62,6 @@ public class SearchMealsFragment extends Fragment implements MealView {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_meals, container, false);
     }
 
@@ -71,13 +70,13 @@ public class SearchMealsFragment extends Fragment implements MealView {
         super.onViewCreated(view, savedInstanceState);
         SearchView searchViewMeal = view.findViewById(R.id.searchViewMeal);
         searchViewMeal.setIconifiedByDefault(false); // Ensure SearchView is always expanded
-        //textViewError = view.findViewById(R.id.textViewError);
         recyclerView = view.findViewById(R.id.recyclerViewMeals);
 
         presenter = new MealPresenterImpl(this, new MealRepository(new MealLocalDataSourceImpl(FavoriteMealDatabase.getInstance(requireContext())),
                 new MealRemoteDataSource(RetrofitClient.getClient().create(MealApi.class))));
-
-        adapter = new MealAdapter(presenter,requireContext());
+        authPresenter = new AuthPresenter(this, new AuthModel(getContext()));
+        loggedIn = authPresenter.isLoggedIn();
+        adapter = new MealAdapter(presenter,requireContext(),authPresenter);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
 
@@ -104,9 +103,6 @@ public class SearchMealsFragment extends Fragment implements MealView {
                 Navigation.findNavController(view).navigate(R.id.action_nameSearchFragment_to_mealDetailsFragment, bundle);
             }
         });
-
-        SharedPreferences prefs = getActivity().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        boolean loggedIn = prefs.getBoolean(KEY_LOGGED_IN, false);
 
         adapter.setOnFabClickListener(meal -> {
             if(loggedIn)
@@ -184,4 +180,38 @@ public class SearchMealsFragment extends Fragment implements MealView {
 
     }
 
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void hideLoading() {
+
+    }
+
+    @Override
+    public void showToast(String message) {
+
+    }
+
+    @Override
+    public void navigateToHome(String email) {
+
+    }
+
+    @Override
+    public void navigateToSignUp() {
+
+    }
+
+    @Override
+    public void setEmailError(String error) {
+
+    }
+
+    @Override
+    public void setPasswordError(String error) {
+
+    }
 }

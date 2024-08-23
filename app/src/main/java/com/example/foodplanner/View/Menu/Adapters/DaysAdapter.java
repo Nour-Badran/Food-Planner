@@ -43,7 +43,6 @@ public class DaysAdapter extends RecyclerView.Adapter<DaysAdapter.DayViewHolder>
     private final List<String> dayDates;
     private final List<List<MealEntity>> weeklyMeals;
     MealPresenter presenter;
-    MealRepository repository;
     private OnFabClickListener onFabClickListener;
     private OnMealClickListener onMealClickListener;
 
@@ -52,7 +51,6 @@ public class DaysAdapter extends RecyclerView.Adapter<DaysAdapter.DayViewHolder>
         this.daysOfWeek = daysOfWeek;
         this.weeklyMeals = weeklyMeals;
         this.presenter = presenter;
-        this.repository = repository;
         this.dayDates = calculateWeekDates();
     }
 
@@ -70,15 +68,13 @@ public class DaysAdapter extends RecyclerView.Adapter<DaysAdapter.DayViewHolder>
         holder.tvDayName.setText(dayName + " (" + dayDate + ")");
 
         List<MealEntity> mealsForDay = weeklyMeals.get(position);
-        PlannedMealsAdapter plannedMealsAdapter = new PlannedMealsAdapter(context, mealsForDay, position,presenter);  // Pass position as dayIndex
+        PlannedMealsAdapter plannedMealsAdapter = new PlannedMealsAdapter(context, mealsForDay, position,presenter);  //  position --> dayIndex
 
         plannedMealsAdapter.setOnDeleteListener((dayIndex, mealPosition) -> {
-            MealEntity mealToDelete = weeklyMeals.get(dayIndex).get(mealPosition);
-
             mealsForDay.remove(mealPosition);
             plannedMealsAdapter.notifyItemRemoved(mealPosition);
             plannedMealsAdapter.notifyItemRangeChanged(mealPosition, mealsForDay.size());
-            removeMealFromDatabase(dayIndex, mealToDelete);
+            removeMealFromDatabase(dayIndex);
 
         });
 
@@ -108,48 +104,40 @@ public class DaysAdapter extends RecyclerView.Adapter<DaysAdapter.DayViewHolder>
     public void setOnMealClickListener(OnMealClickListener listener) {
         this.onMealClickListener = listener;
     }
-    private void removeMealFromDatabase(int dayIndex, MealEntity meal) {
-        List<Monday> mondayMeals;
-        List<Tuesday> tuesdayMeals;
-        List<Wednesday> wednesdayMeals;
-        List<Thursday> thursdayMeals;
-        List<Friday> fridayMeals;
-        List<Saturday> saturdayMeals;
-        List<Sunday> sundayMeals;
-
+    private void removeMealFromDatabase(int dayIndex) {
         switch (daysOfWeek.get(dayIndex)) {
             case "Monday":
-                mondayMeals = convertMealEntitiesToMondays(weeklyMeals.get(dayIndex));
+                List<Monday> mondayMeals = convertMealEntitiesToMondays(weeklyMeals.get(dayIndex));
                 presenter.updateMondayMeals(mondayMeals);
                 break;
 
             case "Tuesday":
-                tuesdayMeals = convertMealEntitiesToTuesdays(weeklyMeals.get(dayIndex));
+                List<Tuesday> tuesdayMeals = convertMealEntitiesToTuesdays(weeklyMeals.get(dayIndex));
                 presenter.updateTuesdayMeals(tuesdayMeals);
                 break;
 
             case "Wednesday":
-                wednesdayMeals = convertMealEntitiesToWednesdays(weeklyMeals.get(dayIndex));
+                List<Wednesday> wednesdayMeals = convertMealEntitiesToWednesdays(weeklyMeals.get(dayIndex));
                 presenter.updateWednesdayMeals(wednesdayMeals);
                 break;
 
             case "Thursday":
-                thursdayMeals = convertMealEntitiesToThursdays(weeklyMeals.get(dayIndex));
+                List<Thursday> thursdayMeals = convertMealEntitiesToThursdays(weeklyMeals.get(dayIndex));
                 presenter.updateThursdayMeals(thursdayMeals);
                 break;
 
             case "Friday":
-                fridayMeals = convertMealEntitiesToFridays(weeklyMeals.get(dayIndex));
+                List<Friday> fridayMeals = convertMealEntitiesToFridays(weeklyMeals.get(dayIndex));
                 presenter.updateFridayMeals(fridayMeals);
                 break;
 
             case "Saturday":
-                saturdayMeals = convertMealEntitiesToSaturdays(weeklyMeals.get(dayIndex));
+                List<Saturday> saturdayMeals = convertMealEntitiesToSaturdays(weeklyMeals.get(dayIndex));
                 presenter.updateSaturdayMeals(saturdayMeals);
                 break;
 
             case "Sunday":
-                sundayMeals = convertMealEntitiesToSundays(weeklyMeals.get(dayIndex));
+                List<Sunday> sundayMeals = convertMealEntitiesToSundays(weeklyMeals.get(dayIndex));
                 presenter.updateSundayMeals(sundayMeals);
                 break;
         }
