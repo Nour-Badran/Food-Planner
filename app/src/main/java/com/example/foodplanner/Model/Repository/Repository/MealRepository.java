@@ -48,10 +48,6 @@ public class MealRepository implements MealRepositoryInterface {
     }
     // Load a random meal from the remote source
     @Override
-    public void getMealDetailsById(String mealId, MealCallback<MealEntity> callback) {
-        remoteDataSource.getMealDetailsById(mealId, callback);
-    }
-    @Override
     public void loadRandomMeal(MealCallback<MealEntity> callback) {
         remoteDataSource.loadRandomMeal(callback);
     }

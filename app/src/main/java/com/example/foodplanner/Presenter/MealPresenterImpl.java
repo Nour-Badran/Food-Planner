@@ -266,11 +266,6 @@ public class MealPresenterImpl implements MealPresenter {
     }
 
     @Override
-    public void loadCountries() {
-        // Implement loadCountries with repository when available
-    }
-
-    @Override
     public void getRandomMeals() {
         repository.getRandomMeals(new MealCallback<List<MealEntity>>() {
             @Override

@@ -49,7 +49,6 @@ public class PlannedMealsAdapter extends RecyclerView.Adapter<PlannedMealsAdapte
     private OnFabClickListener onFabClickListener;
     private OnMealClickListener onMealClickListener;
 
-
     public PlannedMealsAdapter(Context context, List<MealEntity> meals, int dayIndex,MealPresenter presenter) {
         this.context = context;
         this.meals = meals;
@@ -79,6 +78,7 @@ public class PlannedMealsAdapter extends RecyclerView.Adapter<PlannedMealsAdapte
                 .apply(new RequestOptions())
                 .placeholder(R.drawable.img_11)
                 .into(holder.ivMealImage);
+
         int defaultColor = ContextCompat.getColor(holder.itemView.getContext(), R.color.gray);
         holder.fabFav.setBackgroundTintList(ColorStateList.valueOf(defaultColor));
 

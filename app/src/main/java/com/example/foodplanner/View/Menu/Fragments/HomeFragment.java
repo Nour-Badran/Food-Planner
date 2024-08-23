@@ -51,6 +51,7 @@ import com.example.foodplanner.View.Menu.Interfaces.MealView;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -223,12 +224,12 @@ public class HomeFragment extends Fragment implements MealView, AuthView {
                             getActivity().runOnUiThread(() -> {
                                 if (exists) {
                                     getActivity().runOnUiThread(() ->
-                                            Toast.makeText(getContext(), mealsList.get(currentIndex).getStrMeal() + " deleted from favorites", Toast.LENGTH_SHORT).show()
+                                            Snackbar.make(view, mealsList.get(currentIndex).getStrMeal() + " deleted from favorites", Snackbar.LENGTH_SHORT).show()
                                     );
                                     presenter.deleteMeal(mealsList.get(currentIndex));
                                 } else {
                                     getActivity().runOnUiThread(() ->
-                                            Toast.makeText(getContext(), mealsList.get(currentIndex).getStrMeal() + " added to favorites", Toast.LENGTH_SHORT).show()
+                                            Snackbar.make(view, mealsList.get(currentIndex).getStrMeal() + " added to favorites", Snackbar.LENGTH_SHORT).show()
                                     );
                                     presenter.insertMeal(mealsList.get(currentIndex));
                                 }
@@ -326,12 +327,9 @@ public class HomeFragment extends Fragment implements MealView, AuthView {
         currentIndex++;
         updateFabColor(meal.getIdMeal());
         mealsList.add(meal);
-        mealName.append(": " + meal.getStrMeal());
-        mealCategory.append(": " + meal.getStrCategory());
-        mealArea.append(": " + meal.getStrArea());
-        //mealName.setText("Meal Name: " + meal.getStrMeal());
-//        mealCategory.setText("Category: " + meal.getStrCategory());
-//        mealArea.setText("Country: " + meal.getStrArea());
+        mealName.setText("Meal Name: " + meal.getStrMeal());
+        mealCategory.setText("Category: " + meal.getStrCategory());
+        mealArea.setText("Country: " + meal.getStrArea());
         Glide.with(this).load(meal.getStrMealThumb()).apply(new RequestOptions())
                 .placeholder(R.drawable.img_11).into(mealImage);
     }

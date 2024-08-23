@@ -100,11 +100,6 @@ public class MealLocalDataSourceImpl implements MealLocalDataSource {
     }
 
     @Override
-    public void insertMondayMeals(List<Monday> meals) {
-
-    }
-
-    @Override
     @Transaction
     public void updateMondayMeals(List<Monday> newMeals) {
         new Thread(() -> {
@@ -137,11 +132,6 @@ public class MealLocalDataSourceImpl implements MealLocalDataSource {
     @Override
     public void deleteAllTuesdayMeals() {
         new Thread(() -> tuesdayDao.deleteAllTuesdayMeals()).start();
-    }
-
-    @Override
-    public void insertTuesdayMeals(List<Tuesday> meals) {
-
     }
 
     @Override
@@ -180,11 +170,6 @@ public class MealLocalDataSourceImpl implements MealLocalDataSource {
     }
 
     @Override
-    public void insertWednesdayMeals(List<Wednesday> meals) {
-
-    }
-
-    @Override
     @Transaction
     public void updateWednesdayMeals(List<Wednesday> newMeals) {
         new Thread(() -> {
@@ -216,11 +201,6 @@ public class MealLocalDataSourceImpl implements MealLocalDataSource {
     @Override
     public void deleteAllThursdayMeals() {
         new Thread(() -> thursdayDao.deleteAllThursdayMeals()).start();
-    }
-
-    @Override
-    public void insertThursdayMeals(List<Thursday> meals) {
-
     }
 
     @Override
@@ -259,11 +239,6 @@ public class MealLocalDataSourceImpl implements MealLocalDataSource {
     }
 
     @Override
-    public void insertFridayMeals(List<Friday> meals) {
-
-    }
-
-    @Override
     @Transaction
     public void updateFridayMeals(List<Friday> newMeals) {
         new Thread(() -> {
@@ -298,11 +273,6 @@ public class MealLocalDataSourceImpl implements MealLocalDataSource {
     }
 
     @Override
-    public void insertSaturdayMeals(List<Saturday> meals) {
-
-    }
-
-    @Override
     @Transaction
     public void updateSaturdayMeals(List<Saturday> newMeals) {
         new Thread(() -> {
@@ -333,11 +303,6 @@ public class MealLocalDataSourceImpl implements MealLocalDataSource {
     }
     public void deleteAllSundayMeals() {
         new Thread(() -> sundayDao.deleteAllSundayMeals()).start();
-    }
-
-    @Override
-    public void insertSundayMeals(List<Sunday> meals) {
-
     }
 
     @Override

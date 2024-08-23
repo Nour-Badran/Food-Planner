@@ -67,7 +67,6 @@ public class CategorySearchFragment extends Fragment implements MealView {
         presenter.getCategories();
 
         adapter.setOnCategoryClickListener(category -> {
-            // Navigate to MealsFragment
             if (getActivity() != null) {
                 Bundle bundle = new Bundle();
                 bundle.putString("category_name", category.getName());
@@ -99,7 +98,6 @@ public class CategorySearchFragment extends Fragment implements MealView {
     @Override
     public void showCategories(List<CategoryResponse.Category> categories) {
         adapter.setCategories(categories);
-
     }
 
     @Override

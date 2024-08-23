@@ -32,6 +32,7 @@ import com.example.foodplanner.R;
 import com.example.foodplanner.View.Menu.Adapters.MealAdapter;
 import com.example.foodplanner.View.Menu.Interfaces.AuthView;
 import com.example.foodplanner.View.Menu.Interfaces.MealView;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
@@ -93,6 +94,7 @@ public class FavouriteMealsFragment extends Fragment implements MealView, AuthVi
         });
         adapter.setOnFabClickListener(meal -> {
             presenter.deleteMeal(meal);
+            Snackbar.make(view, meal.getStrMeal() + " deleted from favorites", Snackbar.LENGTH_SHORT).show();
         });
     }
 

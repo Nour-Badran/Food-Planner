@@ -17,7 +17,6 @@ import java.util.List;
 public interface MealPresenter {
     void loadRandomMeal();
     void searchMeals(String query);
-    void loadCountries();
     void getCategories();
     void getRandomMeals();
     void getMealsByCategory(String categoryName);

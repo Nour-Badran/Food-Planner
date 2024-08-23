@@ -19,8 +19,6 @@ public interface MealRepositoryInterface {
     void deleteMeal(String mealId);
 
     // Load a random meal from the remote source
-    void getMealDetailsById(String mealId, MealCallback<MealEntity> callback);
-
     void loadRandomMeal(MealCallback<MealEntity> callback);
 
     // Get all meals from the remote source

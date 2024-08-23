@@ -42,6 +42,7 @@ import com.example.foodplanner.View.Menu.Adapters.IngredientAdapter;
 import com.example.foodplanner.View.Menu.Interfaces.MealExistCallback;
 import com.example.foodplanner.View.Menu.Interfaces.MealView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -153,12 +154,12 @@ public class MealDetailsFragment extends Fragment implements MealView, AuthView 
 
                                 if (exists) {
                                     getActivity().runOnUiThread(() ->
-                                            Toast.makeText(getContext(), currentMeal.getStrMeal() + " deleted from favorites", Toast.LENGTH_SHORT).show()
+                                            Snackbar.make(view, currentMeal.getStrMeal() + " deleted from favorites", Snackbar.LENGTH_SHORT).show()
                                     );
                                     presenter.deleteMeal(currentMeal);
                                 } else {
                                     getActivity().runOnUiThread(() ->
-                                            Toast.makeText(getContext(), currentMeal.getStrMeal() + " added to favorites", Toast.LENGTH_SHORT).show()
+                                            Snackbar.make(view, currentMeal.getStrMeal() + " added from favorites", Snackbar.LENGTH_SHORT).show()
                                     );
                                     presenter.insertMeal(currentMeal);
                                 }

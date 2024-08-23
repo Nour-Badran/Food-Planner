@@ -33,6 +33,7 @@ import com.example.foodplanner.View.LoginBottomSheetFragment;
 import com.example.foodplanner.View.Menu.Adapters.MealAdapter;
 import com.example.foodplanner.View.Menu.Interfaces.AuthView;
 import com.example.foodplanner.View.Menu.Interfaces.MealView;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 import androidx.appcompat.widget.SearchView;
@@ -169,12 +170,12 @@ public class MealsFragment extends Fragment implements MealView, AuthView {
                 presenter.isMealExists(meal.getIdMeal(), exists -> {
                     if (exists) {
                         getActivity().runOnUiThread(() ->
-                                Toast.makeText(getContext(), meal.getStrMeal() + " deleted from favorites", Toast.LENGTH_SHORT).show()
+                                Snackbar.make(view, meal.getStrMeal() + " deleted from favorites", Snackbar.LENGTH_SHORT).show()
                         );
                         presenter.deleteMeal(meal);
                     } else {
                         getActivity().runOnUiThread(() ->
-                                Toast.makeText(getContext(), meal.getStrMeal() + " added to favorites", Toast.LENGTH_SHORT).show()
+                                Snackbar.make(view, meal.getStrMeal() + " added to favorites", Snackbar.LENGTH_SHORT).show()
                         );
                         presenter.insertMeal(meal);
                     }
@@ -186,7 +187,6 @@ public class MealsFragment extends Fragment implements MealView, AuthView {
                 bottomSheet.show(getActivity().getSupportFragmentManager(), "LoginBottomSheetFragment");
             }
         });
-        //presenter.getCategories();
     }
 
     @Override

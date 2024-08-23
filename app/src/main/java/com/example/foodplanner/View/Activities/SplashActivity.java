@@ -51,7 +51,6 @@ public class SplashActivity extends AppCompatActivity implements AuthView {
 
     @Override
     public void showToast(String message) {
-
     }
 
     @Override

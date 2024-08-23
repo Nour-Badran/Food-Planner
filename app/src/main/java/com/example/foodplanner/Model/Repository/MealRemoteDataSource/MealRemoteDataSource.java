@@ -38,7 +38,7 @@ public class MealRemoteDataSource implements MealModel {
 
             @Override
             public void onFailure(Call<MealResponse> call, Throwable t) {
-                callback.onFailure("Error: " + t.getMessage());
+                callback.onFailure("No network, please Check your network connection");
             }
         });
     }
