@@ -360,11 +360,6 @@ public class HomeActivity extends AppCompatActivity implements MealView, AuthVie
     }
 
     @Override
-    public void showCategories(List<CategoryResponse.Category> categories) {
-
-    }
-
-    @Override
     public void showMeals(List<MealEntity> meals) {
 
     }

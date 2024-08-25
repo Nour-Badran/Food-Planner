@@ -38,6 +38,7 @@ import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealRemoteD
 import com.example.foodplanner.Model.Repository.MealRemoteDataSource.RetrofitClient;
 import com.example.foodplanner.Model.Repository.Repository.MealRepository;
 import com.example.foodplanner.Presenter.AuthPresenter;
+import com.example.foodplanner.Presenter.CategoryPresenter;
 import com.example.foodplanner.Presenter.MealPresenter;
 import com.example.foodplanner.Presenter.MealPresenterImpl;
 import com.example.foodplanner.R;
@@ -46,6 +47,7 @@ import com.example.foodplanner.View.LoginBottomSheetFragment;
 import com.example.foodplanner.View.Menu.Adapters.CategoryAdapter;
 import com.example.foodplanner.View.Menu.Adapters.IngredientAdapter;
 import com.example.foodplanner.View.Menu.Adapters.MealAdapter;
+import com.example.foodplanner.View.Menu.Interfaces.CategoriesView;
 import com.example.foodplanner.View.Menu.Interfaces.MealExistCallback;
 import com.example.foodplanner.View.Menu.Interfaces.MealView;
 import com.google.android.material.chip.Chip;
@@ -57,9 +59,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class HomeFragment extends Fragment implements MealView, AuthView {
+public class HomeFragment extends Fragment implements MealView, AuthView, CategoriesView {
 
     private MealPresenter presenter;
+    private CategoryPresenter catPresenter;
     ImageView mealImage;
     ImageView next;
     ImageView back;
@@ -82,6 +85,8 @@ public class HomeFragment extends Fragment implements MealView, AuthView {
         super.onCreate(savedInstanceState);
         mealsList = new ArrayList<>();
         authPresenter = new AuthPresenter(this, new AuthModel(getContext()));
+        catPresenter = new CategoryPresenter(this, new MealRepository(new MealLocalDataSourceImpl(FavoriteMealDatabase.getInstance(requireContext())),
+                new MealRemoteDataSource(RetrofitClient.getClient().create(MealApi.class))));
         loggedIn = authPresenter.isLoggedIn();
         requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
@@ -118,7 +123,7 @@ public class HomeFragment extends Fragment implements MealView, AuthView {
                                 .setDuration(300)
                                 .setInterpolator(new AccelerateDecelerateInterpolator())
                                 .setListener(null);
-                        presenter.getCategories();
+                        catPresenter.getCategories();
                     } else if (chip.getTag().equals("Open")) {
                         chip.setTag(null);
                         recyclerView.animate()

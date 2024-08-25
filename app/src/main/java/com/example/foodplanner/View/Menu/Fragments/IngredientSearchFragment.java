@@ -114,9 +114,6 @@ public class IngredientSearchFragment extends Fragment implements MealView {
     }
 
     @Override
-    public void showCategories(List<CategoryResponse.Category> categories) {}
-
-    @Override
     public void showMeals(List<MealEntity> meals) {}
 
     @Override

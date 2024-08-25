@@ -154,14 +154,6 @@ public class MealPresenterImpl implements MealPresenter {
     }
     @Override
     public LiveData<List<MealEntity>> getFavMeals() {
-        // Retrieve all meals and manually notify view
-//        repository.getStoredMeals().observeForever(meals -> {
-//            if (meals == null || meals.isEmpty()) {
-//                view.showError("No favorite meals found");
-//            } else {
-//                view.showMeals(meals);
-//            }
-//        });
         return repository.getStoredMeals();
     }
 
@@ -236,25 +228,6 @@ public class MealPresenterImpl implements MealPresenter {
                     view.showError("No meals found");
                 } else {
                     view.showMeals(meals);
-                }
-            }
-
-            @Override
-            public void onFailure(String errorMessage) {
-                view.showError(errorMessage);
-            }
-        });
-    }
-
-    @Override
-    public void getCategories() {
-        repository.getCategories(new MealCallback<List<CategoryResponse.Category>>() {
-            @Override
-            public void onSuccess(List<CategoryResponse.Category> categories) {
-                if (categories == null || categories.isEmpty()) {
-                    view.showError("No categories found");
-                } else {
-                    view.showCategories(categories);
                 }
             }
 

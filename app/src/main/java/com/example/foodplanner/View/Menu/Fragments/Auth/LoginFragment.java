@@ -340,11 +340,6 @@ public class LoginFragment extends Fragment implements AuthView, MealView {
     }
 
     @Override
-    public void showCategories(List<CategoryResponse.Category> categories) {
-
-    }
-
-    @Override
     public void showMeals(List<MealEntity> meals) {
 
     }

@@ -202,10 +202,6 @@ public class MealsFragment extends Fragment implements MealView, AuthView {
     public void showMessage(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
-    @Override
-    public void showCategories(List<CategoryResponse.Category> categories) {
-
-    }
 
     @Override
     public void showMeals(List<MealEntity> meals) {

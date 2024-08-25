@@ -420,11 +420,6 @@ public class MealDetailsFragment extends Fragment implements MealView, AuthView 
     }
 
     @Override
-    public void showCategories(List<CategoryResponse.Category> categories) {
-
-    }
-
-    @Override
     public void showMeals(List<MealEntity> meals) {
         if (meals != null && !meals.isEmpty()) {
             showMealDetails(meals.get(0));

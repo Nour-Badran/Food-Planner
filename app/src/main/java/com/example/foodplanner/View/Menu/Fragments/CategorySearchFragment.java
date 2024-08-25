@@ -24,16 +24,18 @@ import com.example.foodplanner.Model.Repository.MealDB.MealEntity;
 import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealRemoteDataSource;
 import com.example.foodplanner.Model.Repository.MealRemoteDataSource.RetrofitClient;
 import com.example.foodplanner.Model.Repository.Repository.MealRepository;
+import com.example.foodplanner.Presenter.CategoryPresenter;
 import com.example.foodplanner.Presenter.MealPresenter;
 import com.example.foodplanner.Presenter.MealPresenterImpl;
 import com.example.foodplanner.R;
 import com.example.foodplanner.View.Menu.Adapters.CategoryAdapter;
+import com.example.foodplanner.View.Menu.Interfaces.CategoriesView;
 import com.example.foodplanner.View.Menu.Interfaces.MealView;
 
 import java.util.List;
 
-public class CategorySearchFragment extends Fragment implements MealView {
-    private MealPresenter presenter;
+public class CategorySearchFragment extends Fragment implements CategoriesView {
+    private CategoryPresenter presenter;
     private RecyclerView recyclerView;
     private CategoryAdapter adapter;
 
@@ -62,7 +64,7 @@ public class CategorySearchFragment extends Fragment implements MealView {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
 
-        presenter = new MealPresenterImpl(this, new MealRepository(new MealLocalDataSourceImpl(FavoriteMealDatabase.getInstance(requireContext())),
+        presenter = new CategoryPresenter(this, new MealRepository(new MealLocalDataSourceImpl(FavoriteMealDatabase.getInstance(requireContext())),
                 new MealRemoteDataSource(RetrofitClient.getClient().create(MealApi.class))));
         presenter.getCategories();
 
@@ -76,48 +78,13 @@ public class CategorySearchFragment extends Fragment implements MealView {
     }
 
     @Override
-    public void showMeal(MealEntity meal) {
-
-    }
-
-    @Override
-    public void showMealDetails(MealEntity meal) {
-
-    }
-
-    @Override
     public void showError(String message) {
-
-    }
-
-    @Override
-    public void showMessage(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void showCategories(List<CategoryResponse.Category> categories) {
         adapter.setCategories(categories);
-    }
-
-    @Override
-    public void showMeals(List<MealEntity> meals) {
-
-    }
-
-    @Override
-    public void addMeal(MealEntity meal) {
-
-    }
-
-    @Override
-    public void showIngredients(List<IngredientResponse.Ingredient> ingredients) {
-
-    }
-
-    @Override
-    public void getMealsByCategory(String categoryName) {
-
     }
 
 }

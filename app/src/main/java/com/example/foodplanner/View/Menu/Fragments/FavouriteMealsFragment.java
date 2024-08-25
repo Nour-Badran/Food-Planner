@@ -128,11 +128,6 @@ public class FavouriteMealsFragment extends Fragment implements MealView, AuthVi
     }
 
     @Override
-    public void showCategories(List<CategoryResponse.Category> categories) {
-
-    }
-
-    @Override
     public void showMeals(List<MealEntity> meals) {
         adapter.setMeals(meals);
     }

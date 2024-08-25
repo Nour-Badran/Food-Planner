@@ -150,11 +150,6 @@ public class SearchMealsFragment extends Fragment implements MealView, AuthView 
     }
 
     @Override
-    public void showCategories(List<CategoryResponse.Category> categories) {
-
-    }
-
-    @Override
     public void showMeals(List<MealEntity> meals) {
         adapter.setMeals(meals);
         recyclerView.setVisibility(View.VISIBLE);

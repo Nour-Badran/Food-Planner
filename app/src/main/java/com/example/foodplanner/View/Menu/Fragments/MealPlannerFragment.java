@@ -482,9 +482,6 @@ public class MealPlannerFragment extends Fragment implements MealView, OnAddClic
     @Override
     public void showMessage(String message) {}
 
-    @Override
-    public void showCategories(List<CategoryResponse.Category> categories) {}
-
     private void showLoading(boolean isLoading) {
         progressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
     }
