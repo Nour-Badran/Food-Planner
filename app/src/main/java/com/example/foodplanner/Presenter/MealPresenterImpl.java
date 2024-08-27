@@ -115,43 +115,7 @@ public class MealPresenterImpl implements MealPresenter {
         });
     }
 
-    @Override
-    public void getIngredients() {
-        repository.getIngredients(new MealCallback<List<IngredientResponse.Ingredient>>() {
-            @Override
-            public void onSuccess(List<IngredientResponse.Ingredient> ingredients) {
-                if (ingredients == null || ingredients.isEmpty()) {
-                    view.showError("No ingredients found");
-                } else {
-                    view.showIngredients(ingredients);
-                }
-            }
 
-            @Override
-            public void onFailure(String errorMessage) {
-                view.showError(errorMessage);
-            }
-        });
-    }
-
-    @Override
-    public void getIngredientsBySubstring(String substring) {
-        repository.getIngredientsBySubstring(substring, new MealCallback<List<IngredientResponse.Ingredient>>() {
-            @Override
-            public void onSuccess(List<IngredientResponse.Ingredient> ingredients) {
-                if (ingredients == null || ingredients.isEmpty()) {
-                    view.showError("No ingredients found");
-                } else {
-                    view.showIngredients(ingredients);
-                }
-            }
-
-            @Override
-            public void onFailure(String errorMessage) {
-                view.showError(errorMessage);
-            }
-        });
-    }
     @Override
     public LiveData<List<MealEntity>> getFavMeals() {
         return repository.getStoredMeals();

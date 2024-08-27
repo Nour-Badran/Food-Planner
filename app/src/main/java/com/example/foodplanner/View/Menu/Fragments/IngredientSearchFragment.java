@@ -26,16 +26,19 @@ import com.example.foodplanner.Model.Repository.MealDB.MealEntity;
 import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealRemoteDataSource;
 import com.example.foodplanner.Model.Repository.MealRemoteDataSource.RetrofitClient;
 import com.example.foodplanner.Model.Repository.Repository.MealRepository;
+import com.example.foodplanner.Presenter.IngredientPresenter;
 import com.example.foodplanner.Presenter.MealPresenter;
 import com.example.foodplanner.Presenter.MealPresenterImpl;
 import com.example.foodplanner.R;
 import com.example.foodplanner.View.Menu.Adapters.IngredientAdapter;
+import com.example.foodplanner.View.Menu.Interfaces.IngredientView;
 import com.example.foodplanner.View.Menu.Interfaces.MealView;
 
 import java.util.List;
 
-public class IngredientSearchFragment extends Fragment implements MealView {
-    private MealPresenter presenter;
+public class IngredientSearchFragment extends Fragment implements IngredientView {
+    //private MealPresenter presenter;
+    private IngredientPresenter ingredientPresenter;
     private RecyclerView recyclerView;
     private IngredientAdapter adapter;
     private SearchView searchViewIngredient;
@@ -66,15 +69,14 @@ public class IngredientSearchFragment extends Fragment implements MealView {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
 
-        presenter = new MealPresenterImpl(this, new MealRepository(new MealLocalDataSourceImpl(FavoriteMealDatabase.getInstance(requireContext())),
+        ingredientPresenter = new IngredientPresenter(this, new MealRepository(new MealLocalDataSourceImpl(FavoriteMealDatabase.getInstance(requireContext())),
                 new MealRemoteDataSource(RetrofitClient.getClient().create(MealApi.class))));
-
-        presenter.getIngredients();
+        ingredientPresenter.getIngredients();
 
         searchViewIngredient.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                presenter.getIngredientsBySubstring(query.trim());
+                ingredientPresenter.getIngredientsBySubstring(query.trim());
                 return false;
             }
 
@@ -84,7 +86,7 @@ public class IngredientSearchFragment extends Fragment implements MealView {
                     recyclerView.setVisibility(View.GONE);
                 } else {
                     recyclerView.setVisibility(View.VISIBLE);
-                    presenter.getIngredientsBySubstring(newText.trim());
+                    ingredientPresenter.getIngredientsBySubstring(newText.trim());
                 }
                 return false;
             }
@@ -98,32 +100,14 @@ public class IngredientSearchFragment extends Fragment implements MealView {
             }
         });
     }
-
-    @Override
-    public void showMeal(MealEntity meal) {}
-
-    @Override
-    public void showMealDetails(MealEntity meal) {}
-    @Override
-    public void showMessage(String message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-    }
     @Override
     public void showError(String message) {
         recyclerView.setVisibility(View.GONE);
     }
 
     @Override
-    public void showMeals(List<MealEntity> meals) {}
-
-    @Override
-    public void addMeal(MealEntity meal) {}
-
-    @Override
     public void showIngredients(List<IngredientResponse.Ingredient> ingredients) {
         adapter.setIngredients(ingredients);
         recyclerView.setVisibility(View.VISIBLE);}
 
-    @Override
-    public void getMealsByCategory(String categoryName) {}
 }
