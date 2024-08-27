@@ -27,7 +27,9 @@ import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealRemoteD
 import com.example.foodplanner.Model.Repository.MealRemoteDataSource.RetrofitClient;
 import com.example.foodplanner.Model.Repository.Repository.MealRepository;
 import com.example.foodplanner.Presenter.AuthPresenter;
+import com.example.foodplanner.Presenter.LoggedInPresenter;
 import com.example.foodplanner.Presenter.MealPresenterImpl;
+import com.example.foodplanner.Presenter.UpdateMealsPresenter;
 import com.example.foodplanner.R;
 import com.example.foodplanner.View.Menu.Adapters.MealAdapter;
 import com.example.foodplanner.View.Menu.Interfaces.AuthView;
@@ -36,13 +38,13 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
-public class FavouriteMealsFragment extends Fragment implements MealView, AuthView {
+public class FavouriteMealsFragment extends Fragment {
 
-    private MealPresenterImpl presenter;
+    private UpdateMealsPresenter updateMealsPresenter;
     private RecyclerView recyclerView;
     private MealAdapter adapter;
     private SearchView searchViewMeal;
-    private AuthPresenter authPresenter;
+    private LoggedInPresenter loggedInPresenter;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,16 +61,17 @@ public class FavouriteMealsFragment extends Fragment implements MealView, AuthVi
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.recyclerViewMeals);
         searchViewMeal = view.findViewById(R.id.searchViewMeal);
-        searchViewMeal.setIconifiedByDefault(false); // Ensure SearchView is always expanded
+        searchViewMeal.setIconifiedByDefault(false);
 
-        presenter = new MealPresenterImpl(this, new MealRepository(new MealLocalDataSourceImpl(FavoriteMealDatabase.getInstance(requireContext())),
+        updateMealsPresenter = new UpdateMealsPresenter(new MealRepository(new MealLocalDataSourceImpl(FavoriteMealDatabase.getInstance(requireContext())),
                 new MealRemoteDataSource(RetrofitClient.getClient().create(MealApi.class))));
 
-        authPresenter = new AuthPresenter(this, new AuthModel(getContext()));
-        adapter = new MealAdapter(presenter,requireContext(),authPresenter);
+        loggedInPresenter = new LoggedInPresenter(new AuthModel(getContext()));
+
+        adapter = new MealAdapter(requireContext(),loggedInPresenter,updateMealsPresenter);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-        LiveData<List<MealEntity>> mealList = presenter.getFavMeals();
+        LiveData<List<MealEntity>> mealList = updateMealsPresenter.getFavMeals();
         mealList.observe(getViewLifecycleOwner(), mealEntities -> {
             adapter.setMeals(mealEntities);
         });
@@ -93,7 +96,7 @@ public class FavouriteMealsFragment extends Fragment implements MealView, AuthVi
             }
         });
         adapter.setOnFabClickListener(meal -> {
-            presenter.deleteMeal(meal);
+            updateMealsPresenter.deleteMeal(meal);
             Snackbar.make(view, meal.getStrMeal() + " deleted from favorites", Snackbar.LENGTH_SHORT).show();
         });
     }
@@ -101,85 +104,9 @@ public class FavouriteMealsFragment extends Fragment implements MealView, AuthVi
     @Override
     public void onResume() {
         super.onResume();
-        LiveData<List<MealEntity>> mealList = presenter.getFavMeals();
+        LiveData<List<MealEntity>> mealList = updateMealsPresenter.getFavMeals();
         mealList.observe(getViewLifecycleOwner(), mealEntities -> {
             adapter.setMeals(mealEntities);
         });
-    }
-
-    @Override
-    public void showMeal(MealEntity meal) {
-
-    }
-
-    @Override
-    public void showMealDetails(MealEntity meal) {
-
-    }
-
-    @Override
-    public void showMessage(String message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void showError(String message) {
-
-    }
-
-    @Override
-    public void showMeals(List<MealEntity> meals) {
-        adapter.setMeals(meals);
-    }
-
-    @Override
-    public void addMeal(MealEntity meal) {
-
-    }
-
-
-    @Override
-    public void showIngredients(List<IngredientResponse.Ingredient> ingredients) {
-
-    }
-
-    @Override
-    public void getMealsByCategory(String categoryName) {
-
-    }
-
-    @Override
-    public void showLoading() {
-
-    }
-
-    @Override
-    public void hideLoading() {
-
-    }
-
-    @Override
-    public void showToast(String message) {
-
-    }
-
-    @Override
-    public void navigateToHome(String email) {
-
-    }
-
-    @Override
-    public void navigateToSignUp() {
-
-    }
-
-    @Override
-    public void setEmailError(String error) {
-
-    }
-
-    @Override
-    public void setPasswordError(String error) {
-
     }
 }

@@ -39,8 +39,10 @@ import com.example.foodplanner.Model.Repository.MealRemoteDataSource.RetrofitCli
 import com.example.foodplanner.Model.Repository.Repository.MealRepository;
 import com.example.foodplanner.Presenter.AuthPresenter;
 import com.example.foodplanner.Presenter.CategoryPresenter;
+import com.example.foodplanner.Presenter.LoggedInPresenter;
 import com.example.foodplanner.Presenter.MealPresenter;
 import com.example.foodplanner.Presenter.MealPresenterImpl;
+import com.example.foodplanner.Presenter.UpdateMealsPresenter;
 import com.example.foodplanner.R;
 import com.example.foodplanner.View.Menu.Interfaces.AuthView;
 import com.example.foodplanner.View.LoginBottomSheetFragment;
@@ -59,7 +61,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class HomeFragment extends Fragment implements MealView, AuthView, CategoriesView {
+public class HomeFragment extends Fragment implements MealView, CategoriesView {
 
     private MealPresenter presenter;
     private CategoryPresenter catPresenter;
@@ -77,17 +79,24 @@ public class HomeFragment extends Fragment implements MealView, AuthView, Catego
     RecyclerView recyclerView;
     MealAdapter mealAdapter;
     CategoryAdapter categoryAdapter;
-    IngredientAdapter ingredientAdapter;
-    AuthPresenter authPresenter;
+    LoggedInPresenter loggedInPresenter;
+    UpdateMealsPresenter updateMealsPresenter;
     boolean loggedIn;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         mealsList = new ArrayList<>();
-        authPresenter = new AuthPresenter(this, new AuthModel(getContext()));
+
+        loggedInPresenter = new LoggedInPresenter(new AuthModel(getContext()));
+
         catPresenter = new CategoryPresenter(this, new MealRepository(new MealLocalDataSourceImpl(FavoriteMealDatabase.getInstance(requireContext())),
                 new MealRemoteDataSource(RetrofitClient.getClient().create(MealApi.class))));
-        loggedIn = authPresenter.isLoggedIn();
+
+        updateMealsPresenter = new UpdateMealsPresenter(new MealRepository(new MealLocalDataSourceImpl(FavoriteMealDatabase.getInstance(requireContext())),
+                new MealRemoteDataSource(RetrofitClient.getClient().create(MealApi.class))));
+
+        loggedIn = loggedInPresenter.isLoggedIn();
         requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
@@ -183,7 +192,7 @@ public class HomeFragment extends Fragment implements MealView, AuthView, Catego
         });
     }
     private void doesMealExist(String mealId, MealExistCallback callback) {
-        presenter.isMealExists(mealId, exists -> {
+        updateMealsPresenter.isMealExists(mealId, exists -> {
             callback.onResult(exists);
         });
     }
@@ -231,12 +240,12 @@ public class HomeFragment extends Fragment implements MealView, AuthView, Catego
                                     getActivity().runOnUiThread(() ->
                                             Snackbar.make(view, mealsList.get(currentIndex).getStrMeal() + " deleted from favorites", Snackbar.LENGTH_SHORT).show()
                                     );
-                                    presenter.deleteMeal(mealsList.get(currentIndex));
+                                    updateMealsPresenter.deleteMeal(mealsList.get(currentIndex));
                                 } else {
                                     getActivity().runOnUiThread(() ->
                                             Snackbar.make(view, mealsList.get(currentIndex).getStrMeal() + " added to favorites", Snackbar.LENGTH_SHORT).show()
                                     );
-                                    presenter.insertMeal(mealsList.get(currentIndex));
+                                    updateMealsPresenter.insertMeal(mealsList.get(currentIndex));
                                 }
                                 updateFabColorAfterUpdate(mealsList.get(currentIndex).getIdMeal());
                             });
@@ -348,14 +357,6 @@ public class HomeFragment extends Fragment implements MealView, AuthView, Catego
     }
 
     @Override
-    public void showMealDetails(MealEntity meal) {}
-
-    @Override
-    public void showMessage(String message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
     public void showError(String message) {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
@@ -372,14 +373,6 @@ public class HomeFragment extends Fragment implements MealView, AuthView, Catego
 
     @Override
     public void addMeal(MealEntity meal) {}
-
-    @Override
-    public void showIngredients(List<IngredientResponse.Ingredient> ingredients) {
-        ingredientAdapter.setIngredients(ingredients);
-    }
-
-    @Override
-    public void getMealsByCategory(String categoryName) {}
 
     private void animateFabSlide(final boolean isNext) {
         float translationX = isNext ? fab.getWidth() : -fab.getWidth();
@@ -501,25 +494,4 @@ public class HomeFragment extends Fragment implements MealView, AuthView, Catego
                     public void onAnimationRepeat(Animator animation) {}
                 });
     }
-
-    @Override
-    public void showLoading() {}
-
-    @Override
-    public void hideLoading() {}
-
-    @Override
-    public void showToast(String message) {}
-
-    @Override
-    public void navigateToHome(String email) {}
-
-    @Override
-    public void navigateToSignUp() {}
-
-    @Override
-    public void setEmailError(String error) {}
-
-    @Override
-    public void setPasswordError(String error) {}
 }

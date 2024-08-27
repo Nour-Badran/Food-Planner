@@ -8,11 +8,7 @@ import java.util.List;
 
 public interface MealView {
     void showMeal(MealEntity meal);
-    void showMealDetails(MealEntity meal);
     void showError(String message);
-    void showMessage(String message);
     void showMeals(List<MealEntity> meals);
     void addMeal(MealEntity meal);
-    void showIngredients(List<IngredientResponse.Ingredient> ingredients);
-    void getMealsByCategory(String categoryName);
 }

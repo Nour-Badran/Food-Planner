@@ -81,22 +81,8 @@ public class MealLocalDataSourceImpl implements MealLocalDataSource {
     }
 
     @Override
-    public void updateMondayMeal(Monday meal) {
-        new Thread(() -> mondayDao.updateMeal(meal)).start();
-    }
-
-    @Override
-    public void deleteMondayMeal(String mealId) {
-        new Thread(() -> mondayDao.deleteMealById(mealId)).start();
-    }
-
-    @Override
     public LiveData<List<Monday>> getMondayMeals() {
         return mondayDao.getAllMeals();
-    }
-    @Override
-    public void deleteAllMondayMeals() {
-        new Thread(() -> mondayDao.deleteAllMondayMeals()).start();
     }
 
     @Override
@@ -115,23 +101,8 @@ public class MealLocalDataSourceImpl implements MealLocalDataSource {
     }
 
     @Override
-    public void updateTuesdayMeal(Tuesday meal) {
-        new Thread(() -> tuesdayDao.updateMeal(meal)).start();
-    }
-
-    @Override
-    public void deleteTuesdayMeal(String mealId) {
-        new Thread(() -> tuesdayDao.deleteMealById(mealId)).start();
-    }
-
-    @Override
     public LiveData<List<Tuesday>> getTuesdayMeals() {
         return tuesdayDao.getAllMeals();
-    }
-
-    @Override
-    public void deleteAllTuesdayMeals() {
-        new Thread(() -> tuesdayDao.deleteAllTuesdayMeals()).start();
     }
 
     @Override
@@ -150,23 +121,8 @@ public class MealLocalDataSourceImpl implements MealLocalDataSource {
     }
 
     @Override
-    public void updateWednesdayMeal(Wednesday meal) {
-        new Thread(() -> wednesdayDao.updateMeal(meal)).start();
-    }
-
-    @Override
-    public void deleteWednesdayMeal(String mealId) {
-        new Thread(() -> wednesdayDao.deleteMealById(mealId)).start();
-    }
-
-    @Override
     public LiveData<List<Wednesday>> getWednesdayMeals() {
         return wednesdayDao.getAllMeals();
-    }
-
-    @Override
-    public void deleteAllWednesdayMeals() {
-        new Thread(() -> wednesdayDao.deleteAllWednesdayMeals()).start();
     }
 
     @Override
@@ -185,22 +141,8 @@ public class MealLocalDataSourceImpl implements MealLocalDataSource {
     }
 
     @Override
-    public void updateThursdayMeal(Thursday meal) {
-        new Thread(() -> thursdayDao.updateMeal(meal)).start();
-    }
-
-    @Override
-    public void deleteThursdayMeal(String mealId) {
-        new Thread(() -> thursdayDao.deleteMealById(mealId)).start();
-    }
-
-    @Override
     public LiveData<List<Thursday>> getThursdayMeals() {
         return thursdayDao.getAllMeals();
-    }
-    @Override
-    public void deleteAllThursdayMeals() {
-        new Thread(() -> thursdayDao.deleteAllThursdayMeals()).start();
     }
 
     @Override
@@ -219,23 +161,8 @@ public class MealLocalDataSourceImpl implements MealLocalDataSource {
     }
 
     @Override
-    public void updateFridayMeal(Friday meal) {
-        new Thread(() -> fridayDao.updateMeal(meal)).start();
-    }
-
-    @Override
-    public void deleteFridayMeal(String mealId) {
-        new Thread(() -> fridayDao.deleteMealById(mealId)).start();
-    }
-
-    @Override
     public LiveData<List<Friday>> getFridayMeals() {
         return fridayDao.getAllMeals();
-    }
-
-    @Override
-    public void deleteAllFridayMeals(){
-        new Thread(() -> fridayDao.deleteAllFridayMeals()).start();
     }
 
     @Override
@@ -252,26 +179,10 @@ public class MealLocalDataSourceImpl implements MealLocalDataSource {
     public void insertSaturdayMeal(Saturday meal) {
         new Thread(() -> saturdayDao.insertMeal(meal)).start();
     }
-
-    @Override
-    public void updateSaturdayMeal(Saturday meal) {
-        new Thread(() -> saturdayDao.updateMeal(meal)).start();
-    }
-
-    @Override
-    public void deleteSaturdayMeal(String mealId) {
-        new Thread(() -> saturdayDao.deleteMealById(mealId)).start();
-    }
-
     @Override
     public LiveData<List<Saturday>> getSaturdayMeals() {
         return saturdayDao.getAllMeals();
     }
-    public void deleteAllSaturdayMeals() {
-        new Thread(() -> saturdayDao.deleteAllSaturdayMeals()).start();
-
-    }
-
     @Override
     @Transaction
     public void updateSaturdayMeals(List<Saturday> newMeals) {
@@ -286,25 +197,10 @@ public class MealLocalDataSourceImpl implements MealLocalDataSource {
     public void insertSundayMeal(Sunday meal) {
         new Thread(() -> sundayDao.insertMeal(meal)).start();
     }
-
-    @Override
-    public void updateSundayMeal(Sunday meal) {
-        new Thread(() -> sundayDao.updateMeal(meal)).start();
-    }
-
-    @Override
-    public void deleteSundayMeal(String mealId) {
-        new Thread(() -> sundayDao.deleteMealById(mealId)).start();
-    }
-
     @Override
     public LiveData<List<Sunday>> getSundayMeals() {
         return sundayDao.getAllMeals();
     }
-    public void deleteAllSundayMeals() {
-        new Thread(() -> sundayDao.deleteAllSundayMeals()).start();
-    }
-
     @Override
     @Transaction
     public void updateSundayMeals(List<Sunday> newMeals) {

@@ -9,18 +9,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.foodplanner.Model.AuthModel.AuthModel;
 import com.example.foodplanner.Presenter.AuthPresenter;
+import com.example.foodplanner.Presenter.LoggedInPresenter;
 import com.example.foodplanner.R;
 import com.example.foodplanner.View.Menu.Interfaces.AuthView;
 
-public class SplashActivity extends AppCompatActivity implements AuthView {
-    AuthPresenter authPresenter;
+public class SplashActivity extends AppCompatActivity {
+    LoggedInPresenter presenter;
     boolean loggedIn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        authPresenter = new AuthPresenter(this, new AuthModel(getBaseContext()));
-        loggedIn = authPresenter.isLoggedIn();
+        presenter = new LoggedInPresenter(new AuthModel(getBaseContext()));
+        loggedIn = presenter.isLoggedIn();
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
@@ -37,39 +38,5 @@ public class SplashActivity extends AppCompatActivity implements AuthView {
             }
             finish();
         }, 3000);
-    }
-
-    @Override
-    public void showLoading() {
-
-    }
-
-    @Override
-    public void hideLoading() {
-
-    }
-
-    @Override
-    public void showToast(String message) {
-    }
-
-    @Override
-    public void navigateToHome(String email) {
-
-    }
-
-    @Override
-    public void navigateToSignUp() {
-
-    }
-
-    @Override
-    public void setEmailError(String error) {
-
-    }
-
-    @Override
-    public void setPasswordError(String error) {
-
     }
 }

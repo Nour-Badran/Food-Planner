@@ -25,7 +25,9 @@ import com.example.foodplanner.Model.Repository.PlanDB.Days.Thursday;
 import com.example.foodplanner.Model.Repository.PlanDB.Days.Tuesday;
 import com.example.foodplanner.Model.Repository.PlanDB.Days.Wednesday;
 import com.example.foodplanner.Presenter.AuthPresenter;
+import com.example.foodplanner.Presenter.LoggedInPresenter;
 import com.example.foodplanner.Presenter.MealPresenterImpl;
+import com.example.foodplanner.Presenter.UpdateMealsPresenter;
 import com.example.foodplanner.R;
 import com.example.foodplanner.View.LoginBottomSheetFragment;
 import com.example.foodplanner.View.Menu.Interfaces.OnFabClickListener;
@@ -42,14 +44,14 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
     private OnMealClickListener onMealClickListener;
     private OnFabClickListener onFabClickListener;
     private List<MealEntity> filteredMeals = new ArrayList<>();
-    private MealPresenterImpl presenter;
-    private AuthPresenter authPresenter;
     boolean loggedIn;
+    LoggedInPresenter loggedInPresenter;
     private Context context;
-    public MealAdapter(MealPresenterImpl presenter,Context context,AuthPresenter authPresenter) {
-        this.presenter = presenter;
+    private UpdateMealsPresenter updateMealsPresenter;
+    public MealAdapter(Context context, LoggedInPresenter loggedInPresenter, UpdateMealsPresenter updateMealsPresenter) {
         this.context = context;
-        this.authPresenter = authPresenter;
+        this.loggedInPresenter = loggedInPresenter;
+        this.updateMealsPresenter = updateMealsPresenter;
     }
     @NonNull
     @Override
@@ -72,12 +74,12 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
         holder.fab.setBackgroundTintList(ColorStateList.valueOf(defaultColor));
 
         // Check if meal exists in the database
-        presenter.isMealExists(meal.getIdMeal(), exists -> {
+        updateMealsPresenter.isMealExists(meal.getIdMeal(), exists -> {
             int color = exists ? ContextCompat.getColor(holder.itemView.getContext(), R.color.areaBackgroundColor) : defaultColor;
             holder.fab.setBackgroundTintList(ColorStateList.valueOf(color));
         });
 
-        loggedIn = authPresenter.isLoggedIn();
+        loggedIn = loggedInPresenter.isLoggedIn();
 
         holder.fabAdd.setOnClickListener(v -> {
             if(loggedIn)
@@ -91,43 +93,43 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
                 bottomSheetDialog.show();
 
                 bottomSheetView.findViewById(R.id.btnMonday).setOnClickListener(view -> {
-                    presenter.insertMondayMeal(new Monday(meal.getIdMeal(),meal.getStrMeal(),meal.getStrMealThumb()));
+                    updateMealsPresenter.insertMondayMeal(new Monday(meal.getIdMeal(),meal.getStrMeal(),meal.getStrMealThumb()));
                     bottomSheetDialog.dismiss();
                     Snackbar.make(v, "Meal added to Monday!", Snackbar.LENGTH_SHORT).show();
                 });
 
                 bottomSheetView.findViewById(R.id.btnTuesday).setOnClickListener(view -> {
-                    presenter.insertTuesdayMeal(new Tuesday(meal.getIdMeal(),meal.getStrMeal(),meal.getStrMealThumb()));
+                    updateMealsPresenter.insertTuesdayMeal(new Tuesday(meal.getIdMeal(),meal.getStrMeal(),meal.getStrMealThumb()));
                     bottomSheetDialog.dismiss();
                     Snackbar.make(v, "Meal added to Tuesday!", Snackbar.LENGTH_SHORT).show();
                 });
 
                 bottomSheetView.findViewById(R.id.btnWednesday).setOnClickListener(view -> {
-                    presenter.insertWednesdayMeal(new Wednesday(meal.getIdMeal(),meal.getStrMeal(),meal.getStrMealThumb()));
+                    updateMealsPresenter.insertWednesdayMeal(new Wednesday(meal.getIdMeal(),meal.getStrMeal(),meal.getStrMealThumb()));
                     bottomSheetDialog.dismiss();
                     Snackbar.make(v, "Meal added to Wednesday!", Snackbar.LENGTH_SHORT).show();
                 });
 
                 bottomSheetView.findViewById(R.id.btnThursday).setOnClickListener(view -> {
-                    presenter.insertThursdayMeal(new Thursday(meal.getIdMeal(),meal.getStrMeal(),meal.getStrMealThumb()));
+                    updateMealsPresenter.insertThursdayMeal(new Thursday(meal.getIdMeal(),meal.getStrMeal(),meal.getStrMealThumb()));
                     bottomSheetDialog.dismiss();
                     Snackbar.make(v, "Meal added to Thursday!", Snackbar.LENGTH_SHORT).show();
                 });
 
                 bottomSheetView.findViewById(R.id.btnFriday).setOnClickListener(view -> {
-                    presenter.insertFridayMeal(new Friday(meal.getIdMeal(),meal.getStrMeal(),meal.getStrMealThumb()));
+                    updateMealsPresenter.insertFridayMeal(new Friday(meal.getIdMeal(),meal.getStrMeal(),meal.getStrMealThumb()));
                     bottomSheetDialog.dismiss();
                     Snackbar.make(v, "Meal added to Friday!", Snackbar.LENGTH_SHORT).show();
                 });
 
                 bottomSheetView.findViewById(R.id.btnSaturday).setOnClickListener(view -> {
-                    presenter.insertSaturdayMeal(new Saturday(meal.getIdMeal(),meal.getStrMeal(),meal.getStrMealThumb()));
+                    updateMealsPresenter.insertSaturdayMeal(new Saturday(meal.getIdMeal(),meal.getStrMeal(),meal.getStrMealThumb()));
                     bottomSheetDialog.dismiss();
                     Snackbar.make(v, "Meal added to Saturday!", Snackbar.LENGTH_SHORT).show();
                 });
 
                 bottomSheetView.findViewById(R.id.btnSunday).setOnClickListener(view -> {
-                    presenter.insertSundayMeal(new Sunday(
+                    updateMealsPresenter.insertSundayMeal(new Sunday(
                             meal.getIdMeal(),meal.getStrMeal(),meal.getStrMealThumb()));
                     bottomSheetDialog.dismiss();
                     Snackbar.make(v, "Meal added to Sunday!", Snackbar.LENGTH_SHORT).show();
@@ -152,7 +154,7 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
                 onFabClickListener.onFabClick(meal);
                 if(loggedIn)
                 {
-                    presenter.isMealExists(meal.getIdMeal(), exists -> {
+                    updateMealsPresenter.isMealExists(meal.getIdMeal(), exists -> {
                         int color = exists ? defaultColor : ContextCompat.getColor(holder.itemView.getContext(), R.color.areaBackgroundColor);
                         holder.fab.setBackgroundTintList(ColorStateList.valueOf(color));
                     });

@@ -17,12 +17,6 @@ public interface SundayDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertMeal(Sunday meal);
 
-    @Update
-    void updateMeal(Sunday meal);
-
-    @Query("DELETE FROM Sunday WHERE id = :mealId")
-    void deleteMealById(String mealId);
-
     @Query("SELECT * FROM Sunday")
     LiveData<List<Sunday>> getAllMeals();
 
@@ -31,10 +25,4 @@ public interface SundayDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertMeals(List<Sunday> meals);
-
-    @Transaction
-    default void updateSundayMeals(List<Sunday> newMeals) {
-        deleteAllSundayMeals();
-        insertMeals(newMeals);
-    }
 }

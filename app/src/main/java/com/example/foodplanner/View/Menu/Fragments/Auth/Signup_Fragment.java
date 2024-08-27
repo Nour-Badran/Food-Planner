@@ -44,6 +44,7 @@ import com.example.foodplanner.Presenter.AuthPresenter;
 import com.example.foodplanner.Presenter.DataPresenter;
 import com.example.foodplanner.Presenter.MealPresenter;
 import com.example.foodplanner.Presenter.MealPresenterImpl;
+import com.example.foodplanner.Presenter.UpdateMealsPresenter;
 import com.example.foodplanner.R;
 import com.example.foodplanner.View.Activities.HomeActivity;
 import com.example.foodplanner.View.Menu.Interfaces.AuthView;
@@ -57,14 +58,14 @@ import com.google.android.gms.common.api.ApiException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Signup_Fragment extends Fragment implements AuthView, MealView {
+public class Signup_Fragment extends Fragment implements AuthView {
 
     private Button guestButton, signUp, goToLogin;
     private EditText username, email, password, confirmPassword;
     private ProgressBar progressBar;
+    private UpdateMealsPresenter updateMealsPresenter;
     private GoogleSignInClient mGoogleSignInClient;
     private AuthPresenter presenter;
-    private MealPresenter mealPresenter;
     DataPresenter dataPresenter;
 
     private final ActivityResultLauncher<Intent> googleSignInLauncher =
@@ -92,8 +93,10 @@ public class Signup_Fragment extends Fragment implements AuthView, MealView {
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
-        mealPresenter = new MealPresenterImpl(this, new MealRepository(new MealLocalDataSourceImpl(FavoriteMealDatabase.getInstance(getContext())),
+
+        updateMealsPresenter = new UpdateMealsPresenter(new MealRepository(new MealLocalDataSourceImpl(FavoriteMealDatabase.getInstance(getContext())),
                 new MealRemoteDataSource(RetrofitClient.getClient().create(MealApi.class))));
+
         mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso);
 
         requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
@@ -167,11 +170,11 @@ public class Signup_Fragment extends Fragment implements AuthView, MealView {
             @Override
             public void onMealsLoaded(List<MealEntity> meals) {
                 if (meals != null && !meals.isEmpty()) {
-                    mealPresenter.updateMeals(meals);
+                    updateMealsPresenter.updateMeals(meals);
                 }
                 else
                 {
-                    mealPresenter.updateMeals(new ArrayList<>());
+                    updateMealsPresenter.updateMeals(new ArrayList<>());
                 }
             }
         });
@@ -184,9 +187,9 @@ public class Signup_Fragment extends Fragment implements AuthView, MealView {
                         Monday monday = new Monday(meal.getIdMeal(), meal.getStrMeal(), meal.getStrMealThumb());
                         mondayMeals.add(monday);
                     }
-                    mealPresenter.updateMondayMeals(mondayMeals);
+                    updateMealsPresenter.updateMondayMeals(mondayMeals);
                 } else {
-                    mealPresenter.updateMondayMeals(new ArrayList<>());
+                    updateMealsPresenter.updateMondayMeals(new ArrayList<>());
                 }
             }
         });
@@ -199,9 +202,9 @@ public class Signup_Fragment extends Fragment implements AuthView, MealView {
                         Tuesday tuesday = new Tuesday(meal.getIdMeal(), meal.getStrMeal(), meal.getStrMealThumb());
                         tuesdayMeals.add(tuesday);
                     }
-                    mealPresenter.updateTuesdayMeals(tuesdayMeals);
+                    updateMealsPresenter.updateTuesdayMeals(tuesdayMeals);
                 } else {
-                    mealPresenter.updateTuesdayMeals(new ArrayList<>());
+                    updateMealsPresenter.updateTuesdayMeals(new ArrayList<>());
                 }
             }
         });
@@ -214,9 +217,9 @@ public class Signup_Fragment extends Fragment implements AuthView, MealView {
                         Wednesday wednesday = new Wednesday(meal.getIdMeal(), meal.getStrMeal(), meal.getStrMealThumb());
                         wednesdayMeals.add(wednesday);
                     }
-                    mealPresenter.updateWednesdayMeals(wednesdayMeals);
+                    updateMealsPresenter.updateWednesdayMeals(wednesdayMeals);
                 } else {
-                    mealPresenter.updateWednesdayMeals(new ArrayList<>());
+                    updateMealsPresenter.updateWednesdayMeals(new ArrayList<>());
                 }
             }
         });
@@ -229,9 +232,9 @@ public class Signup_Fragment extends Fragment implements AuthView, MealView {
                         Thursday thursday = new Thursday(meal.getIdMeal(), meal.getStrMeal(), meal.getStrMealThumb());
                         thursdayMeals.add(thursday);
                     }
-                    mealPresenter.updateThursdayMeals(thursdayMeals);
+                    updateMealsPresenter.updateThursdayMeals(thursdayMeals);
                 } else {
-                    mealPresenter.updateThursdayMeals(new ArrayList<>());
+                    updateMealsPresenter.updateThursdayMeals(new ArrayList<>());
                 }
             }
         });
@@ -244,9 +247,9 @@ public class Signup_Fragment extends Fragment implements AuthView, MealView {
                         Friday friday = new Friday(meal.getIdMeal(), meal.getStrMeal(), meal.getStrMealThumb());
                         fridayMeals.add(friday);
                     }
-                    mealPresenter.updateFridayMeals(fridayMeals);
+                    updateMealsPresenter.updateFridayMeals(fridayMeals);
                 } else {
-                    mealPresenter.updateFridayMeals(new ArrayList<>());
+                    updateMealsPresenter.updateFridayMeals(new ArrayList<>());
                 }
             }
         });
@@ -259,9 +262,9 @@ public class Signup_Fragment extends Fragment implements AuthView, MealView {
                         Saturday saturday = new Saturday(meal.getIdMeal(), meal.getStrMeal(), meal.getStrMealThumb());
                         saturdayMeals.add(saturday);
                     }
-                    mealPresenter.updateSaturdayMeals(saturdayMeals);
+                    updateMealsPresenter.updateSaturdayMeals(saturdayMeals);
                 } else {
-                    mealPresenter.updateSaturdayMeals(new ArrayList<>());
+                    updateMealsPresenter.updateSaturdayMeals(new ArrayList<>());
                 }
             }
         });
@@ -274,9 +277,9 @@ public class Signup_Fragment extends Fragment implements AuthView, MealView {
                         Sunday sunday = new Sunday(meal.getIdMeal(), meal.getStrMeal(), meal.getStrMealThumb());
                         sundayMeals.add(sunday);
                     }
-                    mealPresenter.updateSundayMeals(sundayMeals);
+                    updateMealsPresenter.updateSundayMeals(sundayMeals);
                 } else {
-                    mealPresenter.updateSundayMeals(new ArrayList<>());
+                    updateMealsPresenter.updateSundayMeals(new ArrayList<>());
                 }
             }
         });
@@ -311,11 +314,6 @@ public class Signup_Fragment extends Fragment implements AuthView, MealView {
     }
 
     @Override
-    public void navigateToSignUp() {
-
-    }
-
-    @Override
     public void setEmailError(String error) {
         email.setError(error);
     }
@@ -325,45 +323,6 @@ public class Signup_Fragment extends Fragment implements AuthView, MealView {
         password.setError(error);
     }
 
-    @Override
-    public void showMeal(MealEntity meal) {
-
-    }
-
-    @Override
-    public void showMealDetails(MealEntity meal) {
-
-    }
-
-    @Override
-    public void showError(String message) {
-
-    }
-
-    @Override
-    public void showMessage(String message) {
-
-    }
-
-    @Override
-    public void showMeals(List<MealEntity> meals) {
-
-    }
-
-    @Override
-    public void addMeal(MealEntity meal) {
-
-    }
-
-    @Override
-    public void showIngredients(List<IngredientResponse.Ingredient> ingredients) {
-
-    }
-
-    @Override
-    public void getMealsByCategory(String categoryName) {
-
-    }
 }
 
 

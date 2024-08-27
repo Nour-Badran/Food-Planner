@@ -44,9 +44,6 @@ public class AuthModel {
         editor.clear();
         editor.apply();
     }
-    public String getCurrentUserId() {
-        return mAuth.getCurrentUser().getUid();
-    }
 
     public boolean isLoggedIn() {
         return sharedPreferences.getBoolean("loggedIn", false);

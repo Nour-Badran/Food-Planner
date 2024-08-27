@@ -45,25 +45,28 @@ import com.example.foodplanner.Model.Repository.PlanDB.Days.Wednesday;
 import com.example.foodplanner.Model.Repository.Repository.MealRepository;
 import com.example.foodplanner.Presenter.AuthPresenter;
 import com.example.foodplanner.Presenter.DataPresenter;
+import com.example.foodplanner.Presenter.HomePresenter;
 import com.example.foodplanner.Presenter.MealPresenterImpl;
+import com.example.foodplanner.Presenter.UpdateMealsPresenter;
 import com.example.foodplanner.R;
 import com.example.foodplanner.View.Menu.Interfaces.AuthView;
 import com.example.foodplanner.View.LoginBottomSheetFragment;
+import com.example.foodplanner.View.Menu.Interfaces.HomeView;
 import com.example.foodplanner.View.Menu.Interfaces.MealView;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeActivity extends AppCompatActivity implements MealView, AuthView {
+public class HomeActivity extends AppCompatActivity implements HomeView {
 
     DrawerLayout drawerLayout;
     TextView nameTextView;
     ProgressBar progressBar;
-    AuthPresenter authPresenter;
+    HomePresenter homePresenter;
     NavController navController;
     NetworkChangeReceiver networkChangeReceiver;
-    MealPresenterImpl presenter;
+    UpdateMealsPresenter presenter;
     String email;
     boolean loggedIn;
     NavigationView navigationView;
@@ -78,10 +81,10 @@ public class HomeActivity extends AppCompatActivity implements MealView, AuthVie
         // Register network receiver
         intitilaizeNetworkReciever();
 
-        authPresenter = new AuthPresenter(this, new AuthModel(getBaseContext()));
-        email = authPresenter.getEmail();
-        loggedIn = authPresenter.isLoggedIn();
-        presenter = new MealPresenterImpl(this, new MealRepository(new MealLocalDataSourceImpl(FavoriteMealDatabase.getInstance(this)),
+        homePresenter = new HomePresenter(this, new AuthModel(getBaseContext()));
+        email = homePresenter.getEmail();
+        loggedIn = homePresenter.isLoggedIn();
+        presenter = new UpdateMealsPresenter(new MealRepository(new MealLocalDataSourceImpl(FavoriteMealDatabase.getInstance(this)),
                 new MealRemoteDataSource(RetrofitClient.getClient().create(MealApi.class))));
 
         dataPresenter = new DataPresenter(new DataRepository());
@@ -212,7 +215,7 @@ public class HomeActivity extends AppCompatActivity implements MealView, AuthVie
         {
             saveToFirebase();
         }
-        authPresenter.signOut();
+        homePresenter.signOut();
     }
 
     private void saveToFirebase() {
@@ -340,79 +343,15 @@ public class HomeActivity extends AppCompatActivity implements MealView, AuthVie
     }
 
     @Override
-    public void showMeal(MealEntity meal) {
-
-    }
-
-    @Override
-    public void showMealDetails(MealEntity meal) {
-
-    }
-
-    @Override
-    public void showError(String message) {
-
-    }
-
-    @Override
-    public void showMessage(String message) {
-
-    }
-
-    @Override
-    public void showMeals(List<MealEntity> meals) {
-
-    }
-
-    @Override
-    public void addMeal(MealEntity meal) {
-
-    }
-
-    @Override
-    public void showIngredients(List<IngredientResponse.Ingredient> ingredients) {
-
-    }
-
-    @Override
-    public void getMealsByCategory(String categoryName) {
-
-    }
-
-    @Override
-    public void showLoading() {
-
-    }
-
-    @Override
-    public void hideLoading() {
-
-    }
-
-    @Override
     public void showToast(String message) {
-
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void navigateToHome(String email) {
-
-    }
 
     @Override
     public void navigateToSignUp() {
         Intent intent = new Intent(HomeActivity.this, AuthActivity.class);
         startActivity(intent);
         finish();
-    }
-
-    @Override
-    public void setEmailError(String error) {
-
-    }
-
-    @Override
-    public void setPasswordError(String error) {
-
     }
 }

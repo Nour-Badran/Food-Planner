@@ -30,6 +30,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.foodplanner.Model.Repository.MealDB.MealEntity;
 import com.example.foodplanner.Presenter.MealPresenter;
+import com.example.foodplanner.Presenter.UpdateMealsPresenter;
 import com.example.foodplanner.R;
 import com.example.foodplanner.View.Menu.Interfaces.OnDeleteListener;
 import com.example.foodplanner.View.Menu.Interfaces.OnFabClickListener;
@@ -45,15 +46,15 @@ public class PlannedMealsAdapter extends RecyclerView.Adapter<PlannedMealsAdapte
     private final List<MealEntity> meals;
     private OnDeleteListener onDeleteListener;
     private int dayIndex;
-    MealPresenter presenter;
+    UpdateMealsPresenter updateMealsPresenter;
     private OnFabClickListener onFabClickListener;
     private OnMealClickListener onMealClickListener;
 
-    public PlannedMealsAdapter(Context context, List<MealEntity> meals, int dayIndex,MealPresenter presenter) {
+    public PlannedMealsAdapter(Context context, List<MealEntity> meals, int dayIndex,UpdateMealsPresenter updateMealsPresenter) {
         this.context = context;
         this.meals = meals;
         this.dayIndex = dayIndex;
-        this.presenter = presenter;
+        this.updateMealsPresenter = updateMealsPresenter;
     }
 
     @NonNull
@@ -83,7 +84,7 @@ public class PlannedMealsAdapter extends RecyclerView.Adapter<PlannedMealsAdapte
         holder.fabFav.setBackgroundTintList(ColorStateList.valueOf(defaultColor));
 
         // Check if meal exists in the database
-        presenter.isMealExists(meal.getIdMeal(), exists -> {
+        updateMealsPresenter.isMealExists(meal.getIdMeal(), exists -> {
             int color = exists ? ContextCompat.getColor(holder.itemView.getContext(), R.color.areaBackgroundColor) : defaultColor;
             holder.fabFav.setBackgroundTintList(ColorStateList.valueOf(color));
         });
@@ -91,7 +92,7 @@ public class PlannedMealsAdapter extends RecyclerView.Adapter<PlannedMealsAdapte
         holder.fabFav.setOnClickListener(v -> {
             if (onFabClickListener != null) {
                 onFabClickListener.onFabClick(meal);
-                presenter.isMealExists(meal.getIdMeal(), exists -> {
+                updateMealsPresenter.isMealExists(meal.getIdMeal(), exists -> {
                     int color = exists ? defaultColor : ContextCompat.getColor(holder.itemView.getContext(), R.color.areaBackgroundColor);
                     holder.fabFav.setBackgroundTintList(ColorStateList.valueOf(color));
                 });

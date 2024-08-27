@@ -103,21 +103,10 @@ public class MealRepository implements MealRepositoryInterface {
         localDataSource.insertMondayMeal(meal);
     }
 
-    public void updateMondayMeal(Monday meal) {
-        localDataSource.updateMondayMeal(meal);
-    }
-
-    public void deleteMondayMeal(String mealId) {
-        localDataSource.deleteMondayMeal(mealId);
-    }
-
     public LiveData<List<Monday>> getMondayMeals() {
         return localDataSource.getMondayMeals();
     }
 
-    public void deleteAllMondayMeals() {
-        localDataSource.deleteAllMondayMeals();
-    }
     public void updateMondayMeals(List<Monday> newMeals) {
         localDataSource.updateMondayMeals(newMeals);
     }
@@ -127,19 +116,8 @@ public class MealRepository implements MealRepositoryInterface {
         localDataSource.insertTuesdayMeal(meal);
     }
 
-    public void updateTuesdayMeal(Tuesday meal) {
-        localDataSource.updateTuesdayMeal(meal);
-    }
-
-    public void deleteTuesdayMeal(String mealId) {
-        localDataSource.deleteTuesdayMeal(mealId);
-    }
-
     public LiveData<List<Tuesday>> getTuesdayMeals() {
         return localDataSource.getTuesdayMeals();
-    }
-    public void deleteAllTuesdayMeals() {
-        localDataSource.deleteAllTuesdayMeals();
     }
     public void updateTuesdayMeals(List<Tuesday> newMeals) {
         localDataSource.updateTuesdayMeals(newMeals);
@@ -149,19 +127,8 @@ public class MealRepository implements MealRepositoryInterface {
         localDataSource.insertWednesdayMeal(meal);
     }
 
-    public void updateWednesdayMeal(Wednesday meal) {
-        localDataSource.updateWednesdayMeal(meal);
-    }
-
-    public void deleteWednesdayMeal(String mealId) {
-        localDataSource.deleteWednesdayMeal(mealId);
-    }
-
     public LiveData<List<Wednesday>> getWednesdayMeals() {
         return localDataSource.getWednesdayMeals();
-    }
-    public void deleteAllWednesdayMeals() {
-        localDataSource.deleteAllWednesdayMeals();
     }
     public void updateWednesdayMeals(List<Wednesday> newMeals) {
         localDataSource.updateWednesdayMeals(newMeals);
@@ -171,19 +138,8 @@ public class MealRepository implements MealRepositoryInterface {
         localDataSource.insertThursdayMeal(meal);
     }
 
-    public void updateThursdayMeal(Thursday meal) {
-        localDataSource.updateThursdayMeal(meal);
-    }
-
-    public void deleteThursdayMeal(String mealId) {
-        localDataSource.deleteThursdayMeal(mealId);
-    }
-
     public LiveData<List<Thursday>> getThursdayMeals() {
         return localDataSource.getThursdayMeals();
-    }
-    public void deleteAllThursdayMeals() {
-        localDataSource.deleteAllThursdayMeals();
     }
     public void updateThursdayMeals(List<Thursday> newMeals) {
         localDataSource.updateThursdayMeals(newMeals);
@@ -193,19 +149,8 @@ public class MealRepository implements MealRepositoryInterface {
         localDataSource.insertFridayMeal(meal);
     }
 
-    public void updateFridayMeal(Friday meal) {
-        localDataSource.updateFridayMeal(meal);
-    }
-
-    public void deleteFridayMeal(String mealId) {
-        localDataSource.deleteFridayMeal(mealId);
-    }
-
     public LiveData<List<Friday>> getFridayMeals() {
         return localDataSource.getFridayMeals();
-    }
-    public void deleteAllFridayMeals() {
-        localDataSource.deleteAllFridayMeals();
     }
     public void updateFridayMeals(List<Friday> newMeals) {
         localDataSource.updateFridayMeals(newMeals);
@@ -215,19 +160,8 @@ public class MealRepository implements MealRepositoryInterface {
         localDataSource.insertSaturdayMeal(meal);
     }
 
-    public void updateSaturdayMeal(Saturday meal) {
-        localDataSource.updateSaturdayMeal(meal);
-    }
-
-    public void deleteSaturdayMeal(String mealId) {
-        localDataSource.deleteSaturdayMeal(mealId);
-    }
-
     public LiveData<List<Saturday>> getSaturdayMeals() {
         return localDataSource.getSaturdayMeals();
-    }
-    public void deleteAllSaturdayMeals() {
-        localDataSource.deleteAllSaturdayMeals();
     }
 
     public void updateSaturdayMeals(List<Saturday> newMeals) {
@@ -238,19 +172,8 @@ public class MealRepository implements MealRepositoryInterface {
         localDataSource.insertSundayMeal(meal);
     }
 
-    public void updateSundayMeal(Sunday meal) {
-        localDataSource.updateSundayMeal(meal);
-    }
-
-    public void deleteSundayMeal(String mealId) {
-        localDataSource.deleteSundayMeal(mealId);
-    }
-
     public LiveData<List<Sunday>> getSundayMeals() {
         return localDataSource.getSundayMeals();
-    }
-    public void deleteAllSundayMeals() {
-        localDataSource.deleteAllSundayMeals();
     }
     public void updateSundayMeals(List<Sunday> newMeals) {
         localDataSource.updateSundayMeals(newMeals);

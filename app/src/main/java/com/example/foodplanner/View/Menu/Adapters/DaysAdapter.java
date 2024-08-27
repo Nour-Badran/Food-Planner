@@ -12,7 +12,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.foodplanner.Model.Repository.DB.FavoriteMealDatabase;
 import com.example.foodplanner.Model.Repository.MealDB.MealEntity;
+import com.example.foodplanner.Model.Repository.MealDB.MealLocalDataSourceImpl;
+import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealApi;
+import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealRemoteDataSource;
+import com.example.foodplanner.Model.Repository.MealRemoteDataSource.RetrofitClient;
 import com.example.foodplanner.Model.Repository.PlanDB.Days.Friday;
 import com.example.foodplanner.Model.Repository.PlanDB.Days.Monday;
 import com.example.foodplanner.Model.Repository.PlanDB.Days.Saturday;
@@ -22,6 +27,7 @@ import com.example.foodplanner.Model.Repository.PlanDB.Days.Tuesday;
 import com.example.foodplanner.Model.Repository.PlanDB.Days.Wednesday;
 import com.example.foodplanner.Model.Repository.Repository.MealRepository;
 import com.example.foodplanner.Presenter.MealPresenter;
+import com.example.foodplanner.Presenter.UpdateMealsPresenter;
 import com.example.foodplanner.R;
 import com.example.foodplanner.View.Menu.Interfaces.OnAddClickListener;
 import com.example.foodplanner.View.Menu.Interfaces.OnFabClickListener;
@@ -42,16 +48,16 @@ public class DaysAdapter extends RecyclerView.Adapter<DaysAdapter.DayViewHolder>
     private OnAddClickListener onAddClickListener;
     private final List<String> dayDates;
     private final List<List<MealEntity>> weeklyMeals;
-    MealPresenter presenter;
+    private UpdateMealsPresenter presenter;
     private OnFabClickListener onFabClickListener;
     private OnMealClickListener onMealClickListener;
 
-    public DaysAdapter(Context context, List<String> daysOfWeek, List<List<MealEntity>> weeklyMeals,MealPresenter presenter,MealRepository repository) {
+    public DaysAdapter(Context context, List<String> daysOfWeek, List<List<MealEntity>> weeklyMeals,UpdateMealsPresenter presenter) {
         this.context = context;
         this.daysOfWeek = daysOfWeek;
         this.weeklyMeals = weeklyMeals;
-        this.presenter = presenter;
         this.dayDates = calculateWeekDates();
+        this.presenter = presenter;
     }
 
     @NonNull

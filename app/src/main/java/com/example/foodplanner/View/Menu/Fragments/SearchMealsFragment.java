@@ -31,7 +31,9 @@ import com.example.foodplanner.Model.Repository.MealRemoteDataSource.MealRemoteD
 import com.example.foodplanner.Model.Repository.MealRemoteDataSource.RetrofitClient;
 import com.example.foodplanner.Model.Repository.Repository.MealRepository;
 import com.example.foodplanner.Presenter.AuthPresenter;
+import com.example.foodplanner.Presenter.LoggedInPresenter;
 import com.example.foodplanner.Presenter.MealPresenterImpl;
+import com.example.foodplanner.Presenter.UpdateMealsPresenter;
 import com.example.foodplanner.R;
 import com.example.foodplanner.View.LoginBottomSheetFragment;
 import com.example.foodplanner.View.Menu.Adapters.MealAdapter;
@@ -41,11 +43,12 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
-public class SearchMealsFragment extends Fragment implements MealView, AuthView {
+public class SearchMealsFragment extends Fragment implements MealView {
 
     private RecyclerView recyclerView;
     private MealPresenterImpl presenter;
-    private AuthPresenter authPresenter;
+    UpdateMealsPresenter updateMealsPresenter;
+    private LoggedInPresenter loggedInPresenter;
     private MealAdapter adapter;
     private boolean loggedIn;
     @Override
@@ -72,11 +75,15 @@ public class SearchMealsFragment extends Fragment implements MealView, AuthView 
         searchViewMeal.setIconifiedByDefault(false); // Ensure SearchView is always expanded
         recyclerView = view.findViewById(R.id.recyclerViewMeals);
 
+        updateMealsPresenter = new UpdateMealsPresenter(new MealRepository(new MealLocalDataSourceImpl(FavoriteMealDatabase.getInstance(requireContext())),
+                new MealRemoteDataSource(RetrofitClient.getClient().create(MealApi.class))));
+
         presenter = new MealPresenterImpl(this, new MealRepository(new MealLocalDataSourceImpl(FavoriteMealDatabase.getInstance(requireContext())),
                 new MealRemoteDataSource(RetrofitClient.getClient().create(MealApi.class))));
-        authPresenter = new AuthPresenter(this, new AuthModel(getContext()));
-        loggedIn = authPresenter.isLoggedIn();
-        adapter = new MealAdapter(presenter,requireContext(),authPresenter);
+        loggedInPresenter = new LoggedInPresenter(new AuthModel(getContext()));
+
+        loggedIn = loggedInPresenter.isLoggedIn();
+        adapter = new MealAdapter(requireContext(),loggedInPresenter,updateMealsPresenter);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
 
@@ -107,17 +114,17 @@ public class SearchMealsFragment extends Fragment implements MealView, AuthView 
         adapter.setOnFabClickListener(meal -> {
             if(loggedIn)
             {
-                presenter.isMealExists(meal.getIdMeal(), exists -> {
+                updateMealsPresenter.isMealExists(meal.getIdMeal(), exists -> {
                     if (exists) {
                         getActivity().runOnUiThread(() ->
                                 Snackbar.make(view, meal.getStrMeal() + " deleted from favorites", Snackbar.LENGTH_SHORT).show()
                         );
-                        presenter.deleteMeal(meal);
+                        updateMealsPresenter.deleteMeal(meal);
                     } else {
                         getActivity().runOnUiThread(() ->
                                 Snackbar.make(view, meal.getStrMeal() + " added to favorites", Snackbar.LENGTH_SHORT).show()
                         );
-                        presenter.insertMeal(meal);
+                        updateMealsPresenter.insertMeal(meal);
                     }
                 });
             }
@@ -135,16 +142,6 @@ public class SearchMealsFragment extends Fragment implements MealView, AuthView 
     }
 
     @Override
-    public void showMealDetails(MealEntity meal) {
-
-    }
-    @Override
-    public void showMessage(String message) {
-        if (getActivity() != null) {
-            getActivity().runOnUiThread(() -> Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show());
-        }
-    }
-    @Override
     public void showError(String message) {
         recyclerView.setVisibility(View.GONE);
     }
@@ -157,51 +154,6 @@ public class SearchMealsFragment extends Fragment implements MealView, AuthView 
 
     @Override
     public void addMeal(MealEntity meal) {
-
-    }
-
-    @Override
-    public void showIngredients(List<IngredientResponse.Ingredient> ingredients) {
-
-    }
-
-    @Override
-    public void getMealsByCategory(String categoryName) {
-
-    }
-
-    @Override
-    public void showLoading() {
-
-    }
-
-    @Override
-    public void hideLoading() {
-
-    }
-
-    @Override
-    public void showToast(String message) {
-
-    }
-
-    @Override
-    public void navigateToHome(String email) {
-
-    }
-
-    @Override
-    public void navigateToSignUp() {
-
-    }
-
-    @Override
-    public void setEmailError(String error) {
-
-    }
-
-    @Override
-    public void setPasswordError(String error) {
 
     }
 }

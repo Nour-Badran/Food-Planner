@@ -73,30 +73,4 @@ public class AuthPresenter {
         });
     }
 
-    public void saveLoginState(String email) {
-        model.saveLoginState(email);
-    }
-
-    public void clearLoginState() {
-        model.clearLoginState();
-    }
-
-    public String getCurrentUserId() {
-        return model.getCurrentUserId();
-    }
-
-    public boolean isLoggedIn() {
-        return model.isLoggedIn();
-    }
-
-    public String getEmail() {
-        return model.getEmail();
-    }
-
-    public void signOut() {
-        clearLoginState();
-        view.showToast("Signed Out");
-        FirebaseAuth.getInstance().signOut();
-        view.navigateToSignUp();
-    }
 }
